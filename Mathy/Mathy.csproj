@@ -80,6 +80,7 @@
     <Compile Include="Language\VariableContextExpression.cs" />
     <Compile Include="Language\PredefinedConstantExpression.cs" />
     <Compile Include="Libs\DateFuncs.cs" />
+    <Compile Include="Libs\DistributionFuncs.cs" />
     <Compile Include="Libs\ExpressionFuncs.cs" />
     <Compile Include="Libs\MapReduceFuncs.cs" />
     <Compile Include="Libs\GeneralFuncs.cs" />
