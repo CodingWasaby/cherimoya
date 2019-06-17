@@ -1,0 +1,28 @@
+{
+	"Title":"普通线性回归",
+	"Author":"3",
+	"PlanType":1,
+	"Expressions":[
+		{
+			"Title":"线性回归",
+			"Expression":"x=column(lts,0);\ny=column(lts,1);\na_x=average(x);\na_y=average(y);\nnx=size(x);\nb1=isum(i:0->nx-1,(x[i]-a_x)*(y[i]-a_y))\/isum(i:0->nx-1,pow(x[i]-a_x,2));\nb0=a_y-b1*a_x;\nss=isum(i:0->nx-1,pow((y[i]-b0-b1*x[i]),2))\/(nx-2);\nsb=root(ss\/isum(i:0->nx-1,pow(x[i]-a_x,2)),2);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"lts",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"lts",
+			"Size":0,
+			"ColumnNames":[
+				"x",
+				"y"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

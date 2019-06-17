@@ -1,0 +1,50 @@
+﻿@using Mathy.Web.Models
+@model DocVM
+
+@{
+    ViewBag.Title = "文档";
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+        function getFuncArticle(index) {
+
+            $.ajax({
+                url: "/Home/GetFuncArticle?index=" + index,
+                success: function (html) {
+                    $("#article").html(html);
+                }
+            });
+        }
+     
+
+    </script>
+
+}
+
+
+<br/>
+
+<div>
+<style>
+	body{overflow-y: scroll;}
+</style>
+    <div style="float: left; width: 220px;margin-top: 0; line-height: 30px; height:500px; overflow-y:auto">
+
+        @foreach (FuncDocVM func in Model.List)
+        {
+            <div><a href="javascript: getFuncArticle(@func.Index);">@(func.Name + " " + func.Title)</a></div>
+        }
+
+    </div>
+
+    <div style="float:left;margin-left:10px; width:calc(100% - 230px);">
+
+        <div id="article">
+        </div>
+
+        <div style="clear: both;"></div>
+
+    </div>

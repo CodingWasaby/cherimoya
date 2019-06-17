@@ -1,0 +1,73 @@
+﻿@using Mathy.Web.Models
+@model IEnumerable<PlanListCellVM>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th width="15%">类型</th>
+            <th width="15%">名称</th>
+            @if (Model.Count(m => m.IsCustom) > 0)
+            {
+                <th width="5%">作者</th>
+            }
+            @*<th width="5%">引用</th>*@
+            <th width="30%">说明</th>
+            <th width="15%">创建时间</th>
+            <th width="20%"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+
+            foreach (PlanListCellVM item in Model as IEnumerable<PlanListCellVM>)
+            {
+                <tr>
+                    <td width="15%">@item.PlanType</td>
+                    <td width="15%">@item.Title</td>
+                    @if (item.IsCustom)
+                    {
+                        <td width="5%">@item.Author</td>
+                    }
+                    @*<td width="5%">@item.ReferenceCount</td>*@
+                    <td width="30%">@item.Description</td>
+                    <td width="15%">@item.CreateTime</td>
+                    @if (item.IsCustom)
+                    {
+                        if (item.PlanType == "公共")
+                        {
+                            <td width="20%">
+                                <a href="@Html.Raw(item.ViewPlanUrl)">查看</a>&nbsp;
+                                <a href="@Html.Raw(item.CreateJobUrl)">引用</a>&nbsp;
+                            </td>
+                        }
+                        if (item.PlanType == "保护")
+                        {
+                            <td width="20%">
+                                <a href="@Html.Raw(item.ViewPlanUrl)">查看</a>&nbsp;
+                            </td>
+                        }
+                    }
+                    else
+                    {
+                        <td width="20%">
+                            <a href="@Html.Raw(item.ViewPlanUrl)">查看</a>&nbsp;
+                            <a href="@Html.Raw(item.EditPlanUrl)">编辑</a>&nbsp;
+                            <a href="@Html.Raw(item.CreateJobUrl)">引用</a>&nbsp;
+                            <a href="@Html.Raw(item.DeletePlanUrl)">删除</a>&nbsp;
+                        </td>
+                    }
+
+                </tr>
+            }
+        }
+
+
+    </tbody>
+</table>
+
+@{
+    Html.RenderPartial("PagingBar", ViewData["PagingButtons"]);
+}
+

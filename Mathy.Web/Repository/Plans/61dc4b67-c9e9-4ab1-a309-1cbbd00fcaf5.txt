@@ -1,0 +1,57 @@
+{
+	"Title":"Demo12",
+	"Description":"Demo1实验。",
+	"Author":"徐丽",
+	"Expressions":[
+		{
+			"Title":"准备工作",
+			"Description":"取均值和标准差。x为均值向量，s为标准差向量。",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\nm1=concatColumn([m,x,s]);"
+		},
+		{
+			"Title":"Shapiro检验",
+			"Description":"进行置信概率为95%的Shapiro检验。",
+			"Expression":"shapiro=shapiro(array(x),95);"
+		},
+		{
+			"Title":"可疑数据取舍",
+			"Description":"分别进行显著性水平为5%的Dixon和Grubbs检验。返回值分别为需要去掉的值。",
+			"Expression":"d_dixon=dixond(array(x), 5);\nd_grubbs=grubbsd(array(x), 5);"
+		},
+		{
+			"Title":"F检验",
+			"Description":"进行显著性水平为5%的F检验。",
+			"Expression":"#{f,q1,q2,v1,v2,fvalue}=f(m, 5);\np1=q1\/v1;\np2=q2\/v2;\npr=p1\/p2;"
+		},
+		{
+			"Title":"测试计算",
+			"Description":"这是一段测试",
+			"Expression":"temp1=p1 + p2;"
+		},
+		{
+			"Title":"实验结论",
+			"Description":"统计实验结论。",
+			"Expression":"message= \"本次实验结论：本次实验结论：本次实验结论：本次实验结论：本次实验结论：本次实验结论：本次实验结论：\n\" +\n\"对\" + rowCount(m) + \"组数据进行了统计。\n\" +\n\"Shapiro检验结果：\" +\n(shapiro ? \"通过\" : \"未通过\") +\n\"\nF检验结果：\" +\n(f ? \"通过\" : \"未通过\");"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix",
+			"Description":"样本矩阵"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"ColumnNames":[
+				"Data1",
+				"Data2",
+				"Data3"
+			],
+			"RowHeaderWidth":90,
+			"RowName":"Row{0}"
+		}
+	]
+}

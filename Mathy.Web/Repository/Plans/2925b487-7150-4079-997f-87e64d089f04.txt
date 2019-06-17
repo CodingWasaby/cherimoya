@@ -1,0 +1,35 @@
+{
+	"Title":"aa",
+	"Description":"aa",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"a",
+			"Description":"a",
+			"Expression":"m=m\/n"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		},
+		{
+			"Name":"n",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		},
+		{
+			"Target":"n",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

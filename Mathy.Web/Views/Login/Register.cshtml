@@ -1,0 +1,26 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<body style="background-color: #f3f3f4;">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name" style="margin-left: -105px;">Mathy</h1>
+            </div>
+            <p>
+                欢迎注册Mathy
+            </p>
+            <p>
+                我们会给你的邮箱发送一封验证邮件。<br>请您注意查收。
+            </p>
+            <div class="form-group">
+                <input class="form-control" type="email" placeholder="邮箱 Email" required="required" id="email">
+            </div>
+            <button id="sumbit" class="btn btn-primary block full-width m-b" onclick="sendMail_Rgister()">验证邮箱</button>
+            <p class="m-t"> <small>Mathy All Rights Reserved  &copy; @DateTime.Now.Year</small> </p>
+        </div>
+    </div>
+</body>

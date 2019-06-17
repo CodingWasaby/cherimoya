@@ -1,0 +1,64 @@
+﻿@using Mathy.Web.Models
+@model FuncDocVM
+
+<div>
+    <div class="bordered">
+        @Model.Name
+    </div>
+    <div>@Model.Title</div>
+    <div>@Model.Description</div>
+    <div>参数</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="10%">名称</th>
+                <th width="10%">类型</th>
+                <th width="80%">说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ParameterDocVM parameter in Model.Parameters)
+            {
+                <tr>
+                    <td width="10%">@parameter.Name</td>
+                    <td width="10%">@parameter.Type</td>
+                    <td width="80%">@parameter.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>返回</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="20%">类型</th>
+                <th width="80%">说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ReturnDocVM r in Model.Returns)
+            {
+                <tr>
+                    <td width="20%">@r.Type</td>
+                    <td width="80%">@r.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+@foreach (ParagraphVM p in Model.Article.Paragraphs)
+{
+    <div class='@(p.HasBorder ? "code" : "paragraph")'>
+        @{
+            if (p.HasBullet)
+            {
+                @Html.Raw("⬤")
+            }
+
+
+            @Html.Raw(p.Text)
+        }
+    </div>
+}

@@ -1,0 +1,42 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<body style="background-color: #f3f3f4;">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name" style="margin-left: -105px;">UES</h1>
+            </div>
+            <p>
+                欢迎注册UES
+            </p>
+            <p>
+                请完善以下信息
+            </p>
+            <input id="email" hidden="hidden" value="@ViewBag.email">
+            <div class="form-group">
+                <input type="password" class="form-control " placeholder="密码 (必填) Password" required="required" id="password">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control " placeholder="确认秘密 (必填) ConfirmPassword" required="required" id="confirmPassword">
+            </div>
+            <div class="form-group">
+                <input class="form-control " placeholder="用户名 (必填) Name" id="Name" required="required">
+            </div>
+            <div class="form-group">
+                <input class="form-control " placeholder="单位 Company" id="Company">
+            </div>
+            <div class="form-group">
+                <input class="form-control " placeholder="手机 CellPhone" id="CellPhone">
+            </div>
+            <div class="form-group">
+                <input class="form-control " placeholder="固定电话 Tel" id="Tel">
+            </div>
+            <button id="sumbit" class="btn btn-primary block full-width m-b" onclick="RgisterSumbit()">保存信息</button>
+            <p class="m-t"> <small>Mathy All Rights Reserved  &copy; @DateTime.Now.Year</small> </p>
+        </div>
+    </div>
+</body>

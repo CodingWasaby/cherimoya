@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3588A993-D542-4906-B785-6784DC9DE4DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mathy</RootNamespace>
+    <AssemblyName>Mathy</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dandelion, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dandelion\Dandelion\bin\Debug\Dandelion.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.4.8.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CsvParser.cs" />
+    <Compile Include="Graphing\CoordinationConverter.cs" />
+    <Compile Include="Graphing\CandleStickDataSource.cs" />
+    <Compile Include="Graphing\ExpressionDataSource.cs" />
+    <Compile Include="Graphing\FunctionDataSource.cs" />
+    <Compile Include="Graphing\GraphDataSource.cs" />
+    <Compile Include="Graphing\Grapher.cs" />
+    <Compile Include="Graphing\GraphPoint.cs" />
+    <Compile Include="Graphing\GraphStyle.cs" />
+    <Compile Include="Graphing\GridLineComputeMethod.cs" />
+    <Compile Include="Graphing\Inset.cs" />
+    <Compile Include="Graphing\GraphRenderer.cs" />
+    <Compile Include="Graphing\CandleStickRenderer.cs" />
+    <Compile Include="Graphing\PointRenderer.cs" />
+    <Compile Include="Graphing\PointRenderStyle.cs" />
+    <Compile Include="Graphing\ContinousDataSource.cs" />
+    <Compile Include="Graphing\DiscreteDataSource.cs" />
+    <Compile Include="Graphing\LineRenderer.cs" />
+    <Compile Include="Graphing\ScatteredPointRenderer.cs" />
+    <Compile Include="Graphing\SerialStyle.cs" />
+    <Compile Include="Language\MultipleVariableExpression.cs" />
+    <Compile Include="Language\ArrayExpression.cs" />
+    <Compile Include="Language\DictionaryExpression.cs" />
+    <Compile Include="Language\MathyConstants.cs" />
+    <Compile Include="Language\VariableContextExpression.cs" />
+    <Compile Include="Language\PredefinedConstantExpression.cs" />
+    <Compile Include="Libs\DateFuncs.cs" />
+    <Compile Include="Libs\ExpressionFuncs.cs" />
+    <Compile Include="Libs\MapReduceFuncs.cs" />
+    <Compile Include="Libs\GeneralFuncs.cs" />
+    <Compile Include="Libs\MatrixFuncs.cs" />
+    <Compile Include="Libs\GraphFuncs.cs" />
+    <Compile Include="Libs\StatisticsFuncs.cs" />
+    <Compile Include="Libs\StringFuncs.cs" />
+    <Compile Include="Maths\Tables\Dagostino.cs" />
+    <Compile Include="Maths\Tables\T.cs" />
+    <Compile Include="Maths\Tables\Shapiro.cs" />
+    <Compile Include="Maths\Tables\F.cs" />
+    <Compile Include="Maths\Tables\Cochran.cs" />
+    <Compile Include="Maths\Tables\Dixon.cs" />
+    <Compile Include="Maths\Tables\Grubbs.cs" />
+    <Compile Include="Maths\Matrix.cs" />
+    <Compile Include="Maths\Vector.cs" />
+    <Compile Include="MathyContext.cs" />
+    <Compile Include="PathResolver.cs" />
+    <Compile Include="Planning\DataFuncs.cs" />
+    <Compile Include="Planning\DataType.cs" />
+    <Compile Include="Planning\EvaluationContext.cs" />
+    <Compile Include="Planning\Plan.cs" />
+    <Compile Include="Funcs.cs" />
+    <Compile Include="Language\IterationSumExpression.cs" />
+    <Compile Include="Language\MathyExpressionCompiler.cs" />
+    <Compile Include="Language\MathyExpressionEvaluator.cs" />
+    <Compile Include="Language\MathyLanguageService.cs" />
+    <Compile Include="Language\MathyTypeChecker.cs" />
+    <Compile Include="Language\MatrixExpression.cs" />
+    <Compile Include="Language\MultiIndexingExpression.cs" />
+    <Compile Include="MathyShell.cs" />
+    <Compile Include="Planning\PlanAnalyzer.cs" />
+    <Compile Include="Planning\PlanRepository.cs" />
+    <Compile Include="Planning\Settings.cs" />
+    <Compile Include="Planning\Step.cs" />
+    <Compile Include="Planning\StepState.cs" />
+    <Compile Include="Visualization\Computation\Branch.cs" />
+    <Compile Include="Visualization\Computation\ComputedNode.cs" />
+    <Compile Include="Planning\PlanParser.cs" />
+    <Compile Include="Visualization\Computation\ComputePlanVisualizer.cs" />
+    <Compile Include="Visualization\Computation\Node.cs" />
+    <Compile Include="Visualization\Computation\TreeStyle.cs" />
+    <Compile Include="Visualization\Computation\VariableNode.cs" />
+    <Compile Include="Visualization\Expressions\NodeConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\DataType.cs" />
+    <Compile Include="Templates\Parameter.cs" />
+    <Compile Include="Templates\Template.cs" />
+    <Compile Include="Templates\TemplateCollection.cs" />
+    <Compile Include="Templates\TemplateCollectionLoader.cs" />
+    <Compile Include="Tree\ExpressionBranch.cs" />
+    <Compile Include="Tree\ExpressionTree.cs" />
+    <Compile Include="Tree\TreeBranch.cs" />
+    <Compile Include="Tree\VariableBranch.cs" />
+    <Compile Include="Visualization\Expressions\LevelContext.cs" />
+    <Compile Include="Visualization\Expressions\MeasureSpec.cs" />
+    <Compile Include="Visualization\Expressions\MeasureSpecMode.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\AbsExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\IfElseExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\DiffExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\SubscriptExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\UpperlineExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\SuperscriptExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\DictionaryExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\BinaryExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\BinaryOperator.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\BinaryOperatorNode.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\LambdaExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\LogExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\ArrayExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\TextExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\ConstantExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\Expression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\FunctionExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\LimExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\MatrixExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\MultiIndexingExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\Node.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\ParantheseExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\PowExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\RootExpression.cs" />
+    <Compile Include="Visualization\Expressions\Nodes\SumExpression.cs" />
+    <Compile Include="Visualization\Expressions\NodeVisualizer.cs" />
+    <Compile Include="Visualization\Expressions\Style.cs" />
+    <Compile Include="Visualization\Text\DecoratedText.cs" />
+    <Compile Include="Visualization\Text\NormalText.cs" />
+    <Compile Include="Visualization\Text\SuperscriptedText.cs" />
+    <Compile Include="Visualization\Text\SubscriptedText.cs" />
+    <Compile Include="Visualization\Tree\ExpressionTreeVisualizer.cs" />
+    <Compile Include="Visualization\Expressions\VectorGraphics.cs" />
+    <Compile Include="Visualization\Tree\RenderBranch.cs" />
+    <Compile Include="Visualization\Tree\RenderTreeConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cherimoya\Cherimoya.csproj">
+      <Project>{bb24761f-236d-42de-83ca-f01bdfbac0e4}</Project>
+      <Name>Cherimoya</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,23 @@
+﻿@using Mathy.Templates;
+
+@{
+    TemplateCollection collection = Model as TemplateCollection;
+
+    <div>@collection.Name</div>
+    
+    <div style="margin-left:20px;">
+
+        @{
+            foreach (Template template in collection.Templates)
+            {
+                Html.RenderPartial("Template", template);
+            }
+
+            foreach (TemplateCollection subCollection in collection.SubCollections)
+            {
+                Html.RenderPartial("TemplateCollection", subCollection);
+            }
+        }
+
+    </div>
+}

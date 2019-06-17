@@ -1,0 +1,20 @@
+﻿{
+  "ID": "5-20"
+  "Name": "不确定度公式",
+  "Expression":"m=size(x);s=root(abs(sum(x-isum(i:1 -> m,x[i])/m)/(m*(m - 1))), 2);",
+  "Parameters": [
+    {
+      "Name": "x",
+      "Type": "Matrix",
+      "Default": null,
+      "Unit": null,
+      "Description": "输入样本。必须为向量。"
+    },
+  ],
+  "ReturnType": "Number",
+  "ReturnUnit": null,
+  "Description": "p.260，求不确定度。返回[样本数量，不确定度s]。因为根号下可能为负数，因此此处取绝对值。需要确认。",
+  "Reference:": null,
+  "Author": "Akiko",
+  "LastUpdateTime": "2015-9-28"
+}

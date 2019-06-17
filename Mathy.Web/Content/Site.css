@@ -1,0 +1,245 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+select.type{height: 30px;
+    line-height: 30px;
+    border-radius: 5px;}
+    
+select {
+  text-transform: none;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+}    
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.step-item {
+    width:200px;
+    padding:10px;
+    margin-top:10px;
+    margin-bottom:10px;
+    color:#000000;
+    background-color:#F1F1FF;
+    border-radius:5px;
+    display:block;
+}
+
+.bordered {
+    border-width: 0;
+    border-color: #A1AFFF;
+    border-radius: 5px;
+    border-style: solid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 15px 0;
+    font-size: 14px;
+    border-top: #fff 1px solid;
+}
+#article .bordered  {
+   font-size: 30px;
+   border-top:0;
+}
+
+.description {
+   background:#F1F1FF;
+   border-radius:5px;
+   margin-top:10px;
+   margin-bottom:10px;
+   padding:5px;
+}
+
+.button-disabled {
+   background:#A1A1A1;
+   border-radius:5px;
+   margin-top:10px;
+   margin-bottom:10px;
+   padding:5px;
+   width:120px;
+}
+
+.button {
+   background:#A1A1FF;
+   border-radius:5px;
+   margin-top:10px;
+   margin-bottom:10px;
+   padding:5px;
+   min-width:120px;
+}
+
+.button-tab {
+   background:#C1C1C1;
+   border-radius:5px;
+   margin-top:10px;
+   margin-bottom:10px;
+   padding:2px;
+   min-width:120px;
+}
+
+.button-tab-selected {
+   background:#F1F1F1;
+   border-radius:5px;
+   margin-top:10px;
+   margin-bottom:10px;
+   padding:2px;
+   min-width:120px;
+}
+
+.error-message {
+    color:#ff0000;
+    font-family:monospace;
+}
+
+.table-border {
+   border-width:1px;
+   border-color:#E1E1E1;
+   border-style:solid;
+   margin-top:10px;
+   margin-bottom:10px;
+   padding:5px;
+}
+
+.link-button {
+    width:200px;
+    padding:10px;
+    margin-top:10px;
+    margin-bottom:10px;
+    color:#000000;
+    background-color:#F1F1FF;
+    border-radius:5px;
+    display:block;
+}
+
+.paging-button {
+    width:40px;
+    height:40px;
+    margin-right:5px;
+    color:#000000;
+    background-color:#F1F1FF;
+    border-radius:5px;
+    display:inline-block;
+    text-align:center;
+    line-height:40px;
+}
+
+.paging-button-current {
+    width:40px;
+    height:40px;
+    margin-right:5px;
+    color:#fff;
+    background-color:#81adca;
+    border-radius:5px;
+    display:inline-block;
+    text-align:center;
+    line-height:40px;
+}
+
+.code {
+   border-width:1px;
+   border-color:#555599;
+   border-style:solid;
+   margin-top:20px;
+   margin-bottom:20px;
+   padding:10px;
+   border-radius: 5px;
+   background: #fff;
+}
+
+#article{line-height: 30px;}
+
+.table
+{
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border: 1px solid #dddddd;
+  color: #000;
+  width:100%;
+  background:#fff;
+}
+
+.table th, .table td
+{
+  border:0px; //20180726
+  padding: 0.5em;
+  text-align: left;
+  color: #632a39;
+}
+
+#content table tr:nth-child(even)
+{
+  background:#f7f7f7
+}
+
+.table th
+{
+    background-color:#81adca;
+    color: #fff;
+}
+input[type=text]{height: 30px; line-height: 30px; padding: 0 10px; border-radius: 5px; border:#ccc 1px solid}
+textarea{ border-radius: 5px; border:#ccc 1px solid}
+input[type=submit]{height: 30px; line-height: 30px; padding: 0 10px; border: 0; border-radius: 5px; background: #81adca; color: #fff;}
+.table th[scope=col]
+{
+  color: #000;
+  background-color: #8fadcc;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  border-bottom: 2px solid #333;
+  border-right: 2px solid #333;
+}
+
+.table th+th[scope=col]
+{
+  color: #fff;
+  background-color: #7d98b3;
+  border-right: 1px dotted #666;
+}
+
+.table th[scope=row]
+{
+  background-color: #b8cfe5;
+  border-right: 2px solid #333;
+}
+
+.navbar-nav > li > div {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  line-height: 20px;
+}

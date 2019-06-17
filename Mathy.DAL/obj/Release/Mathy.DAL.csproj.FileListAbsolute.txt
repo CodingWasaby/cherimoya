@@ -1,0 +1,11 @@
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\bin\Release\Mathy.DAL.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\bin\Release\Mathy.DAL.pdb
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\bin\Release\Dapper.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\bin\Release\Mathy.Model.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\bin\Release\Mathy.Model.pdb
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\bin\Release\Dapper.xml
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\obj\Release\Mathy.DAL.csprojAssemblyReference.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\obj\Release\Mathy.DAL.csproj.CoreCompileInputs.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\obj\Release\Mathy.DAL.csproj.CopyComplete
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\obj\Release\Mathy.DAL.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.DAL\obj\Release\Mathy.DAL.pdb

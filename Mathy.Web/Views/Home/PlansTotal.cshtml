@@ -1,0 +1,170 @@
+﻿@using Mathy.Web.Models
+@model IEnumerable<PlanListCellVM>
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+@section scripts {
+
+    <script language="javascript">
+
+        function onPagingButtonClick(pageIndex) {
+
+            $.ajax({
+                url: "/Home/SearchPlansAll?pageIndex=" + pageIndex,
+                success: function (html) {
+                    $("#content").html(html);
+                }
+            });
+        }
+
+        $(function () {
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
+        })
+
+        function SearchPage(page) {
+            var url = "/home/PlansTotal/" + "?pageIndex=" + page;
+
+            var planName = $('#planName').val();
+            if (planName.length > 0) {
+                url += "&planName=" + planName + "&";
+            }
+
+            var begindate = $('#begindate').val();
+            if (begindate.length > 0) {
+                url += "&begindate=" + begindate + "&";
+            }
+
+            var enddate = $('#enddate').val();
+            if (enddate.length > 0) {
+                url += "&enddate=" + enddate + "&";
+            }
+
+            var content = $('#content').val();
+            if (content.length > 0) {
+                url += "&content=" + content + "&";
+            }
+            window.location.href = url;
+        }
+
+    </script>
+}
+
+<div class="gray-bg" style="height:110%">
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="p-w-md m-t-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label class="control-label">类型</label>
+                                        <div class="row" style="padding-left:20px">
+                                            <select class="form-control" id="dataRange" style="width:80%">
+                                                <option value="不限">不限</option>
+                                                <option value="公共">公共</option>
+                                                <option value="保护">保护</option>
+                                                <option value="私有">私有</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="product_name">模板名称</label>
+                                        <input type="text" id="planName" value="@ViewBag.planName" placeholder="模板名称" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">开始时间</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="begindate" class="form-control" value="@ViewBag.begindate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">结束时间</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate" class="form-control" value="@ViewBag.enddate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">说明内容</label>
+                                        <input type="text" id="content" name="regional" value="@ViewBag.content" placeholder="说明" class="form-control">
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="SearchPage(@ViewBag.pageIndex)">查询</a>
+                            </div>
+                            <div id="Paginator"> <ul id="pageLimit"></ul> </div>
+                            <div class="table-responsive gray-bg">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>类型</strong></td>
+                                            <td><strong>名称</strong></td>
+                                            @if (Model.Count(m => m.IsCustom) > 0)
+                                            {
+                                                <th>作者</th>
+                                            }
+                                            <td><strong>说明</strong></td>
+                                            <td><strong>引用次数</strong></td>
+                                            <td><strong>创建时间</strong></td>
+                                            <td><strong></strong></td>
+                                        </tr>
+                                        @foreach (var n in Model)
+                                        {
+                                        <tr>
+                                            <td>@n.PlanType</td>
+                                            <td>@n.Title</td>
+                                            @if (n.IsCustom)
+                                            {
+                                                <td>@n.Author</td>
+                                            }
+                                            @*<td width="5%">@item.ReferenceCount</td>*@
+                                            <td>@n.Description</td>
+                                            <td>@n.ReferenceCount</td>
+                                            <td>@n.CreateTime</td>
+                                            @if (n.IsCustom)
+                                            {
+                                                if (n.PlanType == "公共")
+                                                {
+                                                    <td>
+                                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="J_menuItem_Child">查看</a>&nbsp;
+                                                        <a href="@Html.Raw(n.CreateJobUrl)" class="J_menuItem_Child">引用</a>&nbsp;
+                                                    </td>
+                                                }
+                                                if (n.PlanType == "保护")
+                                                {
+                                                    <td>
+                                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="J_menuItem_Child">查看</a>&nbsp;
+                                                    </td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <a href="@Html.Raw(n.ViewPlanUrl)" class="J_menuItem_Child">查看</a>&nbsp;
+                                                    <a href="@Html.Raw(n.EditPlanUrl)" class="J_menuItem_Child">编辑</a>&nbsp;
+                                                    <a href="@Html.Raw(n.CreateJobUrl)" class="J_menuItem_Child">引用</a>&nbsp;
+                                                    <a href="@Html.Raw(n.DeletePlanUrl)"> 删除</a>&nbsp;
+                                                </td>
+                                            }
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

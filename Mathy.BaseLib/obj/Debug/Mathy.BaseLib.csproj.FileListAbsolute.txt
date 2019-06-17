@@ -1,0 +1,5 @@
+H:\VS Projects\Cherimoya\Mathy.BaseLib\bin\Debug\Mathy.BaseLib.dll
+H:\VS Projects\Cherimoya\Mathy.BaseLib\bin\Debug\Mathy.BaseLib.pdb
+H:\VS Projects\Cherimoya\Mathy.BaseLib\obj\Debug\Mathy.BaseLib.dll
+H:\VS Projects\Cherimoya\Mathy.BaseLib\obj\Debug\Mathy.BaseLib.pdb
+H:\VS Projects\Cherimoya\Mathy.BaseLib\obj\Debug\Mathy.BaseLib.csprojResolveAssemblyReference.cache

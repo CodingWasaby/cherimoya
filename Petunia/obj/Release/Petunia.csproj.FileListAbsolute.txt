@@ -1,0 +1,3 @@
+H:\VS Projects\Cherimoya\Petunia\obj\Release\Petunia.csprojResolveAssemblyReference.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia\obj\Release\Petunia.csprojAssemblyReference.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia\obj\Release\Petunia.csproj.CoreCompileInputs.cache

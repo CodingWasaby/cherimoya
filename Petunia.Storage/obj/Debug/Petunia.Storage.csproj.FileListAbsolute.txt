@@ -1,0 +1,27 @@
+H:\VS Projects\Cherimoya\Petunia.Storage\bin\Debug\Petunia.Storage.dll
+H:\VS Projects\Cherimoya\Petunia.Storage\bin\Debug\Petunia.Storage.pdb
+H:\VS Projects\Cherimoya\Petunia.Storage\bin\Debug\Petunia.LogicModel.dll
+H:\VS Projects\Cherimoya\Petunia.Storage\bin\Debug\Tulip.Interfaces.dll
+H:\VS Projects\Cherimoya\Petunia.Storage\bin\Debug\Petunia.LogicModel.pdb
+H:\VS Projects\Cherimoya\Petunia.Storage\bin\Debug\Tulip.Interfaces.pdb
+H:\VS Projects\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csprojResolveAssemblyReference.cache
+H:\VS Projects\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.dll
+H:\VS Projects\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.pdb
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\bin\Debug\Petunia.Storage.dll
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\bin\Debug\Petunia.Storage.pdb
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\bin\Debug\Petunia.LogicModel.dll
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\bin\Debug\Petunia.LogicModel.pdb
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csprojAssemblyReference.cache
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csproj.CoreCompileInputs.cache
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csproj.CopyComplete
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.dll
+E:\BaiduYunDownload\计量院\Cherimoya20161008\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.pdb
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\bin\Debug\Petunia.Storage.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\bin\Debug\Petunia.Storage.pdb
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\bin\Debug\Petunia.LogicModel.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\bin\Debug\Petunia.LogicModel.pdb
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csprojAssemblyReference.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csproj.CoreCompileInputs.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.csproj.CopyComplete
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.dll
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Petunia.Storage\obj\Debug\Petunia.Storage.pdb

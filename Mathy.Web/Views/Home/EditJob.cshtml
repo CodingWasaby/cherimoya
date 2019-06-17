@@ -1,0 +1,46 @@
+﻿@using Mathy.Web.Models
+@model EditJobVM
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+
+    </script>
+
+}
+
+<br />
+
+<h3>@ViewData["PageTitle"]</h3>
+
+<br />
+
+<div>@Model.PlanTitle</div>
+
+<br />
+<br />
+
+@using (Html.BeginForm("UpdateJob", "Home", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+{
+    @Html.HiddenFor(i => i.AutoID);
+    @Html.HiddenFor(i => i.PlanAutoID);
+    
+    <table style="width:100%;">
+        <tr>
+            <td>名称</td>
+            <td><input type="text" id="Name" value="@Model.Name" name="Name" style="min-width:600px;" /></td>
+        </tr>
+    </table>
+    
+    <br />
+
+    <input type="submit" value="确定" class="btn btn-primary" />
+}

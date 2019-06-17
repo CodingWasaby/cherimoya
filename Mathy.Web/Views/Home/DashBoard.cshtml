@@ -1,0 +1,267 @@
+﻿@model Mathy.Model.Entity.UserEntity
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<meta charset="utf-8" />
+<style>
+
+    .img-circle.imghead {
+        height: 50px;
+        width: 50px;
+    }
+</style>
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span>
+                            <img class="img-circle imghead" alt="image" src="~/Content/images/pj1_60_1.png" />
+                        </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">@Model.Name</strong>
+                                </span>
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">@Model.Email</strong>
+                                </span>
+                                <span class="text-muted text-xs block">@Model.Company<b class="caret"></b></span>
+
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a data-toggle="modal" data-target="#editInfo">修改密码</a></li>
+                            <li><a data-toggle="modal" onclick="noPub()">站内消息</a></li>
+                            <li class="divider"></li>
+                            <li><a onclick="loginOut()">退出</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element fss-show" style="cursor:pointer">
+                        UES
+                    </div>
+                </li>
+                <li>
+                    <a><i class="glyphicon glyphicon-user"></i> <span class="nav-label">个人实验室</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="@Url.Action("index","home")" class="J_menuItem"><i class="glyphicon glyphicon-edit"></i>我的分析</a></li>
+                        <li><a href="@Url.Action("Plans","home")" class="J_menuItem"><i class="glyphicon glyphicon-edit"></i>我的模板</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a><i class="glyphicon glyphicon-share-alt"></i> <span class="nav-label">公共实验室</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        @*<li><a href="@Url.Action("AllJob","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>分析共享</a></li>*@
+                        <li><a href="@Url.Action("PlansTotal","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>模板共享</a></li>
+                        <li><a href="@Url.Action("Docs","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>科学文档</a></li>
+                    </ul>
+                </li>
+                @if (Model.Role == "1")
+                {
+                    <li>
+                        <a><i class="glyphicon glyphicon-cog"></i> <span class="nav-label">后台管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="@Url.Action("index", "User")" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>用户管理</a></li>
+                            <li><a href="@Url.Action("Role", "User")" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>角色管理</a></li>
+                            @*<li><a href="dashboard_3.html" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>模板管理</a></li>
+                                <li><a href="dashboard_4_1.html" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>分析项目管理</a></li>*@
+                        </ul>
+                    </li>
+                }
+                <li>
+                    <a><i class="glyphicon glyphicon-share-alt"></i> <span class="nav-label">绘制测试</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="@Url.Action("DrawTest","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>绘制测试</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
+                    <div role="search" class="navbar-form-custom">
+                        <div class="form-group">
+                            <input type="text" placeholder="输入您想要查询的信息..." class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到UES</span>
+                    </li>
+                    <li class="dropdown">
+                        @*<a class="dropdown-toggle count-info" data-toggle="dropdown">
+                                <i class="fa fa-envelope"></i>  <span class="label label-primary">8</span>
+                            </a>*@
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="mailbox.html">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> You have 8 messages
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="profile.html">
+                                    <div>
+                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                        <span class="pull-right text-muted small">12 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="grid_options.html">
+                                    <div>
+                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="notifications.html">
+                                        <strong>查看历史消息</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a onclick="loginOut()">
+                            <i class="fa fa-sign-out"></i> 退出
+                        </a>
+                    </li>
+                    <li>
+                        <a class="right-sidebar-toggle count-info">
+                            <i class="fa fa-tasks"></i>
+                            @*<span class="label label-warning-light">X</span>*@
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
+            <nav class="page-tabs J_menuTabs">
+                <div class="page-tabs-content">
+                    <a href="javascript:;" data-id="main" class="active J_menuTab">首页</a>
+                </div>
+            </nav>
+            <button class="roll-nav roll-right" style="right:180px"><i class="fa fa-forward"></i></button>
+            <div class="btn-group roll-nav roll-right">
+                <button data-toggle="dropdown" class="dropdown J_tabClose">操作<span class="caret"></span></button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                    <li class="J_tabShowActive"><a>定位当前选项卡</a></li>
+                    <li class="divider"></li>
+                    <li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
+                    <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
+                </ul>
+            </div>
+            <a href="javascript:void(0);" class="roll-nav roll-right J_tabExit" rollplay="RollPlay">
+                <i class="glyphicon glyphicon-play-circle"></i> 循环展示
+            </a>
+            <a href="javascript:void(0);" class="roll-nav roll-right J_tabExit" rollplay="RollPlayEnd" hidden="hidden">
+                <i class="glyphicon glyphicon-stop"></i> 停止循环
+            </a>
+        </div>
+        <div id="content-main" class="row J_mainContent">
+            <iframe name="iframe" width="100%" height="100%" scrolling="auto" src="/home/main" frameborder="0" data-id="main" class="J_iframe"></iframe>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                <small>
+                    Base on <a title="inspinia" target="_blank" href="https://wrapbootstrap.com/theme/inspinia-responsive-admin-theme-WB0R5L90S"> inspinia</a>
+                </small>
+            </div>
+            <div>
+                <small>Mathy All Rights Reserved  &copy; @DateTime.Now.Year <a href="mailto:363023619i@qq.com">联系我们</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="cpbutton"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="password" id="oldPass" class="form-control" required="required" placeholder="请填写原始密码">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="newPass" class="form-control" required="required" placeholder="新密码">
+                    <input type="password" id="newPassC" class="form-control" required="required" placeholder="确认新密码">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="changePass()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#content-main').height(document.body.clientHeight - 105);
+        window.setInterval(reloadAllframes, 3000 * 60 * 60);
+    })
+
+    function noPub() {
+        MessageShow("尽请期待", "暂未开放该功能");
+    }
+
+    function changePass() {
+        if (!validateInput()) {
+            return;
+        }
+        if ($('#newPass').val() !== $('#newPassC').val()) {
+            MessageShow("密码错误", "新密码两次输入不一致，请确认");
+            return;
+        }
+        else if ($('#newPass').val() === $('#oldPass').val()) {
+            MessageShow("密码错误", "新密码和旧密码不能相同，请修改");
+            return;
+        }
+        else {
+            $.ajax({
+                url: "/home/ChangePass",
+                type: "POST",
+                data: {
+                    oldPass: $("#oldPass").val(),
+                    newPass: $("#newPass").val()
+                },
+                traditional: true,
+                success: function (result) {
+                    if (result === "oldPass") {
+                        MessageShow("密码错误", "请重新确认原始密码。");
+                    }
+                    else if (result === "success") {
+                        $('#newPass').val("");
+                        $('#newPassC').val("");
+                        $('#oldPass').val("");
+                        $('#cpbutton').click();
+                    }
+                    else {
+                        MessageShow("修改失败", "请联系管理员");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    MessageShow("修改失败", "请联系管理员");
+                }
+            });
+        }
+    }
+</script>
+

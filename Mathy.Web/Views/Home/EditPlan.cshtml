@@ -1,0 +1,264 @@
+﻿@using Mathy.Web.Models
+@model EditPlanVM
+
+@{
+    ViewBag.Title = "编辑模板";
+}
+
+@section scripts {
+
+    <script src="/Scripts/realtime-edit.js"></script>
+
+    <script language="javascript">
+
+        $(document).ready(function () {
+            init();
+        });
+
+
+        function showEditTabPage() {
+            $("#editButton").attr("class", "button-tab-selected");
+            $("#previewButton").attr("class", "button-tab");
+            $("#editTab").show();
+            $("#previewTab").hide();
+        }
+
+        function showPreviewTabPage() {
+
+            var data = getPlanData();
+
+            if (isChanged(prevData, data)) {
+
+                $.ajax({
+                    url: "/Home/SetPreviewPlan",
+                    dataType: "json",
+                    contentType: "application/json",
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    success: function (html) {
+                        prevData = data;
+                        $("#previewMessage").html("");
+                        selectPreviewTabPage();
+                    },
+                    error: function (res) {
+                        $("#previewMessage").html(res.responseJSON.message);
+                        blink("previewMessage");
+                    }
+                });
+            }
+            else {
+                selectPreviewTabPage();
+            }
+        }
+
+        function selectPreviewTabPage() {
+            $("#editButton").attr("class", "button-tab");
+            $("#previewButton").attr("class", "button-tab-selected");
+            $("#editTab").hide();
+            $("#previewTab").show();
+            getStepList();
+        }
+
+        function isChanged(data1, data2) {
+
+            if (prevData == null) {
+                return true;
+            }
+
+            if (data1.Variables.length != data2.Variables.length) {
+                return true;
+            }
+
+            if (data1.Expressions.length != data2.Expressions.length) {
+                return true;
+            }
+
+            for (var i = 0; i <= data1.Variables.length - 1; i++) {
+                var v1 = data1.Variables[i];
+                var v2 = data2.Variables[i];
+                if (v1.Name != v2.Name || v1.Type != v2.Type || v1.Description != v2.Description) {
+                    return true;
+                }
+            }
+
+            for (var i = 0; i <= data1.Expressions.length - 1; i++) {
+                var e1 = data1.Expressions[i];
+                var e2 = data2.Expressions[i];
+                if (e1.Title != e2.Title || e1.Description != e2.Description || e1.Expression != e2.Expression || e1.Condition != e2.Condition) {
+                    return true;
+                }
+            }
+
+
+            return false;
+        }
+
+        function getStepList() {
+
+            $.ajax({
+                url: "/Home/GetPlanStepList",
+                success: function (html) {
+                    $("#stepListDiv").html(html);
+                }
+            });
+        }
+
+        function getStepArea(stepIndex) {
+
+            currentStepIndex = stepIndex;
+
+            $.ajax({
+                url: "/Home/GetPlanStepArea?stepIndex=" + stepIndex,
+                success: function (html) {
+                    $("#stepAreaDiv").html(html);
+                }
+            });
+        }
+
+        function save() {
+            $.ajax({
+                url: "/Home/SavePlan",
+                dataType: "json",   
+                contentType: "application/json",
+                method: "POST",
+                data: JSON.stringify(getPlanData()),
+                success: function (res) {
+                    if (res.success) {
+                        $("#planID").val(res.PlanID);
+                        $("#message").html("已经保存。");
+                    }
+                    else {
+                        $("#message").html(res.message);
+                    }
+                },
+                error: function (res) {
+                    $("#message").html(res.message);
+                    blink("message");
+                }
+            });
+        }
+
+    </script>
+
+}
+
+
+<input type="hidden" id="planID" value="@Model.ID" />
+<input type="hidden" id="editID" value="@Model.EditID" />
+<input type="hidden" id="variableCount" value="@Model.Variables.Length" />
+<input type="hidden" id="expressionCount" value="@Model.Expressions.Length" />
+
+<br />
+<table>
+    <tr>
+        <td>
+            <input id="editButton" class="button-tab-selected" type="button" value="编辑" onclick="javascript: showEditTabPage();" />
+        </td>
+        <td>
+            <input id="previewButton" class="button-tab" type="button" value="预览" onclick="javascript: showPreviewTabPage();" />
+        </td>
+    </tr>
+</table>
+<br />
+
+<div id="previewMessage" class="error-message"></div>
+<br />
+
+<div id="editTab">
+
+    <div class="bordered">基本设置</div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td width="10%">名称</td>
+                <td width="90%"> <input id="titleTextBox" type="text" value="@Model.Title" style="display: block; width: 100%;" /> </td>
+            </tr>
+            <tr>
+                <td width="10%">说明</td>
+                <td width="90%"> <input id="descriptionTextBox" type="text" value="@Model.Description" style="display: block; width: 100%;" /> </td>
+            </tr>
+            @*<tr>
+                <td width="10%">作者</td>
+                <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
+            </tr>*@
+            <tr>
+                <td width="10%">方案类型</td>
+                <td width="90%">
+                    <select id="planType" class='type'>
+                        <option value="0" @(Model.PlanType == 0 ? "selected" : "")>公共</option>
+                        <option value="1" @(Model.PlanType == 1 ? "selected" : "")>保护</option>
+                        <option value="2" @(Model.PlanType == 2 ? "selected" : "")>私有</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+
+    @{
+        Html.RenderPartial("EditVariables", Model.Variables);
+    }
+
+    <div class="bordered">步骤</div>
+    <table class="table" id="expressonTable">
+        <thead>
+            <tr>
+                <th width="10%">标题</th>
+                <th width="10%">说明</th>
+                <th width="35%">表达式</th>
+                <th width="35%">条件</th>
+                <th width="10%"></th>
+            </tr>
+        </thead>
+        <tbody id="expressionList">
+            @foreach (EditSourceExpressionVM item in Model.Expressions)
+            {
+                string id = "expression" + item.ID;
+
+                <tr id="@id">
+                    <td width="10%"><input class='title' type='text' style="display: block; width: 100%;" value='@item.Title' /></td>
+                    <td width="10%"><input class='desc' type='text' style="display: block; width: 100%;" value='@item.Description' /></td>
+                    <td width="35%" height="90px;"><textarea class='expression' style="display: block; width: 100%; height: 100%;">@item.Expression</textarea></td>
+                    <td width="35%" height="90px;"><textarea class='condition' style="display: block; width: 100%; height: 100%;">@item.Condition</textarea></td>
+                    <td width="10%">
+                        <a class='delete' href='javascript:deleteRow(0, &apos;@id&apos;);'>删除</a>&nbsp;
+                        <a class='moveUp' href='javascript:moveRow(1, @item.ID, -1);'>上移</a>&nbsp;
+                        <a class='moveDown' href='javascript:moveRow(1, @item.ID, 1);'>下移</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="button" class="btn btn-primary" value="添加" onclick="javascript: add(1);" />
+    <br />
+    <br />
+
+    <hr />
+    <div id="message" class="error-message"></div>
+    <br />
+    <input class="btn btn-primary" type="button" value="保存" onclick="javascript: save();" />
+</div>
+
+<div id="previewTab">
+
+    <div>
+
+        <div style="float: left; width: 200px;margin-top: 0;">
+
+            <div id="stepListDiv">
+            </div>
+
+        </div>
+
+        <div style="float:left;margin-left:10px; width:80%;">
+
+            <div id="stepAreaDiv">
+            </div>
+
+            <div style="clear: both;"></div>
+
+        </div>
+    </div>
+
+</div>
+

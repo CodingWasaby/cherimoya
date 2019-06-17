@@ -1,0 +1,16 @@
+﻿@using Mathy.Web.Models
+@model PlanVM
+
+@{
+    foreach (PlanStepListCellVM step in Model.Steps)
+    {
+        <div>
+            <a href="javascript:getStepArea(@step.Index)" class="step-item">
+                <div>
+                    <div style="float:left;margin-left:10px;">@step.Title</div>
+                    <div style="clear: both;"></div>
+                </div>
+            </a>
+        </div>
+    }
+}

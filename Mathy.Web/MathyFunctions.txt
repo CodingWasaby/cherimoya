@@ -1,0 +1,238 @@
+﻿[
+  {
+    "Name": "数值函数",
+    "Functions": [
+      {
+         "Name": "root",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "要求根的数字",
+             "Type": "数值"
+           },
+          {
+             "Name": "t",
+             "Description": "次数",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回d的t次根。"
+       },
+      {
+         "Name": "pow",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "要求幂的数字",
+             "Type": "数值"
+           },
+          {
+             "Name": "t",
+             "Description": "次数",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回d的t次幂。"
+       },
+      {
+         "Name": "sin",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "弧度",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的正弦值。"
+       },
+      {
+         "Name": "cos",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "弧度",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的余弦值。"
+       },
+      {
+         "Name": "tan",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "弧度",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的正切值。"
+       },
+      {
+         "Name": "ctg",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "弧度",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的余切值。"
+       },
+      {
+         "Name": "asin",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "-1 <= d <= 1",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的反正弦值。单位为弧度。"
+       },
+      {
+         "Name": "acos",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "-1 <= d <= 1",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的反余弦值。单位为弧度。"
+       },
+      {
+         "Name": "atan",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "-Inf <= d <= +Inf",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的反正切值。单位为弧度。"
+       },
+      {
+         "Name": "actg",
+         "Parameters": [
+           {
+             "Name": "d",
+             "Description": "-Inf <= d <= +Inf",
+             "Type": "数值"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回一个数的反余切值。单位为弧度。"
+       }
+    ]
+  },
+  {
+    "Name": "时间函数",
+    "Functions": [
+      {
+         "Name": "now",
+         "Parameters": [
+         ],
+         "ReturnType": "时间",
+         "Description": "返回当前时间。"
+       },
+      {
+         "Name": "today",
+         "Parameters": [
+         ],
+         "ReturnType": "时间",
+         "Description": "返回今天的日期。"
+       }
+    ]
+  },
+  {
+    "Name": "字符串函数",
+    "Functions": [
+      {
+         "Name": "len",
+         "Parameters": [
+           {
+             "Name": "s",
+             "Description": "字符串",
+             "Type": "字符串"
+           }
+         ],
+         "ReturnType": "整数",
+         "Description": "返回一个字符串的长度。"
+       },
+      {
+         "Name": "reverse",
+         "Parameters": [
+           {
+             "Name": "s",
+             "Description": "字符串",
+             "Type": "字符串"
+           }
+         ],
+         "ReturnType": "字符串",
+         "Description": "返回一个字符串的倒序。"
+       }
+    ]
+  },
+ {
+    "Name": "统计函数",
+    "Functions": [
+      {
+         "Name": "sum",
+         "Parameters": [
+           {
+             "Name": "m",
+             "Description": "样本矩阵",
+             "Type": "矩阵"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回矩阵中所有元素的和。"
+       },
+      {
+         "Name": "average",
+         "Parameters": [
+           {
+             "Name": "m",
+             "Description": "样本矩阵",
+             "Type": "矩阵"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "返回矩阵中所有元素的平均数。"
+       },
+      {
+         "Name": "sqrvar",
+         "Parameters": [
+           {
+             "Name": "m",
+             "Description": "样本矩阵",
+             "Type": "矩阵"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "以矩阵中所有元素作为样本，返回其方差。"
+       },
+      {
+         "Name": "stdvar",
+         "Parameters": [
+           {
+             "Name": "m",
+             "Description": "样本矩阵",
+             "Type": "矩阵"
+           }
+         ],
+         "ReturnType": "数值",
+         "Description": "以矩阵中所有元素作为样本，返回其标准差。"
+       }
+    ]
+  }
+]

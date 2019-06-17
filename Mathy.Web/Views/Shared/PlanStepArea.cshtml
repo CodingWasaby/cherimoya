@@ -1,0 +1,23 @@
+﻿@using Mathy.Web.Models
+@model PlanStepAreaVM
+
+
+<div class="description">
+
+    <div><b>@Model.Title</b></div>
+
+    @{
+        if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div>@Model.Description</div>
+        }
+    }
+
+</div>
+
+<br />
+
+<img src="@Model.ImageUrl"></img>
+
+<br />
+<br />

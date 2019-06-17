@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BB24761F-236D-42DE-83CA-F01BDFBAC0E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cherimoya</RootNamespace>
+    <AssemblyName>Cherimoya</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dandelion">
+      <HintPath>..\..\Dandelion\Dandelion\bin\Debug\Dandelion.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Diff\Differ.cs" />
+    <Compile Include="Evaluation\ExpressionEvaluator.cs" />
+    <Compile Include="Evaluation\TypeChecker.cs" />
+    <Compile Include="Expressions\ExpressionFeatures.cs" />
+    <Compile Include="Expressions\Variable.cs" />
+    <Compile Include="Language\JavaLike\JavaLikeTypeChecker.cs" />
+    <Compile Include="Language\Java\JavaExpressionCompiler.cs" />
+    <Compile Include="Language\Java\JavaExpressionEvaluator.cs" />
+    <Compile Include="Language\Java\JavaLanguageService.cs" />
+    <Compile Include="Language\Java\JavaTypeChecker.cs" />
+    <Compile Include="Language\LanguageService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reduction\ExpressionReductor.cs" />
+    <Compile Include="Reduction\Funcs.cs" />
+    <Compile Include="Reduction\Rules\PromoteLeftRight.cs" />
+    <Compile Include="Reduction\Rules\ReduceFunctionCallExpression.cs" />
+    <Compile Include="Reduction\Rules\ReduceBinaryExpression.cs" />
+    <Compile Include="Reduction\Rules\ReduceConstantExpression.cs" />
+    <Compile Include="Reduction\Rules\ReductionRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Language\JavaLike\JavaLikeExpressionEvaluator.cs" />
+    <Compile Include="Evaluation\MathSnippets.cs" />
+    <Compile Include="Expressions\Associavity.cs" />
+    <Compile Include="Expressions\BinaryExpression.cs" />
+    <Compile Include="Expressions\BinaryOperator.cs" />
+    <Compile Include="Expressions\CastExpression.cs" />
+    <Compile Include="Expressions\CompileErrorProvider.cs" />
+    <Compile Include="Expressions\CompileException.cs" />
+    <Compile Include="Expressions\CondensedArrayExpression.cs" />
+    <Compile Include="Expressions\ConstantExpression.cs" />
+    <Compile Include="Expressions\ConstantExpressionChecker.cs" />
+    <Compile Include="Expressions\CreateArrayExpression.cs" />
+    <Compile Include="Expressions\CreateObjectExpression.cs" />
+    <Compile Include="Expressions\Expression.cs" />
+    <Compile Include="Expressions\ExpressionCompiler.cs" />
+    <Compile Include="Expressions\ExpressionReductor.cs" />
+    <Compile Include="Expressions\ExpressionSimplifier.cs" />
+    <Compile Include="Expressions\ExpressionSnippets.cs" />
+    <Compile Include="Expressions\FieldExpression.cs" />
+    <Compile Include="Expressions\FunctionCallExpression.cs" />
+    <Compile Include="Expressions\IfElseExpression.cs" />
+    <Compile Include="Expressions\IndexingExpression.cs" />
+    <Compile Include="Language\JavaLike\JavaLikeExpressionCompiler.cs" />
+    <Compile Include="Expressions\LambdaContext.cs" />
+    <Compile Include="Expressions\LambdaExpression.cs" />
+    <Compile Include="Expressions\LambdaVariable.cs" />
+    <Compile Include="Expressions\LexiconizationRuleTable.cs" />
+    <Compile Include="Expressions\MethodCallExpression.cs" />
+    <Compile Include="Expressions\ReflectionSnippets.cs" />
+    <Compile Include="Expressions\TypeCheckingContext.cs" />
+    <Compile Include="Expressions\UnaryExpression.cs" />
+    <Compile Include="Expressions\UnaryOperator.cs" />
+    <Compile Include="Expressions\VariableContext.cs" />
+    <Compile Include="Expressions\VariableExpression.cs" />
+    <Compile Include="Lexicons\CharLexicon.cs" />
+    <Compile Include="Lexicons\DoubleLexicon.cs" />
+    <Compile Include="Lexicons\EscapeRule.cs" />
+    <Compile Include="Lexicons\IntegerLexicon.cs" />
+    <Compile Include="Lexicons\Lexicon.cs" />
+    <Compile Include="Lexicons\LexiconizationErrorProvider.cs" />
+    <Compile Include="Lexicons\LexiconizationException.cs" />
+    <Compile Include="Lexicons\LexiconizationRule.cs" />
+    <Compile Include="Lexicons\LexiconizationRuleFactory.cs" />
+    <Compile Include="Lexicons\Lexiconizer.cs" />
+    <Compile Include="Lexicons\PunctuationLexicon.cs" />
+    <Compile Include="Lexicons\Punctuations.cs" />
+    <Compile Include="Lexicons\StringLexicon.cs" />
+    <Compile Include="Lexicons\WordLexicon.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

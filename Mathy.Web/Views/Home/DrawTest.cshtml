@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "DrawTest";
+    Layout = null;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="~/Content/d3/d3.min.js"></script>
+<script src="https://is.muni.cz/do/rect/el/storage/utils/svgedit/canvg/canvg.js?lang=en"></script>
+<body style="background-color: #f3f3f4;" id="aa">
+    <input type="submit" value="刷新" class="btn btn-primary" onclick="refresh()" />
+    <input type="submit" value="导出" class="btn btn-primary" onclick="downLoad()" />
+    <canvas id="canvasId"></canvas>
+    <script>
+        var svg = d3.select("body").append("svg").attr("id", "bb")
+            .attr("height", "100%")
+            .attr("width", "100%");
+        var n = 5;
+        var m = 30;
+        var width = 1200;
+        var height = 400;
+        var margin = ({ top: 0, right: 0, bottom: 10, left: 0 });
+        var xz = d3.range(m);
+        var yz = d3.range(n).map(() => bumps(m));
+        var y01z = d3.stack()
+            .keys(d3.range(n))
+            (d3.transpose(yz)) // stacked yz
+            .map((data, i) => data.map(([y0, y1]) => [y0, y1, i]));
+        var yMax = d3.max(yz, y => d3.max(y));
+        var y1Max = d3.max(y01z, y => d3.max(y, d => d[1]));
+        var x = d3.scaleBand()
+            .domain(xz)
+            .rangeRound([margin.left, width - margin.right])
+            .padding(0.08);
+        var y = d3.scaleLinear()
+            .domain([0, y1Max])
+            .range([height - margin.bottom, margin.top]);
+        var z = d3.scaleSequential(d3.interpolateBlues)
+            .domain([-0.5 * n, 1.5 * n]);
+        var xAxis = svg => svg.append("g")
+            .attr("transform", `translate(0,${height - margin.bottom})`)
+            .call(d3.axisBottom(x).tickSizeOuter(0).tickFormat(() => ""));
+        var rect = svg.selectAll("g")
+            .data(y01z)
+            .enter().append("g")
+            .attr("fill", (d, i) => z(i))
+            .selectAll("rect")
+            .data(d => d)
+            .join("rect")
+            .attr("x", (d, i) => x(i))
+            .attr("y", height - margin.bottom)
+            .attr("width", x.bandwidth())
+            .attr("height", 0);
+        svg.append("g").call(xAxis);
+
+        var chart = {
+            transitionGrouped: function () {
+                y.domain([0, yMax]);
+                rect.transition()
+                    .duration(500)
+                    .delay((d, i) => i * 20)
+                    .attr("x", (d, i) => x(i) + x.bandwidth() / n * d[2])
+                    .attr("width", 3)
+                    .transition()
+                    .attr("y", d => y(d[1] - d[0]))
+                    .attr("height", d => y(0) - y(d[1] - d[0]));
+            },
+            transitionStacked: function () {
+                y.domain([0, y1Max]);
+                rect.transition()
+                    .duration(500)
+                    .delay((d, i) => i * 20)
+                    .attr("y", d => y(d[1]))
+                    .attr("height", d => y(d[0]) - y(d[1]))
+                    .transition()
+                    .attr("x", (d, i) => x(i))
+                    .attr("width", x.bandwidth());
+            },
+            update: function (layout) {
+                if (layout === "stacked") this.transitionStacked();
+                else this.transitionGrouped();
+            }
+        };
+
+        //Object.assign(svg.node(), { chart.update });
+        //chart.transitionGrouped();
+        chart.update("Grouped");
+
+        function bumps(m) {
+            const values = [];
+
+            // Initialize with uniform random values in [0.1, 0.2).
+            for (let i = 0; i < m; ++i) {
+                values[i] = 0.1 + 0.1 * Math.random();
+            }
+
+            // Add five random bumps.
+            for (let j = 0; j < 5; ++j) {
+                const x = 1 / (0.1 + Math.random());
+                const y = 2 * Math.random() - 0.5;
+                const z = 10 / (0.1 + Math.random());
+                for (let i = 0; i < m; i++) {
+                    const w = (i / m - y) * z;
+                    values[i] += x * Math.exp(-w * w);
+                }
+            }
+
+            // Ensure all values are positive.
+            for (let i = 0; i < m; ++i) {
+                values[i] = Math.max(0, values[i]);
+            }
+
+            return values;
+        }
+
+        function refresh() {
+            xz = d3.range(m);
+            yz = d3.range(n).map(() => bumps(m));
+            y01z = d3.stack()
+                .keys(d3.range(n))
+                (d3.transpose(yz)) // stacked yz
+                .map((data, i) => data.map(([y0, y1]) => [y0, y1, i]));
+            yMax = d3.max(yz, y => d3.max(y));
+            y1Max = d3.max(y01z, y => d3.max(y, d => d[1]));
+            x = d3.scaleBand()
+                .domain(xz)
+                .rangeRound([margin.left, width - margin.right])
+                .padding(0.08);
+            y = d3.scaleLinear()
+                .domain([0, y1Max])
+                .range([height - margin.bottom, margin.top]);
+            z = d3.scaleSequential(d3.interpolateBlues)
+                .domain([-0.5 * n, 1.5 * n]);
+            chart.update("Grouped");
+        }
+
+        function downLoad() {
+            var serializer = new XMLSerializer();
+            var source = '<?xml version="1.0" standalone="no"?>\r\n' + serializer.serializeToString(svg.node());
+            var image = new Image;
+            image.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+            var canvas = document.createElement("canvas");
+            canvas.width = 1000;
+            canvas.height = 800;
+            var context = canvas.getContext("2d");
+            context.fillStyle = '#fff';//#fff设置保存后的PNG 是白色的
+            context.fillRect(0, 0, 10000, 10000);
+            image.onload = function () {
+                context.drawImage(image, 0, 0);
+                var a = document.createElement("a");
+                a.download = "name.png";
+                a.href = canvas.toDataURL("image/png");
+                a.click();
+            };
+
+
+            //var svgHtml = $("#aa").val();
+            //var canvasId = document.getElementById("canvasId");
+            //canvg(canvasId, svgHtml);
+        }
+    </script>
+</body>

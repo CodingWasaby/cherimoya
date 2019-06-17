@@ -1,0 +1,211 @@
+﻿@{
+    ViewBag.Title = "计算树";
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+        var expressionID = 0;
+        var variableID = 0;
+
+        function addExpression() {
+
+            var html =
+                "<tr class='expressionRow' id='expressionRow" + expressionID + "'>" +
+                "<td><input type='text' class='description' style='width:100px;' /></td>" +
+                "<td><input type='text' class='expression' style='width:300px;' /></td>" +
+                "<td><input type='button' value='删除' onclick='javascript:removeExpression(" + expressionID + ")'/></td>";
+
+            $('#expressions').append(html);
+
+
+            expressionID++;
+        }
+
+        function removeExpression(index) {
+            $('#expressionRow' + index).remove();
+        }
+
+
+        function addVariable() {
+
+            var html =
+                "<tr class='variableRow' id='variableRow" + variableID + "'>" +
+                "<td><input type='text' class='description' style='width:100px;' /></td>" +
+                "<td><input type='text' class='name' style='width:100px;' /></td>" +
+                "<td><input type='text' class='value' style='width:300px;' /></td>" +
+                "<td><input type='button' value='删除' onclick='javascript:removeVariable(" + variableID + ")'/></td>";
+
+            $('#variables').append(html);
+
+
+            variableID++;
+        }
+
+        function removeVariable(index) {
+            $('#variableRow' + index).remove();
+        }
+
+
+        function createComputationTree() {
+
+            var plan = createPlanJson();
+
+            validatePlanJson(plan, function () {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/CreateComputationTree',
+                    data: JSON.stringify(plan),
+                    success: function (result) {
+
+                        if (result.success) {
+                            $('#image')[0].src = '/Home/GetImage?id=' + result.id;
+                            $('#resultDiv').html('');
+                        }
+                        else {
+                            $('#image')[0].src = '';
+                            $('#resultDiv').html(result.message);
+                        }
+                    }
+                });
+
+            });
+        }
+
+        function validatePlanJson(plan, success) {
+
+            if (plan.Expressions.length == 0) {
+                alert('必须输入至少一个表达式。');
+            }
+            else {
+                success();
+            }
+        }
+
+        function createPlanJson() {
+
+            var expressions = [];
+            var rows = $('.expressionRow');
+
+            for (var i = 0; i <= rows.length - 1; i++) {
+                var expression = $('.expression', rows[i]).val();
+                var description = $('.description', rows[i]).val();
+                if (expression.length > 0) {
+                    expressions.push({
+                        Expression: expression,
+                        Description: description
+                    });
+                }
+            }
+
+
+            var variables = [];
+            rows = $('.variableRow');
+
+            for (var i = 0; i <= rows.length - 1; i++) {
+                var name = $('.name', rows[i]).val();
+                var value = getValue($('.value', rows[i]).val());
+                var description = $('.description', rows[i]).val();
+                if (name.length > 0) {
+                    variables.push({
+                        Name: name,
+                        Value: value,
+                        Description: description
+                    });
+                }
+            }
+
+
+            var plan = {};
+
+            var title = $('#titleInput').val();
+            if (title.length > 0) {
+                plan['Title'] = title;
+            }
+
+
+            plan['Expressions'] = expressions;
+            plan['Variables'] = variables;
+
+            return plan;
+        }
+
+        function getValue(s) {
+
+            if (isNumber(s)) {
+                return parseFloat(s);
+            }
+            else if (s.length > 0 && s.substring(0, 1) == '"') {
+                return s.substring(1, s.length - 2);
+            }
+            else {
+                return s;
+            }
+        }
+
+        function isNumber(s) {
+            return !isNaN(parseFloat(s));
+        }
+
+    </script>
+
+}
+
+
+<div>
+
+    <br/>
+    <a href="~/computeTree.wmv">观看计算演示视频</a>
+    <br/>
+    <br/>
+
+    <div>标题</div>
+
+    <div>
+        <input type="text" id="titleInput" style="min-width:600px;" />
+    </div>
+    <br />
+
+    <div>表达式</div>
+    <table>
+        <thead>
+            <tr>
+                <th style='width:100px;'>说明</th>
+                <th style='width:300px;'>表达式</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="expressions"></tbody>
+    </table>
+    <input type="button" onclick="javascript:addExpression()" value="添加" />
+    <br />
+    <br />
+    <br />
+
+    <div>变量</div>
+    <table>
+        <thead>
+            <tr>
+                <th style='width:100px;'>说明</th>
+                <th style='width:100px;'>名称</th>
+                <th style='width:300px;'>值</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="variables"></tbody>
+    </table>
+    <input type="button" onclick="javascript:addVariable()" value="添加" />
+
+    <div style="position:absolute;width:300px;left:750px;top:75px">
+
+        <input type="button" onclick="javascript:createComputationTree()" value="更新预览" />
+        <br />
+
+        <img id="image" />
+        <div id="resultDiv" style="font-size:20px;font-family:monospace;"></div>
+
+    </div>
+
+</a>

@@ -1,0 +1,69 @@
+﻿@using Mathy.Web.Models
+@model IEnumerable<JobListCellVM>
+
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+@section scripts {
+    <script>
+        $(function () {
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
+        });
+
+        function deleteJob(autoID, pageIndex) {
+            console.log(autoID);
+            if (confirm("是否确定删除？删除后无法恢复。")) {
+                $.ajax({
+                    url: "/Home/DeleteJob?autoID=" + autoID + "&pageIndex=" + pageIndex,
+                    success: function (html) {
+                        SearchPage(1);
+                    },
+                    error: function (res) {
+                        alert(res.responseJSON.message);
+                    }
+                });
+            }
+        }
+
+        function SearchPage(page) {
+            var url = "/home/index/" + "?pageIndex=" + page;
+
+            var jobName = $('#jobName').val();
+            console.log(jobName);
+            if (jobName.length > 0) {
+                url += "&jobName=" + jobName + "&";
+            }
+
+            var planName = $('#planName').val();
+            if (planName.length > 0) {
+                url += "&planName=" + planName + "&";
+            }
+
+            var begindate = $('#begindate').val();
+            if (begindate.length > 0) {
+                url += "&begindate=" + begindate + "&";
+            }
+
+            var enddate = $('#enddate').val();
+            if (enddate.length > 0) {
+                url += "&enddate=" + enddate + "&";
+            }
+
+            var isFinish = $('#isFinish').val();
+            if (isFinish.length > 0) {
+                url += "&isFinish=" + isFinish + "&";
+            }
+            window.location.href = url;
+        }
+
+
+
+    </script>
+}
+
+<div id="content">
+    @{
+        Html.RenderPartial("JobList", Model);
+    }
+</div>

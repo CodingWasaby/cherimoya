@@ -1,0 +1,21 @@
+﻿@using Mathy.Web.Models
+@model EditStepVM
+
+<table width="100%">
+    <tr>
+        <td width="20%">标题</td>
+        <td width="80%"><input id='dialog-title' type='text' style="display: block; max-width:900px; width: 100%;" value='@Model.Title' /></td>
+    </tr>
+    <tr>
+        <td width="20%">说明</td>
+        <td width="80%"><input id='dialog-desc' type='text' style="display: block; max-width: 900px; width: 100%;" value='@Model.Description' /></td>
+    </tr>
+    <tr>
+        <td width="20%">表达式</td>
+        <td width="80%" height="90px;"><textarea id='dialog-expression' style="display: block; max-width: 900px; width: 100%; height: 100%;">@Model.Expression</textarea></td>
+    </tr>
+    <tr>
+        <td width="20%">条件</td>
+        <td width="80%" height="90px;"><textarea id='dialog-condition' style="display: block; max-width: 900px; width: 100%; height: 100%;">@Model.Condition</textarea></td>
+    </tr>
+</table>

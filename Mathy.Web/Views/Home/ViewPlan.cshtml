@@ -1,0 +1,78 @@
+﻿@using Mathy.Web.Models
+@model PlanVM
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts {
+
+    <script src="/Scripts/grid.js"></script>
+
+    <script language="javascript">
+
+        $(document).ready(function () {
+
+            getStepList();
+        });
+
+
+
+    var currentStepIndex;
+
+    function getStepList() {
+
+        $.ajax({
+            url: "/Home/GetPlanStepList",
+            success: function (html) {
+                $("#stepListDiv").html(html);
+            }
+        });
+    }
+
+    function getStepArea(stepIndex) {
+
+        currentStepIndex = stepIndex;
+
+        $.ajax({
+            url: "/Home/GetPlanStepArea?stepIndex=" + stepIndex,
+            success: function (html) {
+                $("#stepAreaDiv").html(html);
+              //  addGrids(stepIndex);
+            }
+        });
+    }
+
+</script>
+
+
+
+}
+
+<br />
+
+<h3>@Model.Title</h3>
+<hr/>
+<div>@Model.Description</div>
+<br/>
+<div>@Model.Author</div>
+<br />
+
+<div>
+
+    <div style="float: left; width: 200px;margin-top: 0;">
+        
+        <div id="stepListDiv">
+        </div>
+    
+    </div>
+
+    <div style="float:left;margin-left:10px; width:80%;">
+
+        <div id="stepAreaDiv" >
+        </div>
+
+    <div style="clear: both;"></div>
+
+</div>  
+

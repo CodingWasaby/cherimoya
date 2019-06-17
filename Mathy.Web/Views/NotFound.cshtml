@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "NotFound";
+    Layout = "~/Views/Shared/_Login.cshtml";
+    var info = "Sorry, 您请求的网页并未找到, 刷新后重试，或尝试请求其他网页。";
+    int code = 404;
+    if (ViewBag.info != null)
+    {
+        code = 500;
+        info = ViewBag.info.ToString();
+    }
+}
+
+<body style="background-color: #f3f3f4;">
+    <div class="middle-box text-center animated fadeInDown">
+        <h1>@code</h1>
+        @if (code == 404)
+        {
+            <h3 class="font-bold">Page Not Found</h3>
+        }
+        else
+        {
+            <h3 class="font-bold">服务器内部错误</h3>
+        }
+        <div class="error-desc">
+            @foreach (var n in info.Split(new string[] { "$" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                @n <br>
+            }
+        </div>
+        @*<a class="btn btn-sm btn-white btn-block"  style="margin-top: 10px;" href="@Url.Action("Index")">返回首页</a>*@
+    </div>
+</body>
+

@@ -1,0 +1,23 @@
+﻿@using Mathy.Web.Models
+@model JobVM
+
+@{
+    foreach (JobStepListCellVM step in Model.Steps)
+    {
+        <div>
+            <a href="javascript:getStepArea(@step.Index)" class="step-item">
+                <div>
+                    <img src="/Resources/@step.ImageFileName" style="width:20px;height:20px;float:left;" />
+                    <div style="float:left;margin-left:10px;">@step.Title</div>
+                    <div style="clear: both;"></div>
+                </div>
+            </a>
+        </div>
+    }
+    
+    
+    <br/>
+    <input type="button" class="@Model.ExportButtonClass" onclick="@Model.ExportButtonCode" value="导出为Word" />
+    <input type="button" class="@Model.ViewGraphButtonClass" onclick="@Model.ViewGraphButtonCode" value="查看结果图" />
+    <input type="button" class="button" onclick="javascript: saveJobPlan();" value="保存实验" />
+}

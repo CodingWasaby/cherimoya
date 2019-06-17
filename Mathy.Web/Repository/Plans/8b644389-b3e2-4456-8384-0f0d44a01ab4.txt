@@ -1,0 +1,29 @@
+{
+	"Title":"DL稳健均值及不确定度",
+	"Description":"DerSimonian-Laird稳健均值及不确定度",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"过程",
+			"Expression":"x=map(m,row->[row[0]]);\nux=map(m,row->[row[1]]);\nnx=size(x);\nw0=pow(1\/ux,2);\nw1=isum(i:0->nx-1,pow(1\/array(ux)[i],2));\nw2=isum(i:0->nx-1,pow(1\/array(ux)[i],4));\nxw=isum(i:0->nx-1,array(x)[i]*array(w0)[i])\/w1;\nxxw=pow(x-xw,2);\nla=max([0,(isum(i:0->nx-1,array(w0)[i]*array(xxw)[i])-nx+1)\/(w1-w2\/w1)]);\nuxx=pow(ux,2);\nula=1\/(uxx+la);\nsula=isum(i:0->nx-1,array(ula)[i]);\nw=ula\/sula;\nx_DL=isum(i:0->nx-1,array(w)[i]*array(x)[i]);\nxx0=pow(x-x_DL,2);\nu_DL=root(isum(i:0->nx-1,pow(array(w)[i],2)*array(xx0)[i]\/(1-array(w)[i])),2);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"ColumnNames":[
+				"x",
+				"u(x)"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

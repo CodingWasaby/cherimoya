@@ -1,0 +1,71 @@
+﻿{
+  "Title":"5-1-1 恒电流库伦基准测量方法为邻苯二甲酸氢钾纯度标准物质定值",
+  "Description":"5-1-1， 230页。",
+  "Author":"徐丽",
+  "Expressions":[
+    {
+      "Title":"定值数据及处理",
+      "Expression":"
+			x=array(sample);
+			n=size(x);
+			avg=average(x);
+			s=stdvar(x);
+			shapiro=shapiro(x,95);
+			grubbs=size(grubbs(x, 5))==n;
+		   "
+    },
+    {
+      "Title":"测量重复uArel",
+      "Expression":"
+			u_Arel=s/avg;	
+
+		   "
+    },
+    {
+      "Title":"电解电流urelI",
+      "Expression":"
+			u_relI=root(pow(U_Irep/root(3,2)/I,2)+pow(U_V/root(3,2)/V,2)+pow(U_R/root(3,2)/R,2),2);	
+
+		   "
+    },
+    {
+      "Title":"电解时间测量urelt",
+      "Expression":"
+			u_relt=root(pow(dt/root(3,2),2)+pow(dti/root(3,2),2),2)/pow(10,6)/t;
+
+		   "
+    },
+    {
+      "Title":"样品称量urelm",
+      "Expression":"
+			u_relm=U_m/root(3,2)/(m*1000);
+
+		   "
+    }
+    {
+      "Title":"定值不确定度",
+      "Expression":"
+			u_Brel=root(pow(u_relI,2)+pow(u_relt,2)+pow(u_relm,2)+pow(U_relM,2)+pow(U_relF,2)+pow(U_relx,2),2);
+			u_charrel=root(pow(u_Arel,2)+pow(u_Brel,2),2)
+
+		   "
+    }
+  ],
+  "Variables":[
+      { "Name":"sample", "Type":"Vector", "Description":"样本" },
+      { "Name":"U_Irep", "Type":"Number", "Description":"电流稳定性标准不确定度" },
+      { "Name":"U_V", "Type":"Number", "Description":"电压标准不确定度" },
+      { "Name":"U_R", "Type":"Number", "Description":"电阻标准不确定度" },
+      { "Name":"I", "Type":"Number", "Description":"电流" },
+      { "Name":"V", "Type":"Number", "Description":"电压" },
+      { "Name":"R", "Type":"Number", "Description":"电阻" },
+      { "Name":"dt", "Type":"Number", "Description":"计时时间间隔不确定度" },
+      { "Name":"dti", "Type":"Number", "Description":"电解与计时同步标准不确定度" },
+      { "Name":"t", "Type":"Number", "Description":"电解时间" },
+      { "Name":"U_m", "Type":"Number", "Description":"称量不确定度" },
+      { "Name":"m", "Type":"Number", "Description":"样品质量" },
+      { "Name":"U_relM", "Type":"Number", "Description":"现对分子质量引入的不确定度" },
+      { "Name":"U_relF", "Type":"Number", "Description":"法拉第常数引入的不确定度" },
+      { "Name":"U_relx", "Type":"Number", "Description":"滴定终点引入的不确定度" },
+  ]
+}

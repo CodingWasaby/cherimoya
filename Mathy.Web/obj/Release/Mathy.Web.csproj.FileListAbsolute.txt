@@ -1,0 +1,3 @@
+H:\VS Projects\Cherimoya\Mathy.Web\obj\Release\Mathy.Web.csprojResolveAssemblyReference.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Web\obj\Release\Mathy.Web.csprojAssemblyReference.cache
+D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Web\obj\Release\Mathy.Web.csproj.CoreCompileInputs.cache

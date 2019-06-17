@@ -1,0 +1,28 @@
+{
+	"Title":"气相色谱法为一溴二氯甲烷溶液标准物质定值",
+	"Description":"多家实验室用同一方法为标准物质定值",
+	"Expressions":[
+		{
+			"Title":"纯度定值数据处理",
+			"Expression":"x=map(p, row->[average(row)]);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"p",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"p",
+			"Size":0,
+			"ColumnNames":[
+				"No{1}",
+				"No{2}"
+			],
+			"RowHeaderWidth":200,
+			"RowName":"定值结果{0}"
+		}
+	]
+}

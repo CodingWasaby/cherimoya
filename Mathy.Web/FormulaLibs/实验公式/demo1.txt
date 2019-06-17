@@ -1,0 +1,20 @@
+﻿{
+  "ID": "demo1"
+  "Name": "Demo1",
+  "Expression":"sum(5.1/9/6*[1,(2.5-6)/9/2.5,sin(5/9)/7.5;(a-5)/(2-a/2),5-a,root(1/a,a/2/5.9)])/2+a/(a-1)/2/5/9*a",
+  "Parameters": [
+    {
+      "Name": "a",
+      "Type": "Number",
+      "Default": null,
+      "Unit": null,
+      "Description": "a >= 0"
+    },
+  ],
+  "ReturnType": "Number",
+  "ReturnUnit": null,
+  "Description": "演示Mathy对含有矩阵的复杂表达式的绘制。",
+  "Reference:": null,
+  "Author": "Akiko",
+  "LastUpdateTime": "2015-9-25"
+}

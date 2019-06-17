@@ -1,0 +1,20 @@
+﻿{
+  "ID": "5-19"
+  "Name": "科克伦公式",
+  "Expression":"max(pow(s, 2))/sum(pow(s, 2))",
+  "Parameters": [
+    {
+      "Name": "s",
+      "Type": "Matrix",
+      "Default": null,
+      "Unit": null,
+      "Description": "输入样本"
+    },
+  ],
+  "ReturnType": "Number",
+  "ReturnUnit": null,
+  "Description": "p.259，判断采样数据是否等精度。根据书中所述，输入参数应为每组样本标准差组成的向量。",
+  "Reference:": null,
+  "Author": "Akiko",
+  "LastUpdateTime": "2015-9-28"
+}

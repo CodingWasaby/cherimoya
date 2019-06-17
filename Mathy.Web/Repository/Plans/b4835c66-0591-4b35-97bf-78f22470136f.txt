@@ -1,0 +1,21 @@
+{
+	"Title":"ANOVA分析",
+	"Description":"计算一组数据的均匀性引入的不确定度，并使用F检验和T检验判断一致性。",
+	"Author":"徐丽",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"计算",
+			"Expression":"\t\t\tu=anovau(m);\t\t\tf=f(m,5);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix",
+			"Description":"样本矩阵"
+		}
+	],
+	"Styles":[
+	]
+}

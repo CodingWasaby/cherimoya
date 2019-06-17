@@ -1,0 +1,29 @@
+{
+	"Title":"DL稳健均值及不确定度",
+	"Description":"DerSimonian-Laird稳健均值及不确定度",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"均值",
+			"Expression":"x=map(m,row->[row[0]]);\n"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"ColumnNames":[
+				"x",
+				"u(x)"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

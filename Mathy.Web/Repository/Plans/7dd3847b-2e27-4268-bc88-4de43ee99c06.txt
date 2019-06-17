@@ -1,0 +1,31 @@
+{
+	"Title":"稳健估计-hampel MADe",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"计算MADe",
+			"Expression":"x0=med(array(m));\nd0=map(m,row->[abs(row[0]-x0)]);\ns0=1.483*med(array(d0));"
+		},
+		{
+			"Title":"第1次迭代",
+			"Expression":"vx=map(m,row->row[0]);\nvq1=map(m,row->[abs((row[0]-x0)\/s0)]);\nvw1=map(vq1,row->[row[0]>4.5?0.0:(row[0]>=3.0?(4.5-row[0])\/row[0]:(row[0]>=1.5?1.5\/row[0]:1.0))]);\nx1=sum(array(vw1*vx))\/sum(array(vw1));\nd1=map(m,row->[abs(row[0]-x1)]);\ns1=1.483*med(array(d1));"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"ColumnNames":[
+				"x"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

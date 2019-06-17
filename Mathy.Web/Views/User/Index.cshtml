@@ -1,0 +1,244 @@
+﻿@model IEnumerable<Mathy.Model.Entity.UserEntity>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<div class="gray-bg" style="height:110%">
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="p-w-md m-t-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label class="control-label" for="product_name">姓名</label>
+                                        <input type="text" id="username" name="username" value="@ViewBag.username" placeholder="姓名" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label class="control-label">角色</label>
+                                        <div class="row" style="padding-left:20px">
+                                            <select class="form-control" id="role" style="width:80%">
+                                                <option value="不限">不限</option>
+                                                <option value="管理员">管理员</option>
+                                                <option value="普通用户">普通用户</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">单位</label>
+                                        <input type="text" id="company" name="company" value="@ViewBag.company" placeholder="单位" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">开始时间</label>
+                                        @*<input type="text" id="beginDate" name="beginDate" value="@ViewBag.beginDate" placeholder="开始时间" class="form-control">*@
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="beginDate" class="form-control" value="@ViewBag.beginDate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">结束时间</label>
+                                        @*<input type="text" id="enddate" name="enddate" value="@ViewBag.enddate" placeholder="结束时间" class="form-control">*@
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate" class="form-control"value="@ViewBag.enddate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="searchview()">查询</a>
+                            </div>
+                            <div class="table-responsive gray-bg">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr id="headinfo">
+                                            <td><strong>用户ID</strong></td>
+                                            <td><strong>角色</strong></td>
+                                            <td><strong>姓名</strong></td>
+                                            <td><strong>邮箱</strong></td>
+                                            <td><strong>单位</strong></td>
+                                            <td><strong>手机</strong></td>
+                                            <td><strong>注册时间</strong></td>
+                                            <td><strong>有效期</strong></td>
+                                            <td><strong></strong></td>
+                                        </tr>
+                                        @foreach (var n in Model)
+                                        {
+                                            <tr>
+                                                <td>@n.UserID</td>
+                                                <td>@n.Role</td>
+                                                <td>@n.Name</td>
+                                                <td>@n.Email</td>
+                                                <td>@n.Company</td>
+                                                <td>@n.CellPhone</td>
+                                                <td>@n.CreateTime</td>
+                                                <td>@n.EnableDate.Value.ToShortDateString()</td>
+
+
+                                                @if (n.Email != "admin")
+                                                {
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#changerule" onclick="changerule('@n.Email','@n.UserID')">变更角色</a>&nbsp;
+                                                        <a data-toggle="modal" data-target="#changeDate" onclick="changeDate('@n.Email','@n.UserID','@n.EnableDate.Value.ToShortDateString()')">延期</a>&nbsp;
+                                                    </td>
+                                                }
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="changerule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">变更角色</h4>
+            </div>
+            <div class="modal-body">
+                <p id="email_changerule"></p>
+                <input id="id_changerule" hidden="hidden" />
+                <div class="form-group ">
+                    <label class="control-label">角色</label>
+                    <div class="row " style="padding-left:0px">
+                        <div class="col-sm-4">
+                            <select class="form-control" id="role_changerule" style="width:80%">
+                                <option value="管理员">管理员</option>
+                                <option value="普通用户">普通用户</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateRole()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeDate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">延期</h4>
+            </div>
+            <div class="modal-body">
+                <p id="email_changeDate"></p>
+                <input id="id_changeDate" hidden="hidden" />
+                <div class="form-group ">
+                    <label class="control-label">有效期</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enableDate_changeDate" class="form-control" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateDate()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#role').val('@ViewBag.role')
+    })
+
+    function searchview() {
+        var username = $('#username').val();
+        var company = $('#company').val();
+        var beginDate = $('#beginDate').val();
+        var enddate = $('#enddate').val();
+        var role = $('#role').val();
+
+        var url = "/user/index?";
+        if (username.length > 0) {
+            url += "username=" + username + "&";
+        }
+        if (company.length > 0) {
+            url += "company=" + company + "&";
+        }
+        if (beginDate.length > 0) {
+            url += "beginDate=" + beginDate + "&";
+        }
+        if (enddate.length > 0) {
+            url += "enddate=" + enddate + "&";
+        }
+        if (role.length > 0) {
+            url += "role=" + role + "&";
+        }
+        window.location.href = url;
+    }
+
+    function changerule(e,i) {
+        $('#email_changerule').text(e);
+        $('#id_changerule').val(i);
+    }
+
+    function updateRole() {
+        $.ajax({
+            url: "/user/updateRole",
+            type: "POST",
+            data: {
+                userid: $("#id_changerule").val(),
+                role: $("#role_changerule").val()
+            },
+            traditional: true,
+            success: function (result) {
+                if (result == "True")
+                    searchview();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function changeDate(e,i,d) {
+        $('#email_changeDate').text(e);
+        $('#id_changeDate').val(i);
+        $('#enableDate_changeDate').val(d);
+    }
+
+    function updateDate() {
+        $.ajax({
+            url: "/user/updateDate",
+            type: "POST",
+            data: {
+                email: $("#email_changeDate").text(),
+                date: $("#enableDate_changeDate").val()
+            },
+            traditional: true,
+            success: function (result) {
+                if (result == "True")
+                    searchview();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+
+</script>
+

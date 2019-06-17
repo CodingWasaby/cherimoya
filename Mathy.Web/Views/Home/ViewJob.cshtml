@@ -1,0 +1,499 @@
+﻿@using Mathy.Web.Models
+@model JobVM
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts {
+
+    <script src="/Scripts/grid.js"></script>
+    <script src="/Scripts/ui.js"></script>
+    <script src="/Scripts/realtime-edit.js"></script>
+
+    <script language="javascript">
+
+        $(document).ready(function () {
+
+            toggleSettingsDiv();
+
+            getStepList();
+        });
+
+
+
+        var currentStepIndex = 0;
+
+
+
+        function onSettingsButtonClick() {
+            toggleSettingsDiv();
+        }
+
+        function toggleSettingsDiv() {
+            $("#settingsDiv").toggle();
+        }
+
+        function updateSettings(jobAutoID) {
+
+            $(".error").html("");
+
+            $.ajax({
+                url: "/Home/UpdateSettings",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    JobAutoID: jobAutoID,
+                    DecimalDigitCount: $("#decimalDigitCount").val()
+                }),
+                success: function (result) {
+                    getStepArea(currentStepIndex);
+                    toggleSettingsDiv();
+                },
+                error: function (result) {
+                    var messages = result.responseJSON;
+
+                    var items = $(".error");
+
+                    for (var i = 0; i <= items.length - 1; i++) {
+                        var item = items[i];
+                        var id = item.id.substring(0, item.id.length - 5);
+                        if (messages[id] != undefined) {
+                            $(item).html(messages[id]);
+                        }
+                    }
+                }
+            })
+        }
+
+        function getStepList() {
+
+            $.ajax({
+                url: "/Home/GetJobStepList",
+                success: function (html) {
+                    $("#stepListDiv").html(html);
+                }
+            });
+        }
+
+        function getStepArea(stepIndex) {
+
+            currentStepIndex = stepIndex;
+
+            $.ajax({
+                url: "/Home/GetJobStepArea?stepIndex=" + stepIndex,
+                success: function (html) {
+                    $("#stepAreaDiv").html(html);
+                    addGrids(stepIndex);
+                }
+            });
+        }
+
+        var inVariableGrids;
+
+        function addGrids(stepIndex) {
+
+            var grids = $(".grid");
+
+            inVariableGrids = [];
+
+
+            for (var i = 0; i <= grids.length - 1; i++) {
+
+                var func = function (index) {
+
+                    $.ajax({
+                        url: "/Home/GetGridContent?stepIndex=" + stepIndex + "&variableIndex=" + grids[index].id,
+                        success: function (data) {
+                            var grid = new Grid(
+                                data.rowCount,
+                                data.columnCount,
+                                grids[index].id,
+                                {
+                                    allowEditRow: data.allowEditRow,
+                                    allowEditColumn: data.allowEditColumn,
+                                    rowHeaderWidth: data.rowHeaderWidth,
+                                    rowName: data.rowName,
+                                    columnNames: data.columnNames
+                                });
+                            grid.setCells(data.cells);
+                            inVariableGrids.push(grid);
+                        }
+                    });
+                };
+
+                func(i);
+            }
+        }
+
+        function findGrid(id) {
+
+            for (var i = 0; i <= inVariableGrids.length - 1; i++) {
+                if (inVariableGrids[i].id == id) {
+                    return inVariableGrids[i];
+                }
+            }
+
+
+            return null;
+        }
+
+        function submit(stepIndex) {
+
+            var data = [];
+
+            var variableViews = $("[data-in-variable=true]");
+
+            for (var i = 0; i <= variableViews.length - 1; i++) {
+
+                var item = {};
+                item["Name"] = $(variableViews[i]).data("variable-name");
+
+
+                var value;
+
+                if ($(variableViews[i]).data("type") == "text") {
+                    value = $(variableViews[i]).val();
+                }
+                else {
+                    value = findGrid(variableViews[i].id).getMatrixString();
+                }
+
+                item["Value"] = value;
+                data.push(item);
+            }
+
+
+            $.ajax({
+                url: "/Home/UpdateInVariables",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    getStepList();
+                    getStepArea(stepIndex);
+                    $("#message").html("");
+                },
+                error: function (result) {
+                    $("#message").html(result.responseJSON.message);
+                }
+            })
+        }
+
+
+        var isEnabled = true;
+
+        function exportAsWordDocument() {
+
+            if (!isEnabled) {
+                return;
+            }
+
+
+            isEnabled = false;
+
+            setTimeout(function () {
+                isEnabled = true;
+            }, 5000);
+
+
+            window.location = "/Home/ExportAsWordDocument";
+        }
+
+
+        function viewGraph() {
+
+            $("#stepAreaDiv").html("<a href=\"/Home/GetGraph\" target=\"_blank\"><img src=\"/Home/GetGraph\" style='max-width:900px;' /></a>");
+        }
+
+
+        function onDeleteStepButtonClick() {
+
+            $.ajax({
+                url: "/Home/DeleteStep?editID=" + $("#editID").val() + "&stepIndex=" + currentStepIndex,
+                success: function (result) {
+
+                    getStepList();
+
+                    if (result.stepIndex == -1) {
+                        $("#stepAreaDiv").html("");
+                    }
+                    else {
+                        getStepArea(result.stepIndex);
+                    }
+                },
+                error: function (result) {
+                    alert(result.responseJSON.message);
+                }
+            });
+        }
+
+        function onEditStepButtonClick() {
+
+            $.ajax({
+                url: "/Home/EditStep?stepIndex=" + currentStepIndex,
+                success: function (html) {
+                    popup(
+                        "编辑步骤",
+                        {
+                            width: 500,
+                            height: 400,
+                            okButton: true,
+                            cancelButton: true,
+                            ok: function () {
+
+                                $.ajax({
+                                    url: "/Home/UpdateStep",
+                                    dataType: "json",
+                                    contentType: "application/json",
+                                    method: "POST",
+                                    data: JSON.stringify({
+                                        Index: currentStepIndex,
+                                        EditID: $("#editID").val(),
+                                        Title: $("#dialog-title").val(),
+                                        Description: $("#dialog-desc").val(),
+                                        Expression: $("#dialog-expression").val(),
+                                        Condition: $("#dialog-condition").val(),
+                                    }),
+                                    success: function (res) {
+                                        closePopup();
+                                        $("#message").html("已经保存。");
+                                        getStepList();
+                                        getStepArea(currentStepIndex);
+                                    },
+                                    error: function (res) {
+                                        closePopup();
+                                        $("#message").html(res.responseJSON.message);
+                                        blink("message");
+                                    }
+                                });
+
+                            },
+                            cancel: function () {
+                                closePopup();
+                            }
+                        },
+                        html);
+                }
+            });
+        }
+
+        function onEditVariablesButtonClick() {
+
+            $.ajax({
+                url: "/Home/EditVariables",
+                success: function (html) {
+                    popup(
+                        "编辑变量",
+                        {
+                            width: 950,
+                            height: 500,
+                            okButton: true,
+                            cancelButton: true,
+                            ok: function () {
+
+                                $.ajax({
+                                    url: "/Home/SaveVariables",
+                                    dataType: "json",
+                                    contentType: "application/json",
+                                    method: "POST",
+                                    data: JSON.stringify(getPlanData()),
+                                    success: function (res) {
+                                        closePopup();
+                                        $("#message").html("已经保存。");
+                                        getStepList();
+                                        getStepArea(currentStepIndex);
+                                    },
+                                    error: function (res) {
+                                        closePopup();
+                                        $("#message").html(res.responseJSON.message);
+                                        blink("message");
+                                    }
+                                });
+
+                            },
+                            cancel: function () {
+                                closePopup();
+                            }
+                        },
+                        html);
+                    init();
+                }
+            });
+        }
+
+        function onInsertBeforeButtonClick() {
+
+            $.ajax({
+                url: "/Home/InsertStep?editID=" + $("#editID").val() + "&stepIndex=" + currentStepIndex,
+                success: function (html) {
+                    getStepList();
+                    getStepArea(currentStepIndex);
+                }
+            });
+        }
+
+        function onInsertAfterButtonClick() {
+
+            $.ajax({
+                url: "/Home/InsertStep?editID=" + $("#editID").val() + "&stepIndex=" + (currentStepIndex + 1),
+                success: function (html) {
+                    getStepList();
+                    getStepArea(currentStepIndex);
+                }
+            });
+        }
+
+        function saveJobPlan() {
+
+            $.ajax({
+                url: "/Home/SaveJobPlan",
+                success: function (html) {
+                    alert("保存完成。");
+                },
+                error: function (res) {
+                    alert(res.responseJSON.message);
+                }
+            });
+        }
+
+        function importGrid(stepIndex, variableIndex) {
+
+            popup(
+                "导入",
+                {
+                    width: 500,
+                    height: 400,
+                    okButton: true,
+                    cancelButton: true,
+                    ok: function () {
+
+                        var files = $("#select-file")[0].files;
+
+                        var form = new FormData();
+                        form.append('stepIndex', stepIndex);
+                        form.append('variableIndex', variableIndex);
+                        form.append('file', files[0]);
+
+                        $.ajax({
+                            url: '/Home/ImportGrid',
+                            type: "POST",
+                            data: form,
+                            contentType: false,
+                            processData: false,
+                            success: function (result) {
+                                closePopup();
+                                getStepList();
+                                getStepArea(currentStepIndex);
+                            },
+                            error: function (result) {
+                                $('#message-dialog').html(result.responseJSON.message);
+                            }
+                        });
+
+                    },
+                    cancel: function () {
+                        closePopup();
+                    }
+                },
+                "<table><tr><td>选择文件</td><td><input id='select-file' type='file'></input></td></tr></table><br/><div id='message-dialog'></div>");
+        }
+
+        function exportGrid(stepIndex, variableIndex) {
+
+            var iframe = document.getElementById("downloadFrame");
+            iframe.src = '/Home/ExportGrid?stepIndex=' + stepIndex + '&variableIndex=' + variableIndex;
+            return;
+
+            //$.ajax({
+            //    url: '/Home/ExportGrid?stepIndex=' + stepIndex + '&variableIndex=' + variableIndex,
+            //    success: function (result) {
+
+            //    },
+            //    error: function (result) {
+
+            //    }
+            //});
+        }
+
+    </script>
+
+
+}
+
+<br />
+
+
+<iframe id="downloadFrame" style="display:none"></iframe>
+
+<input type="hidden" id="editID" value="@Model.EditID" />
+
+<h3>@Model.Name</h3>
+<div>@Model.PlanTitle</div>
+<hr />
+<div>@Model.Description</div>
+<br />
+<div>@Model.Author</div>
+<br />
+
+
+<div class="bordered">
+    <input type="button" value="实验设置" onclick="javascript:onSettingsButtonClick();" />
+    <div id="settingsDiv">
+        <br />
+        <br />
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th width="10%">名称</th>
+                    <th>设置</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="10%">有效小数位数</td>
+                    <td>
+                        <div>
+                            <input id="decimalDigitCount" type="text" value="@Model.Settings.DecimalDigitCount">
+                            <div class="error" id="decimalDigitCountError"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="button" class="button" value="保存设置" onclick="javascript:updateSettings(@Model.AutoID);" />
+    </div>
+</div>
+
+<br />
+
+
+<div class="bordered">
+    <b>信息</b>
+    <div id="message" class="error-message"></div>
+</div>
+
+
+<br />
+
+<div>
+
+    <div style="float: left;float: left; width: 210px;margin-top: 0;">
+
+        <div id="stepListDiv">
+        </div>
+
+    </div>
+
+    <div style="float:left;padding:10px;border-radius:10px;  width:calc(100% - 230px); height: 500px; overflow-y: scroll;background:rgba(255,255,255,.7)">
+
+        <div id="stepAreaDiv">
+        </div>
+
+        <div style="clear: both;"></div>
+
+    </div>
+</div>
+

@@ -1,0 +1,54 @@
+﻿@using Mathy.Web.Models
+@model IEnumerable<JobListCellVM>
+
+@{
+    ViewBag.Title = "我的实验";
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+        function onPagingButtonClick(pageIndex) {
+
+            $.ajax({
+                url: "/Home/SearchJobs?pageIndex=" + pageIndex,
+                success: function (html) {
+                    $("#content").html(html);
+                }
+            });
+        }
+
+
+        function deleteJob(autoID, pageIndex) {
+
+            if (confirm("是否确定删除？删除后无法恢复。")) {
+
+                $.ajax({
+                    url: "/Home/DeleteJob?autoID=" + autoID + "&pageIndex=" + pageIndex,
+                    success: function (html) {
+                        $("#content").html(html);
+                    },
+                    error: function (res) {
+                        alert(res.responseJSON.message);
+                    }
+                });
+            }
+        }
+
+    </script>
+
+}
+
+<br/>
+
+<h3>实验</h3>
+
+
+<br/>
+
+<div id="content">
+    @{
+        Html.RenderPartial("JobList", Model);
+    }
+</div>

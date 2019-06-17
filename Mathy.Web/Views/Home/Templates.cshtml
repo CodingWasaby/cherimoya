@@ -1,0 +1,28 @@
+﻿@using System.Collections.Generic;
+@using System.Linq;
+@using Mathy.Templates;
+
+@{
+    ViewBag.Title = "公式";
+
+    TemplateCollection root = Model as TemplateCollection;
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+        $(document).ready(function () {
+            $(".templateDetail").hide();
+        });
+
+        function toggleTemplateDetail(id) {
+            $("#" + id).toggle();
+        }
+
+    </script>
+}
+
+@{
+    Html.RenderPartial("TemplateCollection", root);
+}

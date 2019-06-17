@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+        var variableID = 0;
+
+        function addVariable() {
+
+            var html =
+                "<tr class='variableRow' id='variableRow" + variableID + "'>" +
+                "<td><input type='text' class='name' style='width:300px;' /></td>" +
+                "<td><input type='text' class='value' style='width:300px;' /></td>" +
+                "<td><input type='button' value='Delete' onclick='javascript:removeVariable(" + variableID + ")'/></td>";
+
+            $("#variables").append(html);
+
+
+            variableID++;
+        }
+
+        function removeVariable(index) {
+            $("#variableRow" + index).remove();
+        }
+
+        function evaluateExpression() {
+
+            var variables = { };
+            var rows = $('.variableRow');
+
+            for (var i = 0; i <= rows.length - 1; i++) {
+                var name = $('.name', rows[i]).val();
+                var value = $('.value', rows[i]).val();
+                if (name.length > 0) {
+                    variables[name] = value;
+                }
+            }
+
+            
+            var expression = $("#expressionInput").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Evaluate",
+                data: JSON.stringify({
+                    expression : expression,
+                    variables: variables
+                }),
+                success: function (result) {
+
+                    $("#resultDiv").html(result);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/Visualize",
+                        data: JSON.stringify({
+                            expression: expression,
+                            variables: variables
+                        }),
+                        success: function (result) {
+                            if (result.success) {
+                                $("#image")[0].src = "/Home/GetImage?id=" + result.id;
+                            }
+                            else {
+                                $("#image")[0].src = "";
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+
+}
+
+<br/>
+
+<div>Input expression here</div>
+
+<div>
+<input type="text" id="expressionInput" style="min-width:600px;"/>
+</div>
+
+
+<br/>
+
+<div>Variables</div>
+
+<input type="button" onclick="javascript:addVariable()" value="Add" />
+
+<br />
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th></th>
+        </tr>
+        </thead>
+    <tbody id="variables">
+    </tbody>
+</table>
+
+
+<br/>
+<input type="button" onclick="javascript:evaluateExpression()" value="Evaluate"/>
+<br/>
+<br/>
+
+<div>Visualization</div>
+<img id="image"/>
+<br/>
+<br />
+
+<div>Result</div>
+<div id="resultDiv" style="font-size:20px;font-family:monospace;"></div>

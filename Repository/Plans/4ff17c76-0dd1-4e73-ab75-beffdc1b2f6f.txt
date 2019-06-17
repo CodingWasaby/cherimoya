@@ -1,0 +1,34 @@
+{
+	"Title":"t1",
+	"Description":"t1",
+	"Author":"t1",
+	"Expressions":[
+		{
+			"Title":"1",
+			"Description":"1",
+			"Expression":"#{r1,r2,r3}=t(row(m1,0),row(m2,0),5)"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m1",
+			"Type":"Matrix"
+		},
+		{
+			"Name":"m2",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m1",
+			"Size":0,
+			"RowHeaderWidth":0
+		},
+		{
+			"Target":"m2",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

@@ -1,0 +1,22 @@
+{
+	"Title":"e",
+	"Description":"e",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"e",
+			"Description":"e",
+			"Expression":"e=1"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"eea",
+			"Type":"Number",
+			"Description":"e"
+		}
+	],
+	"Styles":[
+	]
+}

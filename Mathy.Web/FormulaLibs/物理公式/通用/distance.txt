@@ -1,0 +1,27 @@
+﻿{
+  "ID": "distance"
+  "Name": "求距离",
+  "Expression":"g*pow(t,2)/2",
+  "Parameters": [
+    {
+      "Name": "g",
+      "Type": "Number",
+      "Default": 9.8,
+      "Unit": "m^2/s",
+      "Description": "重力加速度"
+    },
+    {
+      "Name": "t",
+      "Type": "Number",
+      "Default": null,
+      "Unit": "s",
+      "Description": "时间"
+    }
+  ],
+  "ReturnType": "Number",
+  "ReturnUnit": "m",
+  "Description": "给定重力加速度和所经过过的时间，返回所经过的路程。",
+  "Reference:": "http://en.wikipedia.org",
+  "Author": "Akiko",
+  "LastUpdateTime": "2015-9-25"
+}

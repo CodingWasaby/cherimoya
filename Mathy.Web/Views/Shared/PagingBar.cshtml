@@ -1,0 +1,17 @@
+﻿@using Mathy.Web.Models
+@model PageButtonVM[]
+
+<br/>
+@{
+    foreach (PageButtonVM button in Model)
+    {
+        if (button.IsGap)
+        {
+            <div>...</div> 
+        }
+        else
+        {
+            <a href="@button.OnClick" @Html.Raw(button.ClassName)>@button.Text</a> 
+        }
+    }
+}
