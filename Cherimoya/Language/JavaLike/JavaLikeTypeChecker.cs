@@ -458,7 +458,12 @@ namespace Cherimoya.Language.JavaLike
             }
 
             Type[] parameterClasses = e.Parameters.Select(i => i.Type).ToArray();
-
+            if (e.MethodName == "Loop")
+            {
+                var list = parameterClasses.ToList();
+                list.Add(typeof(object));
+                parameterClasses = list.ToArray();
+            }
             e.Method = context.VariableContext.SearchMethod(e.MethodName, null, parameterClasses);
 
             if (e.Method == null)

@@ -18,6 +18,7 @@ namespace Mathy.Libs
         private Triangular triangular; // 三角分布
         private StudentT studentT; // T分布
         private MathNet.Numerics.Distributions.Bernoulli bernoulli;
+
         // 离散分布
         private DiscreteUniform discreteUniform; // 离散均匀分布
 

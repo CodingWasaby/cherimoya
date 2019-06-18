@@ -1,0 +1,30 @@
+{
+	"Title":"ee",
+	"Description":"ee",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"e",
+			"Description":"e",
+			"Expression":"e=1;\na=\"123\";\nc=odd(1);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"ee",
+			"Type":"Number",
+			"Description":"ee"
+		},
+		{
+			"Name":"a",
+			"Type":"String"
+		},
+		{
+			"Name":"c",
+			"Type":"Number"
+		}
+	],
+	"Styles":[
+	]
+}

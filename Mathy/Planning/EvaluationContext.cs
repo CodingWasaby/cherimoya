@@ -18,7 +18,10 @@ namespace Mathy.Planning
         {
             Plan = plan;
             Steps = steps;
-
+            foreach (var s in Steps)
+            {
+                s.Evaluation = this;
+            }
 
             List<string> inVariables = new List<string>();
 
@@ -40,7 +43,7 @@ namespace Mathy.Planning
         public string[] InVariables { get; private set; }
 
 
-
+        private VariableContext _vc;
         private Dictionary<string, object> variables = new Dictionary<string, object>();
 
 
@@ -124,6 +127,19 @@ namespace Mathy.Planning
             }
         }
 
+        public void DoStep(string stepName, int times)
+        {
+            var step = Steps.FirstOrDefault(m => m.SourceExpression.Title == stepName);
+            if (step == null)
+                throw new Exception("No such step,please check stepName");
+            else
+            {
+                for (int i = 0; i < times; i++)
+                    step.Evaluate(_vc);
+            }
+        }
+
+
         public void Update()
         {
             VariableContext vc = CreateVariableContext();
@@ -160,6 +176,9 @@ namespace Mathy.Planning
                     try
                     {
                         step.Evaluate(vc);
+                        this._vc = vc;
+                    //foreach (var n in )
+                    //    SetValueAcrossSteps();
                     }
                     catch (Exception ex)
                     {
@@ -223,11 +242,12 @@ namespace Mathy.Planning
 
 
                         vc.Set(step.InSourceVariables[i].Name, value);
+
                     }
                 }
             }
 
-
+            vc.Set("_EvaluationContext", this);
             return vc;
         }
 

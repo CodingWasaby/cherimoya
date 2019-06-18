@@ -1,0 +1,26 @@
+{
+	"Title":"ee",
+	"Description":"ee",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"step1",
+			"Description":"test",
+			"Expression":"ee=0;\nee=ee+1;"
+		},
+		{
+			"Title":"step2",
+			"Expression":"Loop(\"step1\",100);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"ee",
+			"Type":"Number",
+			"Description":"ee"
+		}
+	],
+	"Styles":[
+	]
+}

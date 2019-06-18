@@ -7,40 +7,34 @@
 		{
 			"Title":"step1",
 			"Description":"test",
-			"Expression":"em=0;"
+			"Expression":"e=0;"
 		},
 		{
 			"Title":"step2",
-			"Expression":"em=em+1;"
+			"Expression":"e=e+1;"
 		},
 		{
 			"Title":"step3",
-			"Expression":"Loop(\"step2\",100);"
+			"Expression":"a=Loop(\"step2\",100);\na=e;"
 		},
 		{
-			"Title":"step5",
-			"Expression":"Loop(\"step3\",100);"
-		},
-		{
-			"Title":"step6",
-			"Expression":"b=abs(em);"
+			"Title":"step4",
+			"Expression":"b=Loop(\"step3\",100);\nb=e;"
 		}
 	],
 	"Variables":[
 		{
-			"Name":"em",
+			"Name":"e",
 			"Type":"Number",
 			"Description":"e"
 		},
 		{
 			"Name":"a",
-			"Type":"Number",
-			"Description":"a"
+			"Type":"Number"
 		},
 		{
 			"Name":"b",
-			"Type":"Number",
-			"Description":"b"
+			"Type":"Number"
 		}
 	],
 	"Styles":[

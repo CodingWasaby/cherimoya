@@ -41,6 +41,7 @@ namespace Mathy.Planning
 
         public object[] DependentValues { get; set; }
 
+        public EvaluationContext Evaluation { get; set; }
 
         public void Evaluate(VariableContext vc)
         {

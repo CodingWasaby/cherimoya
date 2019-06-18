@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Mathy.Maths;
 using Mathy.Libs;
 using System.Drawing;
+using Mathy.Planning;
 
 namespace Mathy.Language
 {
@@ -54,7 +55,7 @@ namespace Mathy.Language
             vc.AddMethodExtender(typeof(MapReduceFuncs));
             vc.AddMethodExtender(typeof(StatisticsFuncs));
             vc.AddMethodExtender(typeof(ExpressionFuncs));
-
+            vc.AddMethodExtender(typeof(LoopFactory));
 
             return vc;
         }

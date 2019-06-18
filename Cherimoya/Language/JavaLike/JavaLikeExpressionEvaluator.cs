@@ -248,6 +248,10 @@ namespace Cherimoya.Language.JavaLike
                 parameters.Add(context);
             }
 
+            if (expression.MethodName == "Loop")
+            {
+                parameters.Add(context.GetValue("_EvaluationContext"));
+            }
 
             try
             {
@@ -259,8 +263,9 @@ namespace Cherimoya.Language.JavaLike
             }
         }
 
-        
-        private object CreateFunctionalInterface(LambdaExpression expression, Type targetType) {
+
+        private object CreateFunctionalInterface(LambdaExpression expression, Type targetType)
+        {
 
             /*
             if (targetType.equals(Predicate.class)) {
@@ -296,10 +301,10 @@ namespace Cherimoya.Language.JavaLike
                 };
             }
             */
-		
+
             return null;
         }
-         
+
 
         private object EvaluateIfElseExpression(IfElseExpression expression, VariableContext context)
         {
