@@ -56,6 +56,7 @@ namespace Mathy.Language
             vc.AddMethodExtender(typeof(StatisticsFuncs));
             vc.AddMethodExtender(typeof(ExpressionFuncs));
             vc.AddMethodExtender(typeof(LoopFactory));
+            vc.AddMethodExtender(typeof(Distribution)); 
 
             return vc;
         }

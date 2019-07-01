@@ -85,7 +85,7 @@ namespace Mathy.Planning
             SetValueAcrossSteps(variableName, value);
         }
 
-        private void SetValueAcrossSteps(string variableName, object value)
+        public void SetValueAcrossSteps(string variableName, object value)
         {
             if (!sourceVariables.ContainsKey(variableName))
             {
@@ -137,6 +137,10 @@ namespace Mathy.Planning
                 for (int i = 0; i < times; i++)
                     step.Evaluate(_vc);
             }
+            foreach (string key in step.OutVariables)
+            {
+                SetValueAcrossSteps(key, _vc.GetValue(key));
+            }
         }
 
 
@@ -177,8 +181,8 @@ namespace Mathy.Planning
                     {
                         step.Evaluate(vc);
                         this._vc = vc;
-                    //foreach (var n in )
-                    //    SetValueAcrossSteps();
+                        //foreach (var n in )
+                        //    SetValueAcrossSteps();
                     }
                     catch (Exception ex)
                     {

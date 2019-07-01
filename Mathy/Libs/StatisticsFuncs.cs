@@ -964,6 +964,11 @@ namespace Mathy.Libs
             return new double[] { mean, standardDeviation };
         }
 
+        Func<double[], double> func = delegate (double[] X)  // 设定函数为 y = x0 + x1 * x2 - x3
+        {
+            return X[0] + X[1] * X[2] - X[3];
+        };
+
         /// <summary>
         /// （待完善）获取包含区间 
         /// </summary>

@@ -20,6 +20,7 @@ namespace Mathy.Libs
         {
             EvaluationContext e = ec as EvaluationContext;
             e.DoStep(steps, times);
+
             return times;
         }
     }

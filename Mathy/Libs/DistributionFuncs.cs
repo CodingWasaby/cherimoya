@@ -13,11 +13,11 @@ namespace Mathy.Libs
     public class Distribution
     {
         // 连续分布
-        private Normal normal; // 正态分布
-        private ContinuousUniform continuousUniform; // 均匀分布
-        private Triangular triangular; // 三角分布
-        private StudentT studentT; // T分布
-        private MathNet.Numerics.Distributions.Bernoulli bernoulli;
+        private Normal normalDis; // 正态分布
+        private ContinuousUniform continuousUniformDis; // 均匀分布
+        private Triangular triangularDis; // 三角分布
+        private StudentT studentTDis; // T分布
+        private MathNet.Numerics.Distributions.Bernoulli bernoulliDis;
 
         // 离散分布
         private DiscreteUniform discreteUniform; // 离散均匀分布
@@ -30,16 +30,16 @@ namespace Mathy.Libs
             switch (DistributionName)
             {
                 case "Normal":
-                    normal = new Normal(vs[0], vs[1]); // double mean, double stddev
+                    normalDis = new Normal(vs[0], vs[1]); // double mean, double stddev
                     break;
                 case "ContinuousUniform":
-                    continuousUniform = new ContinuousUniform(vs[0], vs[1]); // int lower, int upper
+                    continuousUniformDis = new ContinuousUniform(vs[0], vs[1]); // int lower, int upper
                     break;
                 case "Triangular":
-                    triangular = new Triangular(vs[0], vs[1], vs[2]); //double lower, double upper, double mode  (lower ≤ mode ≤ upper)
+                    triangularDis = new Triangular(vs[0], vs[1], vs[2]); //double lower, double upper, double mode  (lower ≤ mode ≤ upper)
                     break;
                 case "StudentT":
-                    studentT = new StudentT(vs[0], vs[1], vs[2]);//double location, double scale, double freedom
+                    studentTDis = new StudentT(vs[0], vs[1], vs[2]);//double location, double scale, double freedom
                     break;
                 case "DiscreteUniform":
                     discreteUniform = new DiscreteUniform((int)vs[0], (int)vs[1]); // int lower, int upper
@@ -54,13 +54,13 @@ namespace Mathy.Libs
             switch (DistributionName)
             {
                 case "Normal":
-                    ret = normal.Sample(); break;
+                    ret = normalDis.Sample(); break;
                 case "ContinuousUniform":
-                    ret = continuousUniform.Sample(); break;
+                    ret = continuousUniformDis.Sample(); break;
                 case "Triangular":
-                    ret = triangular.Sample(); break;
+                    ret = triangularDis.Sample(); break;
                 case "StudentT":
-                    ret = studentT.Sample(); break;
+                    ret = studentTDis.Sample(); break;
                 case "DiscreteUniform":
                     ret = discreteUniform.Sample(); break;
             }
@@ -74,16 +74,16 @@ namespace Mathy.Libs
             switch (DistributionName)
             {
                 case "Normal":
-                    normal.Samples(ret);
+                    normalDis.Samples(ret);
                     break;
                 case "ContinuousUniform":
-                    continuousUniform.Samples(ret);
+                    continuousUniformDis.Samples(ret);
                     break;
                 case "Triangular":
-                    triangular.Samples(ret);
+                    triangularDis.Samples(ret);
                     break;
                 case "StudentT":
-                    studentT.Samples(ret);
+                    studentTDis.Samples(ret);
                     break;
                 case "DiscreteUniform":
                     discreteUniform.Samples(ret_int);
@@ -104,6 +104,46 @@ namespace Mathy.Libs
                 case "DiscreteUniform":
                     ret = new double[] { discreteUniform.LowerBound, discreteUniform.UpperBound }; break;
             }
+            return ret;
+        }
+
+        public static double[] normal(double v1, double v2, int num)
+        {
+            var n = new Normal(v1, v2);
+            double[] ret = new double[num];
+            n.Samples(ret);
+            return ret;
+        }
+
+        public static double[] continuousUniform(double v1, double v2, int num)
+        {
+            var n = new ContinuousUniform(v1, v2);
+            double[] ret = new double[num];
+            n.Samples(ret);
+            return ret;
+        }
+
+        public static double[] triangular(double v1, double v2, double v3, int num)
+        {
+            var t = new Triangular(v1, v2, v3);
+            double[] ret = new double[num];
+            t.Samples(ret);
+            return ret;
+        }
+
+        public static double[] studentT(double v1, double v2, double v3, int num)
+        {
+            var t = new StudentT(v1, v2, v3);
+            double[] ret = new double[num];
+            t.Samples(ret);
+            return ret;
+        }
+
+        public static int[] bernoulli(double v1, int num)
+        {
+            var t = new Bernoulli(v1);
+            int[] ret = new int[num];
+            t.Samples(ret);
             return ret;
         }
     }
