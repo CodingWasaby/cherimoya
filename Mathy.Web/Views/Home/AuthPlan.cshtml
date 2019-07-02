@@ -1,0 +1,100 @@
+﻿@using Mathy.Web.Models
+@model PlanVM
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts {
+
+    <script src="/Scripts/grid.js"></script>
+
+    <script language="javascript">
+
+        $(document).ready(function () {
+
+            getStepList();
+        });
+
+
+
+        var currentStepIndex;
+
+        function getStepList() {
+
+            $.ajax({
+                url: "/Home/GetPlanStepList",
+                success: function (html) {
+                    $("#stepListDiv").html(html);
+                }
+            });
+        }
+
+        function getStepArea(stepIndex) {
+
+            currentStepIndex = stepIndex;
+
+            $.ajax({
+                url: "/Home/GetPlanStepArea?stepIndex=" + stepIndex,
+                success: function (html) {
+                    $("#stepAreaDiv").html(html);
+                    //  addGrids(stepIndex);
+                }
+            });
+        }
+
+        function passPlan() {
+            $.ajax({
+                url: "/Home/PassPlan?planID=" + '@Model.PlanID',
+                method: "POST",
+                success: function (flag) {
+                    window.parent.closeThisTab_sh();
+                }
+            });
+        }
+
+        function ReJectPlan() {
+            $.ajax({
+                url: "/Home/ReJectPlan?planID=" + '@Model.PlanID',
+                method: "POST",
+                success: function (flag) {
+                    window.parent.closeThisTab_sh();
+                }
+            });
+        }
+    </script>
+
+
+
+}
+
+<br />
+
+<h3>@Model.Title</h3>
+<hr />
+<div>@Model.Description</div>
+<br />
+<div>@Model.Author</div>
+<br />
+
+<div>
+
+    <div style="float: left; width: 200px;margin-top: 0;">
+
+        <div id="stepListDiv">
+        </div>
+        <input type="button" class="button" onclick="javascript: passPlan();" value="审核通过" />
+        <input type="button" class="button" onclick="javascript: rejectPlan();" value="驳回" />
+    </div>
+
+    <div style="float:left;margin-left:10px; width:80%;">
+
+        <div id="stepAreaDiv">
+
+        </div>
+
+        <div style="clear: both;"></div>
+
+    </div>
+
+</div>

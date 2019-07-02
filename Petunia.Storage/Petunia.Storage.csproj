@@ -59,6 +59,10 @@
     <Compile Include="UserStorage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mathy.DAL\Mathy.DAL.csproj">
+      <Project>{B8E036F4-A98D-4B7A-BBB8-7089D6B6EFD8}</Project>
+      <Name>Mathy.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Petunia.LogicModel\Petunia.LogicModel.csproj">
       <Project>{bf44d113-164b-4846-ad28-6a69faf4ab46}</Project>
       <Name>Petunia.LogicModel</Name>

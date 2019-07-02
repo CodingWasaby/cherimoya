@@ -1,4 +1,5 @@
 ﻿using JacarandaX;
+using Mathy.DAL;
 using Petunia.LogicModel;
 using Petunia.Storage.Models;
 using System;
@@ -19,6 +20,17 @@ namespace Petunia.Storage
             lm.AutoID = db.AutoID;
         }
 
+        /// <summary>
+        /// authFlag    0待审，1已审，-1驳回
+        /// </summary>
+        /// <param name="planID"></param>
+        /// <param name="authFlag"></param>
+        /// <returns></returns>
+        public static bool UpdatePlanAuthFlag(string planID, int authFlag)
+        {
+            return new PlanDAL().UpdatePlanAuthFlag(planID, authFlag);
+        }
+
 
         public static PlanLM Get(int autoID)
         {
@@ -30,19 +42,42 @@ namespace Petunia.Storage
             return PlanDB.ToLM(Database.Table<PlanDB>().Where(i => i.ID == id).First());
         }
 
-        public static PlanLM[] Search(int pageIndex, int pageSize, string author)
+        public static PlanLM[] Search(int pageIndex, int pageSize, string author, bool isAuth)
         {
             var temp = Database.Table<PlanDB>().Where(m => m.DeleteFlag == 0).OrderByDescending(i => i.CreateTime).OrderByDescending(m => m.ReferenceCount).Skip(pageIndex * pageSize).Take(pageSize);
             if (!string.IsNullOrEmpty(author))
                 temp = temp.Where(m => m.Author == author);
+            else
+            {
+                if (isAuth)
+                {
+                    temp = temp.Where(m => m.AuthFlag == 1);
+                }
+                else
+                {
+                    temp = temp.Where(m => m.AuthFlag == 0 && m.PlanType == 0);
+                }
+            }
             return temp.ToArray().Select(i => PlanDB.ToLM(i)).ToArray();
         }
 
-        public static int GetCount(string author, string planName, string begindate, string enddate, string content)
+        public static int GetCount(string author, string planName, string begindate, string enddate, string content, bool isAuth)
         {
             var query = Database.Table<PlanDB>();
+
             if (!string.IsNullOrEmpty(author))
                 query = query.Where(m => m.Author == author);
+            else
+            {
+                if (isAuth)
+                {
+                    query = query.Where(m => m.AuthFlag == 1);
+                }
+                else
+                {
+                    query = query.Where(m => m.AuthFlag == 0);
+                }
+            }
 
             if (!string.IsNullOrEmpty(planName))
             {

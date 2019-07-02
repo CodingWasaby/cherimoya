@@ -9,9 +9,9 @@ Mathy/bin/
 
 Mathy/obj/
 
-Mathy\.Web/bin/
+Mathy.Web/bin/
 
-Mathy\.Web/obj/
+Mathy.Web/obj/
 
 Petunia/bin/
 
@@ -21,18 +21,31 @@ Cherimoya/bin/
 
 Cherimoya/obj/
 
-Mathy\.DAL/bin/
+Mathy.DAL/bin/
 
-Mathy\.DAL/obj/
+Mathy.DAL/obj/
 
-Mathy\.Model/bin/
+Mathy.Model/bin/
 
-Mathy\.Model/obj/
+Mathy.Model/obj/
 
-Petunia\.LogicModel/bin/
+Petunia.LogicModel/bin/
 
-Petunia\.LogicModel/obj/
+Petunia.LogicModel/obj/
 
-Petunia\.Storage/bin/
+Petunia.Storage/bin/
 
-Petunia\.Storage/obj/
+Petunia.Storage/obj/
+/Mathy.DAL/obj
+/Mathy.Model/obj
+/Mathy.Model/bin
+/Mathy.DAL/bin
+/Petunia.LogicModel/obj
+/Petunia.LogicModel/bin
+/Petunia.Storage/obj
+/Petunia.Storage/bin
+/Petunia.Storage/obj
+/Petunia.Storage/bin
+/Mathy.DAL/bin
+/Petunia.Storage/obj
+/Petunia.Storage/bin

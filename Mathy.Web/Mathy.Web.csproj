@@ -304,6 +304,8 @@
     <Content Include="Views\Home\Main.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Home\DrawTest.cshtml" />
+    <Content Include="Views\Home\PlansAuth.cshtml" />
+    <Content Include="Views\Home\AuthPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mathy.DAL\Mathy.DAL.csproj">

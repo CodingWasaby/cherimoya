@@ -19,6 +19,7 @@ namespace Mathy.Web.Models
             ViewPlanUrl = string.Format("/Home/ViewPlan?planID={0}", lm.ID);
             DownloadUrl = string.Format("/Home/DownloadPlan?planID={0}", lm.ID);
             UpdatePlanUrl = string.Format("/Home/UploadPlan?planID={0}", lm.ID);
+            AuthPlanUrl = string.Format("/Home/AuthPlan?planID={0}", lm.ID);
             Title = lm.Title;
             Author = lm.Author;
             Description = lm.Description;
@@ -26,6 +27,7 @@ namespace Mathy.Web.Models
             ReferenceCount = lm.ReferenceCount;
             PlanType = GetPlanType(lm.PlanType);
             IsCustom = string.IsNullOrEmpty(author);
+            AuthFlag = lm.AuthFlag;
         }
 
 
@@ -41,6 +43,8 @@ namespace Mathy.Web.Models
 
         public string UpdatePlanUrl { get; private set; }
 
+        public string AuthPlanUrl { get; private set; }
+
         public string Title { get; private set; }
 
         public string Author { get; private set; }
@@ -55,6 +59,21 @@ namespace Mathy.Web.Models
 
         public bool IsCustom { get; set; }
 
+        public int AuthFlag { get; set; }
+
+        public string AuthFlag_S
+        {
+            get
+            {
+                switch (AuthFlag)
+                {
+                    case 0: return "（待审）";
+                    case 1: return "（已审）";
+                    case -1: return "（驳回）";
+                    default: return "";
+                }
+            }
+        }
 
         private string GetPlanType(int planType)
         {

@@ -23,14 +23,14 @@ namespace Petunia
             StorageInit.Init();
         }
 
-        public static PlanLM[] SearchPlans(int pageIndex, int pageSize, string author = "")
+        public static PlanLM[] SearchPlans(int pageIndex, int pageSize, string author , bool isAuth)
         {
-            return PlanStorage.Search(pageIndex, pageSize, author);
+            return PlanStorage.Search(pageIndex, pageSize, author, isAuth);
         }
 
-        public static int GetPlanCount(string author, string planName, string begindate, string enddate, string content)
+        public static int GetPlanCount(string author, string planName, string begindate, string enddate, string content, bool isAuth)
         {
-            return PlanStorage.GetCount(author, planName, begindate, enddate, content);
+            return PlanStorage.GetCount(author, planName, begindate, enddate, content,  isAuth);
         }
 
         public static Plan GetPlan(string id)

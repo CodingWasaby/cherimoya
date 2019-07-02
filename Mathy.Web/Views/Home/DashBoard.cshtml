@@ -62,6 +62,13 @@
                 @if (Model.Role == "1")
                 {
                     <li>
+                        <a><i class="glyphicon glyphicon-share-alt"></i> <span class="nav-label">模板审核</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="@Url.Action("PlansAuth", "home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>公共模板</a></li>
+
+                        </ul>
+                    </li>
+                    <li>
                         <a><i class="glyphicon glyphicon-cog"></i> <span class="nav-label">后台管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <li><a href="@Url.Action("index", "User")" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>用户管理</a></li>
@@ -220,6 +227,15 @@
 
     function noPub() {
         MessageShow("尽请期待", "暂未开放该功能");
+    }
+
+    function closeThisTab_sh() {
+        var a = $('.J_menuTab.active');
+        $('.J_iframe[data-id="' + a.data("id") + '"]').remove();
+        a.remove();
+        $('.J_iframe[data-id="/home/PlansAuth"]').attr("style", "display: inline");
+        var name = $('.J_iframe[data-id="/home/PlansAuth"]').attr("name");
+        $("#SearchPageB", window.frames[name].document).click();
     }
 
     function changePass() {

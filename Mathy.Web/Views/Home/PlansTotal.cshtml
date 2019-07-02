@@ -7,16 +7,6 @@
 
     <script language="javascript">
 
-        function onPagingButtonClick(pageIndex) {
-
-            $.ajax({
-                url: "/Home/SearchPlansAll?pageIndex=" + pageIndex,
-                success: function (html) {
-                    $("#content").html(html);
-                }
-            });
-        }
-
         $(function () {
             innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
         })

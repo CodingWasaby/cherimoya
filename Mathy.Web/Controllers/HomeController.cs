@@ -11,6 +11,7 @@ using Mathy.Web.Models;
 using Mathy.Web.ServiceModels;
 using Petunia;
 using Petunia.LogicModel;
+using Petunia.Storage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -136,17 +137,23 @@ namespace Mathy.Web.Controllers
             return View(GetPlanList(pageIndex, planName, begindate, enddate, content));
         }
 
-        public object GetPlanList(int? pageIndex, string planName, string begindate, string enddate, string content, string author = "")
+        public ActionResult PlansAuth(int? pageIndex, string planName, string begindate, string enddate, string content)
+        {
+            pageIndex = pageIndex == null ? 1 : pageIndex;
+            return View(GetPlanList(pageIndex, planName, begindate, enddate, content, "", false));
+        }
+
+        private object GetPlanList(int? pageIndex, string planName, string begindate, string enddate, string content, string author = "", bool isAuth = true)
         {
             int pageSize = string.IsNullOrEmpty(author) ? 10 : 10;
             //ViewData["PagingButtons"] = Paging(pageIndex, Script.GetPlanCount(author), "PlanPageIndex", pageSize);
             ViewBag.pageIndex = pageIndex;
-            ViewBag.TotalPage = Script.GetPlanCount(author, planName, begindate, enddate, content) / pageSize + 1;
+            ViewBag.TotalPage = Script.GetPlanCount(author, planName, begindate, enddate, content, isAuth) / pageSize + 1;
             ViewBag.planName = planName;
             ViewBag.begindate = begindate;
             ViewBag.enddate = enddate;
             ViewBag.content = content;
-            IEnumerable<PlanLM> list = Script.SearchPlans(0, int.MaxValue, author);
+            IEnumerable<PlanLM> list = Script.SearchPlans(0, int.MaxValue, author, isAuth);
             if (!string.IsNullOrEmpty(planName))
             {
                 list = list.Where(m => m.Title != null && m.Title.Contains(planName));
@@ -174,7 +181,6 @@ namespace Mathy.Web.Controllers
                            join u in users on n.Author equals u.UserID.ToString()
                            select n.Author = u.Name).ToList();
             return list.Skip((pageIndex.Value - 1) * pageSize).Take(pageSize)
-
                 .Select(i => new PlanListCellVM(i, pageIndex.Value - 1, author)).ToList();
         }
 
@@ -568,6 +574,35 @@ namespace Mathy.Web.Controllers
             return View();
         }
 
+        [CheckLogin]
+        [HttpGet]
+        [OutputCache(Duration = 0)]
+        public ActionResult AuthPlan(string planID)
+        {
+            EvaluationContext context = Script.GetPlan(planID).CreateEvaluationContext();
+            Session["Context"] = context;
+            Session.Remove("UpdateCount");
+            var plan = new PlanVM(context);
+            plan.PlanID = planID;
+            return View(plan);
+        }
+
+        [CheckLogin]
+        [HttpPost]
+        [OutputCache(Duration = 0)]
+        public bool PassPlan(string planID)
+        {
+            return PlanStorage.UpdatePlanAuthFlag(planID, 1);
+        }
+
+        [CheckLogin]
+        [HttpPost]
+        [OutputCache(Duration = 0)]
+        public bool ReJectPlan(string planID)
+        {
+            return PlanStorage.UpdatePlanAuthFlag(planID, -1);
+        }
+
         /*
         [CheckLogin]
         [HttpPost]
@@ -609,8 +644,8 @@ namespace Mathy.Web.Controllers
             try
             {
                 Script.DeletePlan(autoID);
-                ViewData["PagingButtons"] = Paging(pageIndex, Script.GetPlanCount("", "", "", "", ""), "PlanPageIndex");
-                return PartialView("PlanList", Script.SearchPlans(pageIndex, 3).Select(i => new PlanListCellVM(i, pageIndex)));
+                ViewData["PagingButtons"] = Paging(pageIndex, Script.GetPlanCount("", "", "", "", "", true), "PlanPageIndex");
+                return PartialView("PlanList", Script.SearchPlans(pageIndex, 3, "", true).Select(i => new PlanListCellVM(i, pageIndex)));
             }
             catch (Exception ex)
             {

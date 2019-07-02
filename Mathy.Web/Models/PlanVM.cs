@@ -15,7 +15,7 @@ namespace Mathy.Web.Models
             Author = context.Plan.Author;
             Steps = context.Steps.Select((i, index) => new PlanStepListCellVM(i, index)).ToArray();
         }
-
+        public string PlanID { get; set; }
 
         public string Title { get; private set; }
 
