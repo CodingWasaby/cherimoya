@@ -1,4 +1,5 @@
-﻿using Cherimoya.Expressions;
+﻿using Aspose.Cells;
+using Cherimoya.Expressions;
 using Mathy.Language;
 using Mathy.Maths;
 using Mathy.Visualization.Computation;
@@ -130,6 +131,11 @@ namespace Mathy.Planning
         public void DoStep(string stepName, int times)
         {
             var step = Steps.FirstOrDefault(m => m.SourceExpression.Title == stepName);
+            if (step.State == StepState.Unready)
+            {
+                _DoStep.State = StepState.Unready;
+                return;
+            }
             if (step == null)
                 throw new Exception("No such step,please check stepName");
             else
@@ -141,9 +147,10 @@ namespace Mathy.Planning
             {
                 SetValueAcrossSteps(key, _vc.GetValue(key));
             }
+
         }
 
-
+        private Step _DoStep;
         public void Update()
         {
             VariableContext vc = CreateVariableContext();
@@ -151,7 +158,7 @@ namespace Mathy.Planning
             foreach (Step step in Steps)
             {
                 UpdateStepState(step);
-
+                _DoStep = step;
                 if (step.State == StepState.Ready && step.Conditions.Length > 0)
                 {
                     try
@@ -181,8 +188,10 @@ namespace Mathy.Planning
                     {
                         step.Evaluate(vc);
                         this._vc = vc;
-                        //foreach (var n in )
-                        //    SetValueAcrossSteps();
+                        foreach (string key in step.OutVariables)
+                        {
+                            SetValueAcrossSteps(key, _vc.GetValue(key));
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -243,10 +252,7 @@ namespace Mathy.Planning
                             m.SetDecimalDigitCount(Settings.DecimalDigitCount);
                             value = m;
                         }
-
-
                         vc.Set(step.InSourceVariables[i].Name, value);
-
                     }
                 }
             }
@@ -297,9 +303,10 @@ namespace Mathy.Planning
 
         public void ImportMatrix(string variableName, Stream stream)
         {
-            string text = new StreamReader(stream).ReadToEnd();
-            Matrix m = new CsvParser().Parse(text);
-
+            var workbook = new Workbook(stream);
+            Matrix m = CsvParser.Parse(workbook);
+            //string text = new StreamReader(stream).ReadToEnd();
+            //Matrix m = new CsvParser().Parse(text);
             Style style = Plan.Styles.FirstOrDefault(i => i.Target == variableName);
             if (style != null && style.ColumnNames != null && style.ColumnNames.Length > 0)
             {

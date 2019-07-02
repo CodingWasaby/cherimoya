@@ -1,4 +1,5 @@
-﻿using Mathy.Maths;
+﻿using Aspose.Cells;
+using Mathy.Maths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Mathy
 {
-    class CsvParser
+    public class CsvParser
     {
-        public Matrix Parse(string s)
+        public static Matrix Parse(string s)
         {
             s = s.Replace("[", "").Replace("]", "");
             s = s.Replace(";", "\r\n");
@@ -41,6 +42,29 @@ namespace Mathy
             }
 
             return m;
+        }
+
+        public static Matrix Parse(Workbook wb)
+        {
+            Matrix m = new Matrix(wb.Worksheets[0].Cells.Rows.Count, wb.Worksheets[0].Cells.MaxColumn + 1);
+            foreach (Cell n in wb.Worksheets[0].Cells)
+            {
+                m[n.Row, n.Column] = Convert.ToDouble(n.Value);
+            }
+            return m;
+        }
+
+        public static Workbook ParseToWorkbook(Matrix m)
+        {
+            var wb = new Workbook();
+            for (var r = 0; r < m.RowCount; r++)
+            {
+                for (var c = 0; c < m.ColumnCount; c++)
+                {
+                    wb.Worksheets[0].Cells[r, c].PutValue(m[r, c]);
+                }
+            }
+            return wb;
         }
     }
 }

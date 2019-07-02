@@ -822,10 +822,11 @@ namespace Mathy.Web.Controllers
 
                 string variableName = context.Steps[stepIndex].InSourceVariables[variableIndex].Name;
                 Matrix m = context.GetValue(variableName) as Matrix;
-
                 Session["ExportGrid"] = m;
-
-                return File(System.Text.Encoding.UTF8.GetBytes(m.ToString()), "application/text", variableName + ".txt");
+                var file = CsvParser.ParseToWorkbook(m);
+                var stream = file.SaveToStream();
+                stream.Seek(0, SeekOrigin.Begin);
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", variableName + ".xlsx");
             }
             catch (Exception ex)
             {
