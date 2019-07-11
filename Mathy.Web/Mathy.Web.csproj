@@ -253,6 +253,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\wangEditor.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -306,6 +307,7 @@
     <Content Include="Views\Home\DrawTest.cshtml" />
     <Content Include="Views\Home\PlansAuth.cshtml" />
     <Content Include="Views\Home\AuthPlan.cshtml" />
+    <Content Include="Views\Shared\EditorView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mathy.DAL\Mathy.DAL.csproj">

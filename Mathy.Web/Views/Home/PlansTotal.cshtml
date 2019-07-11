@@ -9,6 +9,7 @@
 
         $(function () {
             innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
+            window.parent.reheight();
         })
 
         function SearchPage(page) {
@@ -39,13 +40,9 @@
     </script>
 }
 
-<div class="gray-bg" style="height:110%">
+<div class="gray-bg reheight" >
     <div class="wrapper wrapper-content animated fadeIn">
-        <div class="p-w-md m-t-sm">
-            <div class="row">
                 <div class="col-lg-12">
-                    <div class="ibox">
-                        <div class="ibox-content">
                             <div class="row">
                                 <div class="col-sm-1">
                                     <div class="form-group">
@@ -93,68 +90,38 @@
                             </div>
                             <div id="Paginator"> <ul id="pageLimit"></ul> </div>
                             <div class="table-responsive gray-bg">
-                                <table class="table table-striped">
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>类型</strong></td>
-                                            <td><strong>名称</strong></td>
-                                            @if (Model.Count(m => m.IsCustom) > 0)
-                                            {
-                                                <th>作者</th>
-                                            }
-                                            <td><strong>说明</strong></td>
-                                            <td><strong>引用次数</strong></td>
-                                            <td><strong>创建时间</strong></td>
-                                            <td><strong></strong></td>
-                                        </tr>
-                                        @foreach (var n in Model)
-                                        {
-                                        <tr>
-                                            <td>@n.PlanType</td>
-                                            <td>@n.Title</td>
-                                            @if (n.IsCustom)
-                                            {
-                                                <td>@n.Author</td>
-                                            }
-                                            @*<td width="5%">@item.ReferenceCount</td>*@
-                                            <td>@n.Description</td>
-                                            <td>@n.ReferenceCount</td>
-                                            <td>@n.CreateTime</td>
+                                @foreach (var n in Model)
+                                {
+                                    <div class="media list-group-item">
+                                        <div class="media-body">
+                                            <h4 class="media-heading">
+                                                @n.Title
+                                                <span class="badge" title="引用次数" style="margin-left:10px">@n.ReferenceCount</span>
+                                            </h4>
+                                            <h5>@(n.Author + "  " + n.CreateTime)</h5>
+                                            @Html.Raw(n.Description)
+                                        </div>
+                                        <div class="media" style="margin-top:10px">
                                             @if (n.IsCustom)
                                             {
                                                 if (n.PlanType == "公共")
                                                 {
-                                                    <td>
-                                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="J_menuItem_Child">查看</a>&nbsp;
-                                                        <a href="@Html.Raw(n.CreateJobUrl)" class="J_menuItem_Child">引用</a>&nbsp;
-                                                    </td>
+                                                    <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                                    <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">引用</a>
                                                 }
                                                 if (n.PlanType == "保护")
                                                 {
-                                                    <td>
-                                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="J_menuItem_Child">查看</a>&nbsp;
-                                                    </td>
+                                                    <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
                                                 }
                                             }
-                                            else
-                                            {
-                                                <td>
-                                                    <a href="@Html.Raw(n.ViewPlanUrl)" class="J_menuItem_Child">查看</a>&nbsp;
-                                                    <a href="@Html.Raw(n.EditPlanUrl)" class="J_menuItem_Child">编辑</a>&nbsp;
-                                                    <a href="@Html.Raw(n.CreateJobUrl)" class="J_menuItem_Child">引用</a>&nbsp;
-                                                    <a href="@Html.Raw(n.DeletePlanUrl)"> 删除</a>&nbsp;
-                                                </td>
-                                            }
+                                        </div>
+                                    </div>
+                                }
 
-                                        </tr>
-                                        }
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        @*</div>
+    </div>*@

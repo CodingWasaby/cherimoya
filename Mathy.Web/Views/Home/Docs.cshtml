@@ -18,33 +18,89 @@
                 }
             });
         }
-     
+
 
     </script>
 
 }
 
 
-<br/>
-
-<div>
 <style>
-	body{overflow-y: scroll;}
+    body {
+        overflow-y: scroll;
+    }
 </style>
-    <div style="float: left; width: 220px;margin-top: 0; line-height: 30px; height:500px; overflow-y:auto">
+@*style="float: left; width: 220px;margin-top: 0; line-height: 30px; height:500px; overflow-y:auto"*@
+<div class="table-responsive gray-bg">
 
-        @foreach (FuncDocVM func in Model.List)
-        {
-            <div><a href="javascript: getFuncArticle(@func.Index);">@(func.Name + " " + func.Title)</a></div>
-        }
+    @foreach (FuncDocVM func in Model.List)
+    {
+        <div class="media list-group-item  gray-bg">
+            <div class=" media-heading">
+                <h4>@func.Name</h4>
+            </div>
+            <div class="media-body">
+                <div>
+                    <div>@func.Title</div>
+                    <div>@func.Description</div>
+                    <div>参数</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="10%">名称</th>
+                                <th width="10%">类型</th>
+                                <th width="80%">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (ParameterDocVM parameter in func.Parameters)
+                            {
+                                <tr>
+                                    <td width="10%">@parameter.Name</td>
+                                    <td width="10%">@parameter.Type</td>
+                                    <td width="80%">@parameter.Description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div>返回</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="20%">类型</th>
+                                <th width="80%">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (ReturnDocVM r in func.Returns)
+                            {
+                                <tr>
+                                    <td width="20%">@r.Type</td>
+                                    <td width="80%">@r.Description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
 
-    </div>
-
-    <div style="float:left;margin-left:10px; width:calc(100% - 230px);">
-
-        <div id="article">
+                <br />
+                @if (func.Article != null)
+                {
+                    foreach (ParagraphVM p in func.Article.Paragraphs)
+                    {
+                        <div class='@(p.HasBorder ? "code" : "paragraph")'>
+                            @{
+                                if (p.HasBullet)
+                                {
+                                    @Html.Raw("⬤")
+                                }
+                                @Html.Raw(p.Text)
+                            }
+                        </div>
+                    }
+                }
+            </div>
         </div>
+    }
 
-        <div style="clear: both;"></div>
-
-    </div>
+</div>

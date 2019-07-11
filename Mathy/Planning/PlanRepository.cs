@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mathy.DAL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,15 +10,6 @@ namespace Mathy.Planning
 {
     public class PlanRepository
     {
-        public void Load(string repositoryPath)
-        {
-            this.repositoryPath = repositoryPath;
-        }
-
-
-        private string repositoryPath;
-
-
         public Plan Save(string id, Stream stream)
         {
             string content = null;
@@ -26,8 +18,6 @@ namespace Mathy.Planning
             {
                 content = reader.ReadToEnd();
             }
-
-
             Plan plan = null;
 
             try
@@ -38,28 +28,24 @@ namespace Mathy.Planning
             {
                 throw new Exception("解析试验计划文件错误。\r\n通常是因为实验文件内容错误造成。请检查您的实验文件，或联系相关人员协助解决。\r\n错误信息：\r\n" + ex.Message);
             }
-
-
-            File.WriteAllText(GetFilePath(id), content);
-
-
+            new PlanDAL().AddPlanRepository(id, content);
             return plan;
         }
 
         public Plan Get(string id)
         {
-            return Plan.Parse(File.ReadAllText(GetFilePath(id), System.Text.Encoding.UTF8));
+            var content = new PlanDAL().GetRepository(id);
+            return Plan.Parse(content.Text);
+        }
+
+        public bool Copy(string fromID, string toID)
+        {
+            return new PlanDAL().CopyRepository(fromID, toID);
         }
 
         public void Delete(string id)
         {
-            File.Delete(GetFilePath(id));
-        }
-
-
-        private string GetFilePath(string id)
-        {
-            return Path.Combine(repositoryPath, id + ".txt");
+            // File.Delete(GetFilePath(id));
         }
     }
 }

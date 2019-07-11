@@ -7,10 +7,10 @@
 
 @section scripts {
 
-    <script src="/Scripts/realtime-edit.js"></script>
+    <script src="/Scripts/realtime-edit.js?a=@DateTime.Now.Ticks"></script>
 
     <script language="javascript">
-
+        var editor;
         $(document).ready(function () {
             init();
         });
@@ -25,8 +25,8 @@
 
         function showPreviewTabPage() {
 
-            var data = getPlanData();
-
+            var data = getPlanData(editor.txt.html());
+           
             if (isChanged(prevData, data)) {
 
                 $.ajax({
@@ -115,13 +115,18 @@
             });
         }
 
+
         function save() {
+            //console.log(editor.txt.html());
+            //console.log(editor.txt.text());
+            //return;
+            var data1 = getPlanData(editor.txt.html());
             $.ajax({
                 url: "/Home/SavePlan",
                 dataType: "json",   
                 contentType: "application/json",
                 method: "POST",
-                data: JSON.stringify(getPlanData()),
+                data: JSON.stringify(data1),
                 success: function (res) {
                     if (res.success) {
                         $("#planID").val(res.PlanID);
@@ -175,7 +180,10 @@
             </tr>
             <tr>
                 <td width="10%">说明</td>
-                <td width="90%"> <input id="descriptionTextBox" type="text" value="@Model.Description" style="display: block; width: 100%;" /> </td>
+                <td width="90%">
+                    @Html.Partial("~/Views/Shared/EditorView.cshtml",Model)
+                    @*<input id="descriptionTextBox" type="text" value="@Model.Description" style="display: block; width: 100%;" />*@
+                </td>
             </tr>
             @*<tr>
                 <td width="10%">作者</td>

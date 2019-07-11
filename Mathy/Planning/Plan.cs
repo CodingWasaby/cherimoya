@@ -11,6 +11,10 @@ namespace Mathy.Planning
 {
     public class Plan
     {
+        public int AutoID { get; set; }
+
+        public string ID { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }

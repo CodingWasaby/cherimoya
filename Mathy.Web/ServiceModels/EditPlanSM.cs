@@ -80,6 +80,7 @@ namespace Mathy.Web.ServiceModels
 
             return new Plan()
             {
+                ID = ID,
                 Title = Title,
                 Description = Description,
                 Author = Author,

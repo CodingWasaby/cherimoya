@@ -16,7 +16,7 @@ namespace Mathy.Web.Models
             CreateJobUrl = string.Format("/Home/CreateJob?planAutoID={0}", lm.AutoID);
             EditPlanUrl = string.Format("/Home/EditPlan?planID={0}", lm.ID);
             DeletePlanUrl = string.Format("javascript:deletePlan({0},{1});", lm.AutoID, pageIndex);
-            ViewPlanUrl = string.Format("/Home/ViewPlan?planID={0}", lm.ID);
+            ViewPlanUrl = string.Format("/Home/ViewPlan?planID={0}", lm.AutoID);
             DownloadUrl = string.Format("/Home/DownloadPlan?planID={0}", lm.ID);
             UpdatePlanUrl = string.Format("/Home/UploadPlan?planID={0}", lm.ID);
             AuthPlanUrl = string.Format("/Home/AuthPlan?planID={0}", lm.ID);

@@ -1,0 +1,25 @@
+﻿@using Mathy.Web.Models
+@model EditPlanVM
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/wangEditor.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var E = window.wangEditor;
+        editor = new E('#div1');
+        editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+        editor.customConfig.uploadImgShowBase64 = true;
+        //editor.customConfig.uploadImgServer = '/uploadfile';
+        editor.create();
+
+        try {
+             editor.txt.html('@Html.Raw(Model.Description)');
+        } catch (e) {
+              editor.txt.text('@Model.Description');
+        }
+
+    });
+</script>
+<div id="div1">
+
+</div>

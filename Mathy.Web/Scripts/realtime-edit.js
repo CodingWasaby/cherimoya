@@ -165,15 +165,15 @@ function renameRows(stateIndex) {
     }
 }
 
-function getPlanData() {
+function getPlanData(des) {
 
-
+    console.log(des);
     var data = {};
 
     data["ID"] = $("#planID").val();
     data["EditID"] = $("#editID").val();
     data["Title"] = $("#titleTextBox").val();
-    data["Description"] = $("#descriptionTextBox").val();
+    data["Description"] = des;     // $("#descriptionTextBox").val();
     data["Author"] = $("#authorTextBox").val();
     data["PlanType"] = $("#planType").find(":selected").val();
     data["Variables"] = [];

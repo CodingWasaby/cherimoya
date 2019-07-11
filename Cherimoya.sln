@@ -30,7 +30,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		C:\Users\aska_\Desktop\Program.cs = C:\Users\aska_\Desktop\Program.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test1", "Test1\Test1.csproj", "{40B16283-1D03-4805-ABB1-BD6449945D51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test1", "Test1\Test1.csproj", "{40B16283-1D03-4805-ABB1-BD6449945D51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp4", "ConsoleApp4\ConsoleApp4.csproj", "{FDF23437-BD64-42DD-B709-4A8B4CBE9589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +88,10 @@ Global
 		{40B16283-1D03-4805-ABB1-BD6449945D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40B16283-1D03-4805-ABB1-BD6449945D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40B16283-1D03-4805-ABB1-BD6449945D51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

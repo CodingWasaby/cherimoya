@@ -92,13 +92,13 @@ namespace Mathy.Web.Controllers
                 userid = 0;
             //ViewData["PagingButtons"] = Paging(pageIndex, Script.GetJobCount(), "JobPageIndex", 10);
             ViewBag.pageIndex = pageIndex;
-            ViewBag.TotalPage = Script.GetJobCount(userid) / 10 + 1;
+            ViewBag.TotalPage = Script.GetJobCount(userid) / 5 + 1;
             ViewBag.jobName = jobName;
             ViewBag.planName = planName;
             ViewBag.begindate = begindate;
             ViewBag.enddate = enddate;
             ViewBag.isall = isall;
-            return Script.SearchJobs(userid, pageIndex - 1, 10, jobName, planName, begindate, enddate, isFinish).Select(i => new JobListCellVM(i, pageIndex - 1));
+            return Script.SearchJobs(userid, pageIndex - 1, 5, jobName, planName, begindate, enddate, isFinish).Select(i => new JobListCellVM(i, pageIndex - 1));
         }
 
         [CheckLogin]
@@ -145,15 +145,18 @@ namespace Mathy.Web.Controllers
 
         private object GetPlanList(int? pageIndex, string planName, string begindate, string enddate, string content, string author = "", bool isAuth = true)
         {
-            int pageSize = string.IsNullOrEmpty(author) ? 10 : 10;
+            int pageSize = string.IsNullOrEmpty(author) ? 5 : 5;
             //ViewData["PagingButtons"] = Paging(pageIndex, Script.GetPlanCount(author), "PlanPageIndex", pageSize);
+            IEnumerable<PlanLM> list = Script.SearchPlans(0, int.MaxValue, author, isAuth);
+            //Script.GetPlanCount(author, planName, begindate, enddate, content, isAuth)
             ViewBag.pageIndex = pageIndex;
-            ViewBag.TotalPage = Script.GetPlanCount(author, planName, begindate, enddate, content, isAuth) / pageSize + 1;
+            var planCount = list.Count();
+            ViewBag.TotalPage = planCount / pageSize + 1;
             ViewBag.planName = planName;
             ViewBag.begindate = begindate;
             ViewBag.enddate = enddate;
             ViewBag.content = content;
-            IEnumerable<PlanLM> list = Script.SearchPlans(0, int.MaxValue, author, isAuth);
+
             if (!string.IsNullOrEmpty(planName))
             {
                 list = list.Where(m => m.Title != null && m.Title.Contains(planName));
@@ -187,7 +190,7 @@ namespace Mathy.Web.Controllers
 
         [CheckLogin]
         [OutputCache(Duration = 0)]
-        public ActionResult ViewPlan(string planID)
+        public ActionResult ViewPlan(int planID)
         {
             EvaluationContext context = Script.GetPlan(planID).CreateEvaluationContext();
             Session["Context"] = context;
@@ -321,7 +324,7 @@ namespace Mathy.Web.Controllers
             Session["JobAutoID"] = job.AutoID;
             Session["JobLM"] = job;
 
-            EvaluationContext context = Script.GetPlan(job.PlanID).CreateEvaluationContext();
+            EvaluationContext context = Script.GetPlan(job.PlanAutoID, job.PlanID).CreateEvaluationContext();
             context.Settings = new Settings() { DecimalDigitCount = job.DecimalCount };
 
             Session["Context"] = context;
@@ -846,6 +849,17 @@ namespace Mathy.Web.Controllers
                 return new JsonResult() { Data = new { message = ex.Message }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
         }
+
+        //[CheckLogin]
+        //[OutputCache(Duration = 0)]
+        //[HttpPost]
+        //public ActionResult ImportGrid(int stepIndex, int variableIndex, HttpPostedFileBase file)
+        //{
+        //    return new JsonResult(new {
+
+        //    });
+        //}
+
 
         [CheckLogin]
         [OutputCache(Duration = 0)]

@@ -23,24 +23,38 @@ namespace Petunia
             StorageInit.Init();
         }
 
-        public static PlanLM[] SearchPlans(int pageIndex, int pageSize, string author , bool isAuth)
+        public static PlanLM[] SearchPlans(int pageIndex, int pageSize, string author, bool isAuth)
         {
             return PlanStorage.Search(pageIndex, pageSize, author, isAuth);
         }
 
         public static int GetPlanCount(string author, string planName, string begindate, string enddate, string content, bool isAuth)
         {
-            return PlanStorage.GetCount(author, planName, begindate, enddate, content,  isAuth);
+            return PlanStorage.GetCount(author, planName, begindate, enddate, content, isAuth);
         }
 
         public static Plan GetPlan(string id)
         {
-            return AppStore.PlanRepository.Get(id);
+            var planlm = PlanStorage.GetByID(id);
+            var plan = AppStore.PlanRepository.Get(id);
+            plan.Description = planlm.Description;
+            return plan;
         }
 
         public static Plan GetPlan(int autoID)
         {
-            return AppStore.PlanRepository.Get(PlanStorage.Get(autoID).ID);
+            var planlm = PlanStorage.Get(autoID);
+            var plan = AppStore.PlanRepository.Get(planlm.ID);
+            plan.Description = planlm.Description;
+            return plan;
+        }
+
+        public static Plan GetPlan(int autoID, string textID)
+        {
+            var planlm = PlanStorage.Get(autoID);
+            var plan = AppStore.PlanRepository.Get(textID);
+            plan.Description = planlm.Description;
+            return plan;
         }
 
         public static PlanLM GetPlanLM(int autoID)
@@ -150,10 +164,8 @@ namespace Petunia
             Plan plan = GetPlan(planLM.AutoID);
             DateTime now = DateTime.Now;
 
-            string filePath = AppStore.PathResolver.GetPlanPath(planLM.ID);
             string id = Guid.NewGuid().ToString();
-            string newFilePath = AppStore.PathResolver.GetPlanPath(id);
-            File.Copy(filePath, newFilePath);
+            AppStore.PlanRepository.Copy(planLM.ID, id);
 
             JobStorage.Save(
                 new JobLM()

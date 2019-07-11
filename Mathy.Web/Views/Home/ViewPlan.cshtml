@@ -18,32 +18,32 @@
 
 
 
-    var currentStepIndex;
+        var currentStepIndex;
 
-    function getStepList() {
+        function getStepList() {
 
-        $.ajax({
-            url: "/Home/GetPlanStepList",
-            success: function (html) {
-                $("#stepListDiv").html(html);
-            }
-        });
-    }
+            $.ajax({
+                url: "/Home/GetPlanStepList",
+                success: function (html) {
+                    $("#stepListDiv").html(html);
+                }
+            });
+        }
 
-    function getStepArea(stepIndex) {
+        function getStepArea(stepIndex) {
 
-        currentStepIndex = stepIndex;
+            currentStepIndex = stepIndex;
 
-        $.ajax({
-            url: "/Home/GetPlanStepArea?stepIndex=" + stepIndex,
-            success: function (html) {
-                $("#stepAreaDiv").html(html);
-              //  addGrids(stepIndex);
-            }
-        });
-    }
+            $.ajax({
+                url: "/Home/GetPlanStepArea?stepIndex=" + stepIndex,
+                success: function (html) {
+                    $("#stepAreaDiv").html(html);
+                    //  addGrids(stepIndex);
+                }
+            });
+        }
 
-</script>
+    </script>
 
 
 
@@ -52,27 +52,22 @@
 <br />
 
 <h3>@Model.Title</h3>
-<hr/>
-<div>@Model.Description</div>
-<br/>
-<div>@Model.Author</div>
+<hr />
+<div>@Html.Raw(Model.Description)</div>
 <br />
-
-<div>
-
     <div style="float: left; width: 200px;margin-top: 0;">
-        
+
         <div id="stepListDiv">
         </div>
-    
+
     </div>
 
     <div style="float:left;margin-left:10px; width:80%;">
 
-        <div id="stepAreaDiv" >
+        <div id="stepAreaDiv">
         </div>
 
-    <div style="clear: both;"></div>
+        <div style="clear: both;"></div>
 
-</div>  
+    </div>
 

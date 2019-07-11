@@ -53,3 +53,13 @@ Petunia.Storage/obj/
 /Mathy.DAL/bin
 /Mathy.Model/obj
 /Mathy.Model/bin
+
+Mathy\.Web/Repository/Plans1/
+
+*.zip
+
+packages/
+
+ConsoleApp4/bin/
+
+ConsoleApp4/obj/

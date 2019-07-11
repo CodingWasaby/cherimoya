@@ -183,6 +183,14 @@
       <Project>{bb24761f-236d-42de-83ca-f01bdfbac0e4}</Project>
       <Name>Cherimoya</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mathy.DAL\Mathy.DAL.csproj">
+      <Project>{B8E036F4-A98D-4B7A-BBB8-7089D6B6EFD8}</Project>
+      <Name>Mathy.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mathy.Model\Mathy.Model.csproj">
+      <Project>{7282CD48-B228-4A5C-9163-62F8DDDCF6C1}</Project>
+      <Name>Mathy.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

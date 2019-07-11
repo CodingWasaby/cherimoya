@@ -27,8 +27,6 @@ namespace Petunia
             UrlResolver = new UrlResolver(ConfigurationManager.AppSettings["RootUrl"]);
 
             PlanRepository = new PlanRepository();
-            PlanRepository.Load(PathResolver.PlanRepositoryPath);
-
 
             if (ConfigurationManager.AppSettings["MockUserAuth"] == "true")
             {
