@@ -1,0 +1,82 @@
+﻿@using Mathy.Model.Entity
+@model IEnumerable<Coefficient>
+
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+@section scripts {
+
+    <script language="javascript">
+
+        $(function () {
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
+            window.parent.reheight();
+        })
+
+        function SearchPage(page) {
+            var url = "/Coefficient/index/" + "?pageIndex=" + page;
+
+            var CoefficientName = $('#CoefficientName').val();
+            if (CoefficientName.length > 0) {
+                url += "&CoefficientName=" + CoefficientName + "&";
+            }
+            window.location.href = url;
+        }
+
+        function deleteCoefficient(autoID) {
+
+            if (confirm("是否确定删除？删除后无法恢复。")) {
+
+                $.ajax({
+                    url: "/Coefficient/DeleteCoefficient?autoID=" + autoID,
+                    method:'POST',
+                    success: function (res) {
+                        alert("删除成功");
+                        SearchPage(1);
+                    },
+                    error: function (res) {
+                        alert(res.responseJSON.message);
+                    }
+                });
+            }
+        }
+
+    </script>
+}
+<div class="gray-bg reheight">
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label" for="product_name">系数表名称</label>
+                        <input type="text" id="CoefficientName" value="@ViewBag.CoefficientName" placeholder="系数表名称" class="form-control">
+                    </div>
+                </div>
+                <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="SearchPage(@ViewBag.pageIndex)">查询</a>
+                <a class="btn btn-primary J_menuItem_Child" style="margin-top:24px;width:100px" href="@Url.Action("CreateCoefficient","Coefficient",new {coefficientID=0 })">新增系数表</a>
+            </div>
+            <div id="Paginator"> <ul id="pageLimit"></ul> </div>
+            <div class="table-responsive gray-bg">
+                @foreach (var n in Model)
+                {
+                    <div class="media list-group-item  gray-bg">
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                @n.CoefficientName
+                            </h4>
+                            <h5>@(n.Creator + "  " + n.CreateTime)</h5>
+                            @Html.Raw(n.CoefficientContent)
+                        </div>
+                        <div class="media" style="margin-top:10px">
+                            <a href="@Url.Action("CreateCoefficient","Coefficient",new {coefficientID =n.CoefficientID,ro= true })" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                            <a href="@Url.Action("CreateCoefficient","Coefficient",new {coefficientID =n.CoefficientID,ro= false })" class="btn-sm btn-primary J_menuItem_Child">编辑</a>
+                            <a href="javascript:viod(0)" onclick="deleteCoefficient(@n.CoefficientID)" class="btn-sm btn-danger"> 删除</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

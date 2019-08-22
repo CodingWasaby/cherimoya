@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Upload";
+}
+
+<script src="/Scripts/grid.js"></script>
+<script src="/Scripts/ui.js"></script>
+<script src="/Scripts/realtime-edit.js"></script>
+<script type="text/javascript">
+
+    function donlowdMB() {
+        window.open("../Scripts/m.xls");
+    }
+    function importGrid() {
+        popup(
+            "导入",
+            {
+                width: 500,
+                height: 400,
+                okButton: true,
+                cancelButton: true,
+                ok: function () {
+                    var files = $("#select-file")[0].files;
+                    var form = new FormData();
+                    form.append('file', files[0]);
+                    $.ajax({
+                        url: '/Draw/ImportGrid',
+                        type: "POST",
+                        data: form,
+                        contentType: false,
+                        processData: false,
+                        success: function (result) {
+                            $('#test').html(result);
+                            closePopup();
+                        },
+                        error: function (result) {
+                            alert(result.responseJSON.message);
+                        }
+                    });
+
+                },
+                cancel: function () {
+                    closePopup();
+                }
+            },
+            "<table><tr><td>选择文件</td><td><input id='select-file' type='file'></input></td></tr></table><br/><div id='message-dialog'></div>");
+    }
+</script>
+<h2>Upload</h2>
+<button onclick="importGrid()">
+    导入Excel
+</button>
+<button onclick="donlowdMB()">
+    下载模板
+</button>
+<div id="test">
+
+</div>
+

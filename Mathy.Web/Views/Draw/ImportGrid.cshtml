@@ -1,0 +1,36 @@
+﻿@using System.Collections.Generic;
+@using Mathy.Web.Controllers;
+@model List<DrawController.DataColumn>
+@{
+    var rows = new List<DrawController.DataRow>();
+    foreach (var n in Model)
+    {
+        rows.AddRange(n.Rows);
+    }
+}
+@{
+    ViewBag.Title = "ImportGrid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table>
+    <tr>
+        @foreach (var n in Model)
+        {
+            <th>
+                @n.Name
+            </th>
+        }
+    </tr>
+    @foreach (var n in rows.ToLookup(m => m.RowIndex).OrderBy(m => m.Key))
+    {
+        <tr>
+            @foreach (var m in n)
+            {
+                <td  width="10%">
+                    @m.RowData
+                </td>
+            }
+        </tr>
+    }
+</table>
+

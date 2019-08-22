@@ -1,5 +1,5 @@
 ﻿@using Mathy.Web.Models
-@model EditPlanVM
+@model string
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/wangEditor.js"></script>
 <script type="text/javascript">
@@ -13,13 +13,13 @@
         editor.create();
 
         try {
-             editor.txt.html('@Html.Raw(Model.Description)');
+             editor.txt.html('@Html.Raw(Model)');
         } catch (e) {
-              editor.txt.text('@Model.Description');
+              editor.txt.text('@Model');
         }
 
     });
 </script>
-<div id="div1">
+<div id="div1" style="z-index:100">
 
 </div>

@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Mathy.Libs
 {
-    public class LoopFactory
+    public class CustomFuncFactory
     {
 
         //public static int Loop(string steps, int times)

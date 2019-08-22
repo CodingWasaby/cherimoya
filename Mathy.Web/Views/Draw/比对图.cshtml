@@ -1,0 +1,187 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/New/data.js"></script>
+    <script type="text/javascript">
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+
+        function splitData(rawData) {
+            var categoryData = [];
+            var values = [];
+            for (var i = 0; i < rawData.length; i++) {
+                categoryData.push(rawData[i][0]);
+                rawData[i][0] = i;
+                values.push(rawData[i]);
+            }
+            return {
+                categoryData: categoryData,
+                values: values
+            };
+        }
+
+
+        function renderItem(params, api) {
+            var xValue = api.value(0);
+            var openPoint = api.coord([xValue, api.value(1)]);
+            var closePoint = api.coord([xValue, api.value(2)]);
+            var lowPoint = api.coord([xValue, api.value(3)]);
+            var highPoint = api.coord([xValue, api.value(4)]);
+            var halfWidth = api.size([1, 0])[0] * 0.35;
+            var style = api.style({
+                stroke: api.visual('color')
+            });
+
+            return {
+                type: 'group',
+                children: [{
+                    type: 'line',
+                    color:'black',
+                    shape: {
+                        x1: lowPoint[0], y1: lowPoint[1],
+                        x2: highPoint[0], y2: highPoint[1]
+                    },
+                    style: style
+                }, {
+                    type: 'line',
+                    shape: {
+                        x1: closePoint[0], y1: closePoint[1],
+                        x2: closePoint[0] - 2, y2: closePoint[1]
+                    },
+                    style: style,
+                    label: {
+                        show: true
+                    }
+                }, {
+                    type: 'line',
+                    shape: {
+                        x1: closePoint[0], y1: closePoint[1],
+                        x2: closePoint[0] + 2, y2: closePoint[1]
+                    },
+                    style: style,
+                    label: {
+                        show: true
+                    }
+                }]
+            };
+        }
+
+        fetch('https://echarts.baidu.com/examples/data/asset/data/stock-DJI.json', {
+            method: 'GET',
+            mode: 'no-cors'
+        }).then((response) => {
+            // console.log(response);
+            // console.log(response.json());
+            // var rawData = response.formData();
+            var json = getJJ().slice(0, 20);
+            var data = splitData(json);
+
+            myChart.setOption(option = {
+                backgroundColor: '#eee',
+                animation: false,
+                legend: {
+                    bottom: 10,
+                    left: 'center',
+                    data: ['比对图']
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross'
+                    },
+                    backgroundColor: 'rgba(245, 245, 245, 0.8)',
+                    borderWidth: 1,
+                    borderColor: '#ccc',
+                    padding: 10,
+                    textStyle: {
+                        color: '#000'
+                    },
+                    position: function (pos, params, el, elRect, size) {
+                        var obj = { top: 10 };
+                        obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                        return obj;
+                    },
+                    extraCssText: 'width: 170px'
+                },
+                axisPointer: {
+                    link: { xAxisIndex: 'all' },
+                    label: {
+                        backgroundColor: '#777'
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: false
+                        },
+                        brush: {
+                            type: ['lineX', 'clear']
+                        },
+                        saveAsImage: {}
+                    }
+                },
+                grid: [
+                    {
+                        left: '10%',
+                        right: '8%',
+                        bottom: 150
+                    }
+                ],
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: data.categoryData,
+                        scale: true,
+                        boundaryGap: false,
+                        axisLine: { onZero: false },
+                        splitLine: { show: false },
+                        splitNumber: 20,
+                        min: 'dataMin',
+                        max: 'dataMax',
+                        axisPointer: {
+                            z: 100
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        scale: true,
+                        splitArea: {
+                            show: true
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '比对图',
+                        type: 'custom',
+                        renderItem: renderItem,
+                        dimensions: [null, 'open', 'close', 'lowest', 'highest'],
+                        encode: {
+                            x: 0,
+                            y: [1, 2, 3, 4],
+                            tooltip: [1, 2, 3, 4]
+                        },
+                        data: data.values
+                    }
+                ]
+            }, true);
+        });
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    </script>
+</body>
+</html>

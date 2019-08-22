@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\PageInfo.cs" />
+    <Compile Include="Entity\Coefficient.cs" />
+    <Compile Include="Entity\CoefficientDetail.cs" />
     <Compile Include="Entity\PlanRepositoryEntity.cs" />
     <Compile Include="Entity\UserEntity.cs" />
     <Compile Include="Entity\UserRoleEntity.cs" />

@@ -16,6 +16,8 @@ namespace Cherimoya.Expressions
 
         public string MethodName { get; private set; }
 
+        public bool IsCustomFunc { get; set; }
+
         public MethodInfo Method { get; set; }
 
         public Expression[] Parameters { get; private set; }

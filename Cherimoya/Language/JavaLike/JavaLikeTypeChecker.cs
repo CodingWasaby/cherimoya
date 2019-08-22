@@ -1,6 +1,7 @@
 ﻿using Cherimoya.Evaluation;
 using Cherimoya.Expressions;
 using Dandelion;
+using Mathy.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -407,7 +408,6 @@ namespace Cherimoya.Language.JavaLike
                 e.Method = context.VariableContext.SearchMethod(e.MethodName, e.Operand.Type, parameterClasses);
                 e.IsExtension = true;
             }
-
             if (e.Method == null)
             {
                 StringBuilder list1 = new StringBuilder();
@@ -466,35 +466,46 @@ namespace Cherimoya.Language.JavaLike
             }
             e.Method = context.VariableContext.SearchMethod(e.MethodName, null, parameterClasses);
 
+
+
             if (e.Method == null)
             {
-                StringBuilder list = new StringBuilder();
-                foreach (Type type in parameterClasses)
+                var dal = new CoefficientDAL();
+                var coeList = dal.GetCoefficientDetail(e.MethodName);
+                if (coeList.Count > 0)
                 {
-                    list.Append(type).Append(",");
+                    context.VariableContext.Set(e.MethodName, coeList);
+                    e.Method = this.GetType().GetMethods()[0]; //模拟一个方法
+                    e.IsCustomFunc = true;
                 }
-
-                list.Remove(list.Length - 1, 1);
-
-
-                StringBuilder locations = new StringBuilder();
-                foreach (Type type in context.VariableContext.GetMethodExtenders())
+                else
                 {
-                    locations.Append(type).Append("\r\n");
+                    e.IsCustomFunc = false;
                 }
+                if (!e.IsCustomFunc)
+                {
+                    StringBuilder list = new StringBuilder();
+                    foreach (Type type in parameterClasses)
+                    {
+                        list.Append(type).Append(",");
+                    }
+
+                    list.Remove(list.Length - 1, 1);
 
 
-                context.ErrorProvider.ThrowException(string.Format("Method {0}({1}) cannot be found.\r\nSearched the following locations:\r\n{2}",
-                        e.MethodName,
-                        list,
-                        locations), e);
+                    StringBuilder locations = new StringBuilder();
+                    foreach (Type type in context.VariableContext.GetMethodExtenders())
+                    {
+                        locations.Append(type).Append("\r\n");
+                    }
+                    context.ErrorProvider.ThrowException(string.Format("Method {0}({1}) cannot be found.\r\nSearched the following locations:\r\n{2}",
+                            e.MethodName,
+                            list,
+                            locations), e);
+                }
             }
-
-
             e.Type = e.Method.ReturnType;
-
             context.LambdaContext.PushCallerMethod(e);
-
             for (int i = 0; i <= e.Parameters.Length - 1; i++)
             {
                 PerformTypeChecking(e.Parameters[i], context);

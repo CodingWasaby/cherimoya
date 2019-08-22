@@ -46,7 +46,7 @@ function popup(title, options, html) {
         'background-color': '#ffffff',
         'left': '50%',
         'top': '50%',
-        'z-index': 100,
+        'z-index': 100000,
         'margin-top': -(height / 2) + "px",
         'margin-left': -(width / 2) + "px",
     });
@@ -65,6 +65,7 @@ function popup(title, options, html) {
         'top': '0%',
         'position': 'fixed',
         'overflow': 'hidden',
+        'z-index': 100000,
         'background-color': 'rgba(0, 0, 0, 0.5)'
     });
 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using MathNet.Numerics.Statistics;
 using MathNet.Numerics;
 using System.Collections;
+using Mathy.Planning;
 
 namespace Mathy.Libs
 {
@@ -628,12 +629,6 @@ namespace Mathy.Libs
             return m;
         }
 
-        public static void test()
-        {
-            Excel.Application excel = new Excel.Application();
-            //var a = excel.WorksheetFunction.NormDist();
-        }
-
         public static bool odd(object a)
         {
             if (a is int)
@@ -660,11 +655,8 @@ namespace Mathy.Libs
         public static double RobustAnalysisS(double[] array, int type, int resultNum = 0, double eps = 1e-7)
         {
             int v = type == 0 ? 1 : resultNum - 1; //自由度
-            double[] tempArray = array.Clone() as double[];
-
             double eta = etas[v - 1]; // η
             double xi = xis[v - 1]; //ξ
-
             double w_init = SortedArrayStatistics.Median(array);
             double w_t = w_init;
             double w_t_old;
@@ -673,8 +665,9 @@ namespace Mathy.Libs
             int step = 0;
             do
             {
+                double[] tempArray = array.Clone() as double[];
                 step++;
-                Console.WriteLine(step);
+                //Console.WriteLine(step);
 
                 w_t_sum = 0;
                 psi = eta * w_t;
@@ -687,14 +680,11 @@ namespace Mathy.Libs
                     }
                     w_t_sum += tempArray[i] * tempArray[i];
                 }
-
                 w_t_old = w_t;
-
                 w_t = xi * Math.Sqrt(w_t_sum / tempArray.Length); // 计算 w*
 
-
-
-            } while (Math.Abs(w_t - w_t_old) > eps); // 比较这次w*的变化
+            }
+            while (Math.Abs(w_t - w_t_old) > eps); // 比较这次w*的变化
 
             // WriteLine(w_t); // 输出w*
 
@@ -734,13 +724,23 @@ namespace Mathy.Libs
             return Qn;
         }
 
+        public static double[] OneWayANOVA(bool isBalanced, params double[][] datas)
+        {
+            var arrays = new ArrayList();
+            foreach (var n in datas)
+            {
+                arrays.Add(n);
+            }
+            return _OneWayANOVA(arrays, isBalanced);
+        }
+
         /// <summary>
         /// 单因素方差分析
         /// </summary>
         /// <param name="arrays">输入为多组数据 每组数据的个数不同</param>
         /// <param name="isBalanced">数据是否平衡</param>
         /// <returns>{SSe, SSa, MSe, MSa, se_2, sa_2}</returns>
-        public static double[] OneWayANOVA(ArrayList arrays, bool isBalanced = true)
+        private static double[] _OneWayANOVA(ArrayList arrays, bool isBalanced = true)
         {
             double SSe, SSa, meanMean, MSe, MSa, se_2, sa_2;
             if (isBalanced)
@@ -820,13 +820,23 @@ namespace Mathy.Libs
             return new double[] { SSe, SSa, MSe, MSa, se_2, sa_2 };
         }
 
+        public static double[] MLE(bool isBalanced, params double[][] datas)
+        {
+            var arrays = new ArrayList();
+            foreach (var n in datas)
+            {
+                arrays.Add(n);
+            }
+            return _MLE(arrays, isBalanced);
+        }
+
         /// <summary>
         /// 极大似然估计 （参数和方差分析一致）
         /// </summary>
         /// <param name="arrays">输入为多组数据 每组数据的个数不同</param>
         /// <param name="isBalanced">数据是否平衡</param>
         /// <returns>sigma_e_2, sigma_a_2</returns>
-        public static double[] MLE(ArrayList arrays, bool isBalanced = true)
+        public static double[] _MLE(ArrayList arrays, bool isBalanced = true)
         {
             int arraysLength = arrays.Count; // 数据组数 a
             int[] arrayLengths = new int[arraysLength];
@@ -837,7 +847,7 @@ namespace Mathy.Libs
             }
             int n = arrayLengths.Sum();
 
-            double[] rets = OneWayANOVA(arrays, isBalanced); // 先进行单因素方差分析
+            double[] rets = _OneWayANOVA(arrays, isBalanced); // 先进行单因素方差分析
             double SSe = rets[0], SSa = rets[1], MSe = rets[2], MSa = rets[3]; // 获取 SSe, SSa, MSe, MSa
             double sigma_e_2, sigma_a_2;
 
@@ -856,6 +866,16 @@ namespace Mathy.Libs
             return new double[] { sigma_e_2, sigma_a_2 };
         }
 
+        public static double[] REML(bool isBalanced, double _sigma_a_R, params double[][] datas)
+        {
+            var arrays = new ArrayList();
+            foreach (var n in datas)
+            {
+                arrays.Add(n);
+            }
+            return _REML(arrays, isBalanced, _sigma_a_R);
+        }
+
         /// <summary>
         /// 限制最大似然估计（REML）
         /// </summary>
@@ -863,7 +883,7 @@ namespace Mathy.Libs
         /// <param name="isBalanced">数据是否平衡</param>
         /// <param name="_sigma_a_R">REML的中的参数，决定了最后估计值的计算方式</param>
         /// <returns></returns>
-        public static double[] REML(ArrayList arrays, bool isBalanced, double _sigma_a_R)
+        private static double[] _REML(ArrayList arrays, bool isBalanced, double _sigma_a_R)
         {
             int arraysLength = arrays.Count; // 数据组数 a
             double sum = 0;
@@ -877,7 +897,7 @@ namespace Mathy.Libs
             int n = arrayLengths.Sum();
             double meanALL = sum / n;
 
-            double[] rets = OneWayANOVA(arrays, isBalanced); // 先进行单因素方差分析
+            double[] rets = _OneWayANOVA(arrays, isBalanced); // 先进行单因素方差分析
             double SSe = rets[0], SSa = rets[1], MSe = rets[2], MSa = rets[3]; // 获取 SSe, SSa, MSe, MSa
             double sigma_e_2, sigma_a_2, SST = 0;
 
@@ -903,13 +923,23 @@ namespace Mathy.Libs
             return new double[] { sigma_e_2, sigma_a_2 };
         }
 
+        public static double[] BayesEstimation(bool isBalanced, params double[][] datas)
+        {
+            var arrays = new ArrayList();
+            foreach (var n in datas)
+            {
+                arrays.Add(n);
+            }
+            return _BayesEstimation(arrays, isBalanced);
+        }
+
         /// <summary>
         /// 贝叶斯估计
         /// </summary>
         /// <param name="arrays">输入为多组数据 每组数据的个数不同</param>
         /// <param name="isBalanced">数据是否平衡</param>
         /// <returns></returns>
-        public static double[] BayesEstimation(ArrayList arrays, bool isBalanced)
+        public static double[] _BayesEstimation(ArrayList arrays, bool isBalanced)
         {
             int arraysLength = arrays.Count; // 数据组数 a
             int[] arrayLengths = new int[arraysLength];
@@ -920,7 +950,7 @@ namespace Mathy.Libs
             }
             int n = arrayLengths.Sum();
 
-            double[] rets = OneWayANOVA(arrays, isBalanced); // 先进行单因素方差分析
+            double[] rets = _OneWayANOVA(arrays, isBalanced); // 先进行单因素方差分析
             double SSe = rets[0], SSa = rets[1], MSe = rets[2], MSa = rets[3]; // 获取 SSe, SSa, MSe, MSa
             double sigma_e_2, sigma_a_2, Ve, Va, r;
 
@@ -962,6 +992,81 @@ namespace Mathy.Libs
             double standardDeviation = results.StandardDeviation(); // 标准差作为不确定度
 
             return new double[] { mean, standardDeviation };
+        }
+
+        /// <summary>
+        /// 蒙特卡洛模拟计算不确定度过程 报告结果部分 2)
+        /// </summary>
+        /// <param name="simulateNum">模拟次数</param>
+        /// <param name="func">自定义输入量与输出量之间的函数关系</param>
+        /// <param name="distribution">自定义分布</param>
+        /// <returns></returns>
+        public static double[] MCM_2(double p, int n_dig, Func<double[], double> func, params Distribution[] distributions)
+        {
+            double J, M;
+            J = Math.Floor(100 / (1 - p));
+            M = J > 1e4 ? J : 1e4;
+            int h = 1;
+            int simulateNum = (int)M;
+
+            List<double[]> resultsList = new List<double[]>();
+            List<double> meanList = new List<double>();
+            List<double> standardDeviationList = new List<double>();
+            List<double> yLowList = new List<double>();
+            List<double> yHighList = new List<double>();
+
+            while (true)
+            {
+                double[] results = new double[simulateNum]; // simulateResults
+                double[] paramList = new double[distributions.Length];
+
+                for (int i = 0; i < simulateNum; i++) // 进行多次模拟
+                {
+                    for (int j = 0; j < distributions.Length; j++) // 取样X
+                    {
+                        paramList[j] = distributions[j].getSample();
+                    }
+                    results[i] = func(paramList);
+                }
+
+
+                Array.Sort(results); // 顺序递增排序
+                double mean = results.Mean(); // 平均值 作为 估计值
+                double standardDeviation = results.StandardDeviation(); // 标准差作为不确定度
+                double[] ySection = getSection(false, 0.95, simulateNum, true, results); // 包含区间获取
+                double yLow = ySection[0], yHigh = ySection[1]; // 包含区间的左右端点
+
+                resultsList.Add(results);
+                meanList.Add(mean);
+                standardDeviationList.Add(standardDeviation);
+                yLowList.Add(yLow);
+                yHighList.Add(yHigh);
+
+
+                if (h == 1) { h++; continue; } // h为1就加一
+
+                double meanStd = meanList.StandardDeviation(); //估计值的标准差
+                double standardDeviationStd = standardDeviationList.StandardDeviation(); // 不确定度的标准差
+                double yLowStd = yLowList.StandardDeviation(); // 左端点的标准差
+                double yHighStd = yHighList.StandardDeviation(); // 右端点的标准差
+
+                double sum = 0;
+                int cnt = 0;
+                foreach (var a in resultsList)
+                {
+                    sum += a.Sum();
+                    cnt += a.Length;
+                }
+                double resultsMean = sum / cnt;
+                // 获取z的数值容差
+                double ret = getNumLimit(resultsMean, n_dig);
+                if (2 * meanStd >= ret || 2 * standardDeviationStd >= ret || 2 * yLowStd >= ret || 2 * yHighStd >= ret)
+                {
+                    h++; continue;
+                }
+                return new double[] { mean, resultsMean, yLow, yHigh };
+            }
+
         }
 
         Func<double[], double> func = delegate (double[] X)  // 设定函数为 y = x0 + x1 * x2 - x3
@@ -1036,79 +1141,15 @@ namespace Mathy.Libs
         }
 
 
-        /// <summary>
-        /// 蒙特卡洛模拟计算不确定度过程 报告结果部分 2)
-        /// </summary>
-        /// <param name="simulateNum">模拟次数</param>
-        /// <param name="func">自定义输入量与输出量之间的函数关系</param>
-        /// <param name="distribution">自定义分布</param>
-        /// <returns></returns>
-        public static double[] MCM_2(double p, int n_dig, Func<double[], double> func, params Distribution[] distributions)
+        public static EvaluationContext GetEvaluationContext(string text)
         {
-            double J, M;
-            J = Math.Floor(100 / (1 - p));
-            M = J > 1e4 ? J : 1e4;
-            int h = 1;
-            int simulateNum = (int)M;
-
-            List<double[]> resultsList = new List<double[]>();
-            List<double> meanList = new List<double>();
-            List<double> standardDeviationList = new List<double>();
-            List<double> yLowList = new List<double>();
-            List<double> yHighList = new List<double>();
-
-            while (true)
+            var plan = new Plan();
+            var e = new SourceExpression
             {
-                double[] results = new double[simulateNum]; // simulateResults
-                double[] paramList = new double[distributions.Length];
-
-                for (int i = 0; i < simulateNum; i++) // 进行多次模拟
-                {
-                    for (int j = 0; j < distributions.Length; j++) // 取样X
-                    {
-                        paramList[j] = distributions[j].getSample();
-                    }
-                    results[i] = func(paramList);
-                }
-
-
-                Array.Sort(results); // 顺序递增排序
-                double mean = results.Mean(); // 平均值 作为 估计值
-                double standardDeviation = results.StandardDeviation(); // 标准差作为不确定度
-                double[] ySection = getSection(false, 0.95, simulateNum, true, results); // 包含区间获取
-                double yLow = ySection[0], yHigh = ySection[1]; // 包含区间的左右端点
-
-                resultsList.Add(results);
-                meanList.Add(mean);
-                standardDeviationList.Add(standardDeviation);
-                yLowList.Add(yLow);
-                yHighList.Add(yHigh);
-
-
-                if (h == 1) { h++; continue; } // h为1就加一
-
-                double meanStd = meanList.StandardDeviation(); //估计值的标准差
-                double standardDeviationStd = standardDeviationList.StandardDeviation(); // 不确定度的标准差
-                double yLowStd = yLowList.StandardDeviation(); // 左端点的标准差
-                double yHighStd = yHighList.StandardDeviation(); // 右端点的标准差
-
-                double sum = 0;
-                int cnt = 0;
-                foreach (var a in resultsList)
-                {
-                    sum += a.Sum();
-                    cnt += a.Length;
-                }
-                double resultsMean = sum / cnt;
-
-                double ret = getNumLimit(resultsMean, n_dig);
-                if (2 * meanStd >= ret || 2 * standardDeviationStd >= ret || 2 * yLowStd >= ret || 2 * yHighStd >= ret)
-                {
-                    h++; continue;
-                }
-                return new double[] { mean, resultsMean, yLow, yHigh };
-            }
-
+                Expression = text
+            };
+            plan.Expressions = new SourceExpression[1] { e };
+            return plan.CreateEvaluationContext();
         }
 
     }

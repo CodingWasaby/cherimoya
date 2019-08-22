@@ -37,7 +37,8 @@ namespace Petunia
         {
             var planlm = PlanStorage.GetByID(id);
             var plan = AppStore.PlanRepository.Get(id);
-            plan.Description = planlm.Description;
+            if (planlm != null)
+                plan.Description = planlm.Description;
             return plan;
         }
 

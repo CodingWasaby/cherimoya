@@ -63,23 +63,36 @@ namespace Cherimoya.Expressions
 
         public static MethodInfo FindMethod(Type clazz, string methodName, Type[] parameterTypes)
         {
-
             foreach (MethodInfo method in GetSortedMethods(clazz))
             {
                 ParameterInfo[] parameters = method.GetParameters();
 
 
                 int parameterCount = parameters.Length > 0 && parameters.Last().ParameterType == typeof(VariableContext) ? parameters.Length - 1 : parameters.Length;
-
-                if (parameterCount != parameterTypes.Length || method.Name != methodName)
+                if (method.Name != methodName)
                 {
                     continue;
+                }
+
+                if (parameterCount != parameterTypes.Length)
+                {
+                    if (!parameters.Any(m => m.CustomAttributes.Any(n => n.AttributeType == typeof(System.ParamArrayAttribute))))
+                        continue;
                 }
 
                 bool found = true;
                 int i = 0;
                 foreach (ParameterInfo parameter in method.GetParameters().Where(j => j.ParameterType != typeof(VariableContext)))
                 {
+                    if (parameter.CustomAttributes.Any(m => m.AttributeType == typeof(System.ParamArrayAttribute)))
+                    {
+                        var tp = GetArrayElementType(parameter.ParameterType);
+                        var restparameterTypes = parameterTypes.Skip(i).Take(parameterTypes.Count() - i).ToList();
+                        if (restparameterTypes.TrueForAll(m => Accepts(tp, m)))
+                        {
+                            break;
+                        }
+                    }
                     bool match = Accepts(parameter.ParameterType, parameterTypes[i]);
 
                     if (!match)
@@ -98,6 +111,23 @@ namespace Cherimoya.Expressions
 
             return null;
         }
+
+        private static Type GetArrayElementType(Type t)
+        {
+            if (!t.IsArray) return null;
+            string tName;
+            if (t.FullName.Contains("[][]"))
+            {
+                tName = t.FullName.Replace("[][]", "[]");
+            }
+            else
+            {
+                tName = t.FullName.Replace("[]", string.Empty);
+            }
+            Type elType = t.Assembly.GetType(tName);
+            return elType;
+        }
+
 
         private static List<MethodInfo> GetSortedMethods(Type type)
         {

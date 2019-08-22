@@ -28,7 +28,9 @@ namespace Mathy.Planning
             {
                 throw new Exception("解析试验计划文件错误。\r\n通常是因为实验文件内容错误造成。请检查您的实验文件，或联系相关人员协助解决。\r\n错误信息：\r\n" + ex.Message);
             }
-            new PlanDAL().AddPlanRepository(id, content);
+            var dal = new PlanDAL();
+            //dal.
+            dal.AddPlanRepository(id, content);
             return plan;
         }
 

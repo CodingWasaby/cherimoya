@@ -55,7 +55,7 @@ namespace Mathy.Language
             vc.AddMethodExtender(typeof(MapReduceFuncs));
             vc.AddMethodExtender(typeof(StatisticsFuncs));
             vc.AddMethodExtender(typeof(ExpressionFuncs));
-            vc.AddMethodExtender(typeof(LoopFactory));
+            vc.AddMethodExtender(typeof(CustomFuncFactory));
             vc.AddMethodExtender(typeof(Distribution)); 
 
             return vc;

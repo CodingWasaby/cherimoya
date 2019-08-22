@@ -4,6 +4,8 @@ using Cherimoya.Expressions;
 using System.Collections.Generic;
 using Cherimoya.Evaluation;
 using Dandelion;
+using Mathy.Model.Entity;
+using Mathy.DAL;
 
 namespace Cherimoya.Language.JavaLike
 {
@@ -253,8 +255,47 @@ namespace Cherimoya.Language.JavaLike
                 parameters.Add(context.GetValue("_EvaluationContext"));
             }
 
+            if (expression.IsCustomFunc)
+            {
+                List<CoefficientDetail> data;
+                if (context.HasVariable(expression.MethodName))
+                {
+                    data = (List<CoefficientDetail>)context.GetValue(expression.MethodName);
+                }
+                else
+                {
+                    var dal = new CoefficientDAL();
+                    data = dal.GetCoefficientDetail(expression.MethodName);
+                }
+                var colName = Evaluate(expression.Parameters[0], context).ToString();
+                var rowIndex = (int)Evaluate(expression.Parameters[1], context);
+                return data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailName == colName).CoefficientDetailValue;
+            }
+
             try
             {
+                //可变参数处理
+                if (expression.Parameters.Count() > 1 && parameters[0].GetType() != typeof(double[]))
+                {
+                    var p = new List<object>();
+                    var o = new List<double[]>();
+                    foreach (var n in parameters)
+                    {
+                        if (n.GetType() != typeof(double[]))
+                        {
+                            p.Add(n);
+                        }
+                        else
+                        {
+                            o.Add(n as double[]);
+                        }
+                    }
+                    if (o.Count > 0)
+                    {
+                        p.Add(o.ToArray());
+                        parameters = p;
+                    }
+                }
                 return expression.Method.Invoke(this, parameters.ToArray());
             }
             catch (Exception ex)

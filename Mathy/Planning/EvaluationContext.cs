@@ -80,10 +80,13 @@ namespace Mathy.Planning
 
         public void SetValueString(string variableName, string s)
         {
-            SourceVariable v = Plan.Variables.First(i => i.Name == variableName);
-            object value = string.IsNullOrEmpty(s) ? null : DataFuncs.DeserializeValue(v.Type, s);
+            SourceVariable v = Plan.Variables.FirstOrDefault(i => i.Name == variableName);
+            if (v != null)
+            {
+                object value = string.IsNullOrEmpty(s) ? null : DataFuncs.DeserializeValue(v.Type, s);
 
-            SetValueAcrossSteps(variableName, value);
+                SetValueAcrossSteps(variableName, value);
+            }
         }
 
         public void SetValueAcrossSteps(string variableName, object value)

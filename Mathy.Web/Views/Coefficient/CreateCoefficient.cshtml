@@ -1,0 +1,124 @@
+﻿@using Mathy.Model.Entity
+@model CoefficientVM
+
+@{
+    ViewBag.Title = "编辑";
+    bool readOnly = (Boolean)ViewBag.ro;
+}
+
+@section scripts {
+    <script src="/Scripts/grid.js"></script>
+    <script src="/Scripts/ui.js"></script>
+    <script src="/Scripts/realtime-edit.js"></script>
+    <script language="javascript">
+        function saveCoe() {
+            $.ajax({
+                url: "/Coefficient/AddCoefficient",
+                dataType: "json",
+                contentType: "application/json",
+                method: "POST",
+                data: JSON.stringify({
+                    CoefficientID: $("#CoefficientID").val(),
+                    CoefficientName: $("#CoefficientName").val(),
+                    CoefficientContent: editor.txt.html()
+                }),
+                success: function (res) {
+                    if (res.CoefficientID > 0) {
+                        alert("保存成功");
+                        $("#CoefficientID").val(res.CoefficientID);
+                    }
+                    else {
+                        if (res.CoefficientID === -1) {
+                            alert("请导入明细");
+                        }
+                        else if (res.CoefficientID === -2) {
+                            alert("已有相同名称的系数表");
+                        }
+                        else {
+                            alert("保存失败");
+                        }
+                    }
+                },
+                error: function (res) {
+                    alert("服务器异常，请联系管理员。");
+                }
+            });
+        }
+        function importGrid() {
+            popup(
+                "导入",
+                {
+                    width: 500,
+                    height: 400,
+                    okButton: true,
+                    cancelButton: true,
+                    ok: function () {
+                        var files = $("#select-file")[0].files;
+                        var form = new FormData();
+                        form.append('file', files[0]);
+                        $.ajax({
+                            url: '/Coefficient/ImportGrid',
+                            type: "POST",
+                            data: form,
+                            contentType: false,
+                            processData: false,
+                            success: function (result) {
+                                $('#grid1').html(result);
+                                closePopup();
+                            },
+                            error: function (result) {
+                                alert(result.responseJSON.message);
+                            }
+                        });
+
+                    },
+                    cancel: function () {
+                        closePopup();
+                    }
+                },
+                "<table><tr><td>选择文件</td><td><input id='select-file' type='file'></input></td></tr></table><br/><div id='message-dialog'></div>");
+        }
+    </script>
+}
+
+<div id="previewMessage" class="error-message"></div>
+<br />
+
+<div id="editTab">
+    <input hidden="hidden" id="CoefficientID" value="@Model.CoefficientID" />
+    <table class="table">
+        <tbody>
+            <tr>
+                <td width="10%">系数表名称</td>
+                <td width="90%"> <input id="CoefficientName" type="text" value="@Model.CoefficientName" style="display: block; width: 100%;" /> </td>
+            </tr>
+            <tr>
+                <td width="10%">说明</td>
+                <td width="90%">
+                    @Html.Partial("~/Views/Shared/EditorView.cshtml", string.IsNullOrEmpty(Model.CoefficientContent) ? "" : Model.CoefficientContent)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    @if (!readOnly)
+    {
+        <input type="button" class="btn btn-primary" value="导入系数表" onclick="importGrid();" />
+    }
+    else
+    {
+        <input type="button" class="btn btn-primary" value="系数表明细" />
+    }
+    <div id="grid1">
+        @Html.Partial("~/Views/Coefficient/ImportGrid.cshtml", Model.CoefficientDetails)
+    </div>
+    <br />
+    <hr />
+    <div id="message" class="error-message"></div>
+    <br />
+    @if (!readOnly)
+    {
+        <input class="btn btn-primary" type="button" value="保存" onclick=" saveCoe();" />
+    }
+</div>
+

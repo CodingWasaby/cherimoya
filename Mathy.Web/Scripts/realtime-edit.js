@@ -167,7 +167,6 @@ function renameRows(stateIndex) {
 
 function getPlanData(des) {
 
-    console.log(des);
     var data = {};
 
     data["ID"] = $("#planID").val();

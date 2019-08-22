@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using Mathy.DAL;
 
 namespace Cherimoya.Expressions
 {
@@ -102,6 +103,8 @@ namespace Cherimoya.Expressions
             return null;
         }
 
+
+
         private MethodInfo SearchMethod(string methodName, Type[] parameterClasses)
         {
             foreach (Type extenderClass in methodExtenders)
@@ -112,9 +115,12 @@ namespace Cherimoya.Expressions
                     return method;
                 }
             }
-
-
             return null;
+        }
+
+        public void ForTest()
+        {
+
         }
 
         public void Remove(string variableName)

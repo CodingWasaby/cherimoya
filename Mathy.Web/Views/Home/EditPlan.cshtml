@@ -26,7 +26,7 @@
         function showPreviewTabPage() {
 
             var data = getPlanData(editor.txt.html());
-           
+
             if (isChanged(prevData, data)) {
 
                 $.ajax({
@@ -123,7 +123,7 @@
             var data1 = getPlanData(editor.txt.html());
             $.ajax({
                 url: "/Home/SavePlan",
-                dataType: "json",   
+                dataType: "json",
                 contentType: "application/json",
                 method: "POST",
                 data: JSON.stringify(data1),
@@ -181,14 +181,14 @@
             <tr>
                 <td width="10%">说明</td>
                 <td width="90%">
-                    @Html.Partial("~/Views/Shared/EditorView.cshtml",Model)
+                    @Html.Partial("~/Views/Shared/EditorView.cshtml", string.IsNullOrEmpty(Model.Description) ? "" : Model.Description)
                     @*<input id="descriptionTextBox" type="text" value="@Model.Description" style="display: block; width: 100%;" />*@
                 </td>
             </tr>
             @*<tr>
-                <td width="10%">作者</td>
-                <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
-            </tr>*@
+                    <td width="10%">作者</td>
+                    <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
+                </tr>*@
             <tr>
                 <td width="10%">方案类型</td>
                 <td width="90%">

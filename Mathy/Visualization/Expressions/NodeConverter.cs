@@ -282,7 +282,7 @@ namespace Mathy.Visualization.Expressions
             {
                 return new FunctionExpression()
                 {
-                    Name = e.Method.Name, 
+                    Name = e.MethodName,
                     Operands = e.Parameters.Select(i => Convert(i, parantheseLevel + 1)).ToArray(),
                     ParantheseLevel = parantheseLevel
                 };

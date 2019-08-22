@@ -82,7 +82,7 @@
     <Compile Include="Language\MathyConstants.cs" />
     <Compile Include="Language\VariableContextExpression.cs" />
     <Compile Include="Language\PredefinedConstantExpression.cs" />
-    <Compile Include="Libs\LoopFactory.cs" />
+    <Compile Include="Libs\CustomFuncFactory.cs" />
     <Compile Include="Libs\DateFuncs.cs" />
     <Compile Include="Libs\DistributionFuncs.cs" />
     <Compile Include="Libs\ExpressionFuncs.cs" />

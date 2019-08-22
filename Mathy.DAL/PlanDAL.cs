@@ -19,7 +19,8 @@ namespace Mathy.DAL
 
         public bool AddPlanRepository(string planRepositoryID, string text)
         {
-            string sql = @" INSERT  INTO [dbo].[PlanRepository]
+            string sql = @" Delete  [dbo].[PlanRepository] where PlanID =@PlanID
+                                     INSERT  INTO [dbo].[PlanRepository]
                                             ( [PlanID], [Text] )
                                     VALUES  ( @PlanID, @Text ) ";
             return Excute(sql, new { PlanID = planRepositoryID, Text = text });

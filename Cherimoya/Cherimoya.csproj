@@ -112,6 +112,16 @@
     <Compile Include="Lexicons\StringLexicon.cs" />
     <Compile Include="Lexicons\WordLexicon.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mathy.DAL\Mathy.DAL.csproj">
+      <Project>{B8E036F4-A98D-4B7A-BBB8-7089D6B6EFD8}</Project>
+      <Name>Mathy.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mathy.Model\Mathy.Model.csproj">
+      <Project>{7282CD48-B228-4A5C-9163-62F8DDDCF6C1}</Project>
+      <Name>Mathy.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
