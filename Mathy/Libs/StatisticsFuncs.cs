@@ -974,18 +974,30 @@ namespace Mathy.Libs
         /// <param name="func">自定义输入量与输出量之间的函数关系</param>
         /// <param name="distribution">自定义分布</param>
         /// <returns></returns>
-        public static double[] MCM_1(int simulateNum, Func<double[], double> func, params Distribution[] distributions)
+        public static double[] MCM_1(int simulateNum, string text, object ec)
         {
+            EvaluationContext e = ec as EvaluationContext;
+            var textEC = GetEvaluationContext(text, e);
+            textEC.Settings = e.Settings;
+            var vList = e.SourceVariables;
             double[] results = new double[simulateNum];
-            double[] paramList = new double[distributions.Length];
 
             for (int i = 0; i < simulateNum; i++) // 进行多次模拟
             {
-                for (int j = 0; j < distributions.Length; j++) // 取样X
+                foreach (var n in vList)
                 {
-                    paramList[j] = distributions[j].getSample();
+                    if (n.Value is double[])
+                    {
+                        var v = (double[])n.Value;
+                        if (v.Count() > i)
+                        {
+                            textEC.SetValueAcrossSteps(n.Key, v[i]);
+                        }
+                    }
                 }
-                results[i] = func(paramList);
+                textEC.Update();
+                var r = textEC.SourceVariables.Last(m => !e.Variables.Contains(m.Key));
+                results[i] = (double)r.Value;
             }
             Array.Sort(results); // 顺序递增排序
             double mean = results.Mean(); // 平均值 作为 估计值
@@ -1001,7 +1013,7 @@ namespace Mathy.Libs
         /// <param name="func">自定义输入量与输出量之间的函数关系</param>
         /// <param name="distribution">自定义分布</param>
         /// <returns></returns>
-        public static double[] MCM_2(double p, int n_dig, Func<double[], double> func, params Distribution[] distributions)
+        public static double[] MCM_2(double p, int n_dig, string text, object ec)
         {
             double J, M;
             J = Math.Floor(100 / (1 - p));
@@ -1017,16 +1029,28 @@ namespace Mathy.Libs
 
             while (true)
             {
-                double[] results = new double[simulateNum]; // simulateResults
-                double[] paramList = new double[distributions.Length];
+                EvaluationContext e = ec as EvaluationContext;
+                var textEC = GetEvaluationContext(text, e);
+                textEC.Settings = e.Settings;
+                var vList = e.SourceVariables;
+                double[] results = new double[simulateNum];
 
                 for (int i = 0; i < simulateNum; i++) // 进行多次模拟
                 {
-                    for (int j = 0; j < distributions.Length; j++) // 取样X
+                    foreach (var n in vList)
                     {
-                        paramList[j] = distributions[j].getSample();
+                        if (n.Value is double[])
+                        {
+                            var v = (double[])n.Value;
+                            if (v.Count() > i)
+                            {
+                                textEC.SetValueAcrossSteps(n.Key, v[i]);
+                            }
+                        }
                     }
-                    results[i] = func(paramList);
+                    textEC.Update();
+                    var r = textEC.SourceVariables.Last(m => !e.Variables.Contains(m.Key));
+                    results[i] = (double)r.Value;
                 }
 
 
@@ -1068,11 +1092,6 @@ namespace Mathy.Libs
             }
 
         }
-
-        Func<double[], double> func = delegate (double[] X)  // 设定函数为 y = x0 + x1 * x2 - x3
-        {
-            return X[0] + X[1] * X[2] - X[3];
-        };
 
         /// <summary>
         /// （待完善）获取包含区间 
@@ -1141,9 +1160,10 @@ namespace Mathy.Libs
         }
 
 
-        public static EvaluationContext GetEvaluationContext(string text)
+        public static EvaluationContext GetEvaluationContext(string text, EvaluationContext ec)
         {
             var plan = new Plan();
+            plan.Variables = ec.Variables.Select(m => new SourceVariable { Name = m, Type = DataType.Number }).ToArray();
             var e = new SourceExpression
             {
                 Expression = text

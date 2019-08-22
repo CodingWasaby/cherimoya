@@ -10,13 +10,6 @@ namespace Mathy.Libs
 {
     public class CustomFuncFactory
     {
-
-        //public static int Loop(string steps, int times)
-        //{
-        //    var a = steps;
-        //    return times;
-        //}
-
         public static int Loop(string steps, int times, object ec)
         {
             EvaluationContext e = ec as EvaluationContext;
