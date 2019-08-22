@@ -32,7 +32,6 @@ namespace Mathy.Web.Controllers
         [OutputCache(Duration = 0)]
         public ActionResult Index(int? pageIndex, string jobName, string planName, string begindate, string enddate, string isFinish)
         {
-            var a = StatisticsFuncs.GetEvaluationContext("i=a+x");
             pageIndex = pageIndex == null ? 1 : pageIndex;
 
             //if (Session["JobPageIndex"] != null)
