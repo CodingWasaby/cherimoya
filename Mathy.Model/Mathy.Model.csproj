@@ -41,6 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\PageInfo.cs" />
+    <Compile Include="Draw\Comparison.cs" />
+    <Compile Include="Draw\Histogram.cs" />
+    <Compile Include="Draw\HK.cs" />
+    <Compile Include="Draw\LinearRegression.cs" />
+    <Compile Include="Draw\MeanValue.cs" />
     <Compile Include="Entity\Coefficient.cs" />
     <Compile Include="Entity\CoefficientDetail.cs" />
     <Compile Include="Entity\PlanRepositoryEntity.cs" />

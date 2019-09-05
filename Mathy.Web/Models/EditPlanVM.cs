@@ -24,6 +24,7 @@ namespace Mathy.Web.Models
             Description = plan.Description;
             Author = plan.Author;
             PlanType = plan.PlanType;
+            PlanCategory = plan.PlanCategory;
             Expressions = plan.Expressions.Select((i, index) =>
                 new EditSourceExpressionVM()
                 {
@@ -56,6 +57,7 @@ namespace Mathy.Web.Models
         public string Author { get; private set; }
 
         public int PlanType { get; set; }
+        public string PlanCategory { get; set; }
 
         public EditSourceExpressionVM[] Expressions { get; set; }
 

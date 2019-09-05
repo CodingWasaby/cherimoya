@@ -149,6 +149,7 @@
     <Compile Include="Html\PagingItem.cs" />
     <Compile Include="Html\PagingMode.cs" />
     <Compile Include="Models\CustomDataException.cs" />
+    <Compile Include="Models\Draw\MeanValueDM.cs" />
     <Compile Include="Models\EditJobVM.cs" />
     <Compile Include="Models\EditStepVM.cs" />
     <Compile Include="Models\FuncArticleVM.cs" />
@@ -263,6 +264,7 @@
     <Content Include="Views\Coefficient\Index.cshtml" />
     <Content Include="Views\Coefficient\CreateCoefficient.cshtml" />
     <Content Include="Views\Coefficient\ImportGrid.cshtml" />
+    <Content Include="Views\Draw\GetDraw.cshtml" />
     <None Include="Views\Draw\均值.cshtml" />
     <None Include="Views\Draw\比对图.cshtml" />
     <Content Include="Views\Draw\直方图.cshtml" />
@@ -323,8 +325,13 @@
     <Content Include="Views\Home\PlansAuth.cshtml" />
     <Content Include="Views\Home\AuthPlan.cshtml" />
     <Content Include="Views\Shared\EditorView.cshtml" />
+    <Content Include="Views\Home\MCM.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cherimoya\Cherimoya.csproj">
+      <Project>{BB24761F-236D-42DE-83CA-F01BDFBAC0E4}</Project>
+      <Name>Cherimoya</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mathy.DAL\Mathy.DAL.csproj">
       <Project>{B8E036F4-A98D-4B7A-BBB8-7089D6B6EFD8}</Project>
       <Name>Mathy.DAL</Name>

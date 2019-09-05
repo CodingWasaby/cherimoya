@@ -23,11 +23,12 @@ namespace Mathy.Web.Models
 
             ExportButtonClass = IsCompleted ? "button" : "button-disabled";
             ExportButtonCode = IsCompleted ? "javascript:exportAsWordDocument()" : null;
-
-            ViewGraphButtonClass = IsCompleted ? "button" : "button-disabled";
-            ViewGraphButtonCode = IsCompleted ? "javascript:viewGraph()" : null;
+            DrawSourceVariables = context.SourceVariables.Where(m => m.Key.Contains("Draw_")).Select(m => m.Key).ToList();
         }
 
+        public List<string> DrawSourceVariables { get; set; }
+
+        public bool IsDraw { get { return DrawSourceVariables.Count > 0; } }
 
         public int AutoID { get; set; }
 
@@ -48,10 +49,6 @@ namespace Mathy.Web.Models
         public string ExportButtonClass { get; private set; }
 
         public string ExportButtonCode { get; private set; }
-
-        public string ViewGraphButtonClass { get; private set; }
-
-        public string ViewGraphButtonCode { get; private set; }
 
         public bool IsCompleted { get; private set; }
     }

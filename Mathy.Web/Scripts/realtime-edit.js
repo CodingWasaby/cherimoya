@@ -12,6 +12,7 @@ function init() {
     variableTemplate += "<option >字符串</option>";
     variableTemplate += "<option >矩阵</option>";
     variableTemplate += "<option >向量</option>";
+    variableTemplate += "<option >数组</option>";
     variableTemplate += "</select>";
     variableTemplate += "<div class='type-size'>长度：<input type='text' /></div>";
     variableTemplate += "<div class='type-column-names'>列标题：<input type='text' /></div>";
@@ -83,13 +84,13 @@ function showOptions(row) {
 
     var s = $(row).find(":selected").text();
 
-    if (s == "矩阵") {
+    if (s === "矩阵") {
         option0.hide();
         option1.show();
         option2.show();
         option3.show();
     }
-    else if (s == "向量") {
+    else if (s === "向量") {
         option0.show();
         option1.show();
         option2.show();
@@ -109,7 +110,7 @@ function add(stateIndex) {
     $("#" + state[stateIndex].listID).append(state[stateIndex].template.replace(/{id}/g, id).replace(/{index}/g, state[stateIndex].count));
     state[stateIndex].count++;
 
-    if (state[stateIndex].addCallback != null) {
+    if (state[stateIndex].addCallback !== null) {
         var rows = $("tr", $("#" + state[stateIndex].listID));
         state[stateIndex].addCallback(rows[rows.length - 1]);
     }
@@ -128,17 +129,17 @@ function moveRow(stateIndex, index, d) {
     var listID = state[stateIndex].listID;
     var count = state[stateIndex].count;
 
-    if (d == -1 && index > 0) {
+    if (d === -1 && index > 0) {
         var from = $("#" + listID + " tr")[index];
         var to = $("#" + listID + " tr")[index - 1];
         $("#" + listID)[0].removeChild(from);
         $(from).insertBefore(to);
     }
-    else if (d == 1 && index < count - 1) {
-        var from = $("#" + listID + " tr")[index];
-        var to = $("#" + listID + " tr")[index + 1];
-        $("#" + listID)[0].removeChild(from);
-        $(from).insertAfter(to);
+    else if (d === 1 && index < count - 1) {
+        var from1 = $("#" + listID + " tr")[index];
+        var to1 = $("#" + listID + " tr")[index + 1];
+        $("#" + listID)[0].removeChild(from1);
+        $(from).insertAfter(to1);
     }
 
     renameRows(stateIndex);
@@ -175,6 +176,7 @@ function getPlanData(des) {
     data["Description"] = des;     // $("#descriptionTextBox").val();
     data["Author"] = $("#authorTextBox").val();
     data["PlanType"] = $("#planType").find(":selected").val();
+    data["PlanCategory"] = $("#category").find(":selected").val();
     data["Variables"] = [];
     data["Expressions"] = [];
 
@@ -190,14 +192,14 @@ function getPlanData(des) {
         variable["Type"] = $(".type", variables[i]).find(":selected").text();
         variable["Description"] = $(".desc", variables[i]).val();
 
-        if (variable["Type"] == "矩阵") {
+        if (variable["Type"] === "矩阵") {
             variable["Style"] = {
                 ColumnNames: $(".type-column-names input", variables[i]).val(),
                 RowHeaderWidth: $(".type-row-header-width input", variables[i]).val(),
                 RowName: $(".type-row-name input", variables[i]).val()
             };
         }
-        else if (variable["Type"] == "向量") {
+        else if (variable["Type"] === "向量") {
             variable["Style"] = {
                 Size: $(".type-size input", variables[i]).val(),
                 ColumnNames: $(".type-column-names input", variables[i]).val(),
@@ -241,3 +243,56 @@ function blinkTime(id, time) {
         }, 200);
     }, 200);
 }
+
+var EventUtil = {
+    addHandler: function (element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        } else {
+            element["on" + type] = handler;
+        }
+    },
+    removeHandler: function (element, type, handler) {
+        if (element.removeEventListener) {
+            element.removeEventListener(type, handler, false);
+        } else if (element.detachEvent) {
+            element.detachEvent("on" + type, handler);
+        } else {
+            element["on" + type] = null;
+        }
+    },
+
+    getEvent: function (event) {
+        return event ? event : window.event;
+    },
+    getTarget: function (event) {
+        return event.target || event.srcElement;
+    },
+    preventDefault: function (event) {
+        if (event.preventDefault) {
+            event.preventDefault();
+        } else {
+            event.returnValue = false;
+        }
+    },
+    stopPropagation: function (event) {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        } else {
+            event.cancelBubbles = true;
+        }
+    },
+    getRelatedTarget: function (event) {
+        if (event.relatedTarger) {
+            return event.relatedTarget;
+        } else if (event.toElement) {
+            return event.toElement;
+        } else if (event.fromElement) {
+            return event.fromElement;
+        } else { return null; }
+
+    }
+
+};

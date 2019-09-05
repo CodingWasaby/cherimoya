@@ -1,6 +1,8 @@
 ﻿@{
     Layout = null;
 }
+@using Mathy.Model.Draw
+@model  MeanValue
 <!DOCTYPE html>
 <html style="height: 100%">
 <head>
@@ -8,118 +10,120 @@
 </head>
 <body style="height: 100%; margin: 0">
     <div id="container" style="height: 100%"></div>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-    <script type="text/javascript">var dom = document.getElementById("container");
-        var myChart = echarts.init(dom);
-        var datas = getData();
-        var app = {};
-        option = null;
-        option = {
-            title: {
-                text: '平均值(极值)控制图',
-                subtext: '测试'
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: ['data', 'Xe=' + datas.d5[0], 'UCL=' + datas.d4[0], 'LCL=' + datas.d3[0]],
-                orient:'vertical',
-                right:20,
-                top:'middle'
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    dataView: { readOnly: true },
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: datas.d1
-            },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value}'
-                }
-            },
-            series: [
-                {
-                    name: 'data',
-                    type: 'line',
-                    data: datas.d2,
-                    color: 'black',
-                    label: {
-                        show: true,
-                        align: 'right'
+    <script type="text/javascript">
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var datas = getData();
+            var app = {};
+            option = null;
+            option = {
+                title: {
+                    text: '平均值(极值)控制图',
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['data', 'Xe=' + datas.d5[0], 'UCL=' + datas.d4[0], 'LCL=' + datas.d3[0]],
+                    orient: 'vertical',
+                    right: 5,
+                    top: 'middle'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataView: { readOnly: true },
+                        restore: {},
+                        saveAsImage: {}
                     }
                 },
-                {
-                    name: 'LCL=' + datas.d3[0],
-                    type: 'line',
-                    data: datas.d3,
-                    lineStyle: {
-                        normal: {
-                            width: 2,
-                            type: 'dashed'
-                        }
-                    },
-                    symbol: 'none',
-                    color: 'red'
-                },
-                {
-                    name: 'UCL=' + datas.d4[0],
-                    type: 'line',
-                    data: datas.d4,
-                    lineStyle: {
-                        normal: {
-                            width: 2,
-                            type: 'dashed'
-                        }
-                    },
-                    symbol: 'none',
-                    color: 'green'
+                dataZoom: [{
+                    start: 0,
+                    end:20
                 }, {
-                    name: 'Xe=' + datas.d5[0],
-                    type: 'line',
-                    data: datas.d5,
-                    symbol: 'none',
-                    color: 'orange'
-                }
-            ]
-        };
-
-        function getData() {
-            var data = [1, 4, 3, 3.5, 5, 4, 3, 6.8, 1, 3, 6, 8, 2, 3, 5, 7];
-            var d1 = [];
-            for (let index = 0; index < data.length; index++) {
-                d1.push(index);
-            }
-            var d2 = [];
-            var d3 = [];
-            var d4 = [];
-            var d5 = [];
-            for (let index = 0; index < data.length; index++) {
-                const element = data[index];
-                d2.push(element);
-                d3.push(0.2);
-                d4.push(9.5);
-                d5.push(5.1);
-            }
-            return {
-                d1, d2, d3, d4, d5
+                    type: 'inside'
+                }],
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: datas.d1
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
+                series: [
+                    {
+                        name: 'data',
+                        type: 'line',
+                        data: datas.d2,
+                        color: 'black',
+                        label: {
+                            show: true,
+                            align: 'right'
+                        }
+                    },
+                    {
+                        name: 'LCL=' + datas.d3[0],
+                        type: 'line',
+                        data: datas.d3,
+                        lineStyle: {
+                            normal: {
+                                width: 2,
+                                type: 'dashed'
+                            }
+                        },
+                        symbol: 'none',
+                        color: 'red'
+                    },
+                    {
+                        name: 'UCL=' + datas.d4[0],
+                        type: 'line',
+                        data: datas.d4,
+                        lineStyle: {
+                            normal: {
+                                width: 2,
+                                type: 'dashed'
+                            }
+                        },
+                        symbol: 'none',
+                        color: 'green'
+                    }, {
+                        name: 'Xe=' + datas.d5[0],
+                        type: 'line',
+                        data: datas.d5,
+                        symbol: 'none',
+                        color: 'orange'
+                    }
+                ]
             };
-        }
 
-        if (option && typeof option === "object") {
-            myChart.setOption(option, true);
-        }</script>
+            function getData() {
+                var data = '@Model.Datas'.split(',');
+                var d1 = [];
+                for (let index = 0; index < data.length; index++) {
+                    d1.push(index);
+                }
+                var d2 = [];
+                var d3 = [];
+                var d4 = [];
+                var d5 = [];
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    d2.push(element);
+                    d3.push(@Model.L);
+                    d4.push(@Model.H);
+                    d5.push(@Model.M);
+                }
+                return {
+                    d1, d2, d3, d4, d5
+                };
+            }
+
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }</script>
 </body>
 </html>

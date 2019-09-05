@@ -1,0 +1,150 @@
+﻿@using Mathy.Web.Models
+@model EditPlanVM
+@{
+    ViewBag.Title = "MCM";
+}
+@section scripts {
+    <script src="/Scripts/realtime-edit.js?a=@DateTime.Now.Ticks"></script>
+    <script language="javascript">
+        var c = "";
+        function showDocs() {
+            window.parent.document.getElementById("docs").click();
+        }
+        $(document).ready(function () {
+
+        });
+        // 跨浏览器获取用户在文本框中选中的文本
+        function getSelectedText() {
+            var textbox = document.getElementById("gs");
+            if (typeof textbox.selectionStart === 'number') {
+                // IE9及以上，其他常用浏览器
+                return textbox.value.substring(textbox.selectionStart, textbox.selectionEnd);
+            } else if (document.selection) {
+                // IE8
+                return document.selection.createRange().text;
+            }
+        }
+        function getFunc(ftype) {
+            var f = "";
+            c = getSelectedText();
+            if (c === null || c === "") {
+                c = "[参数]";
+            }
+            if (ftype === "root") {
+                f = "root(" + c + ",[方根])";
+            }
+            if (ftype === "pow") {
+                f = "pow(" + c + ",[幂])";
+            }
+            if (ftype === "lg") {
+                f = "lg(" + c + ")";
+            }
+            if (ftype === "ln") {
+                f = "ln(" + c + ")";
+            }
+            if (ftype === "log") {
+                f = "log([底数]," + c + ")";
+            }
+            var textbox = document.getElementById("gs");
+            var textGS = $('#gs').val();
+            var b = textGS.substring(0, textbox.selectionStart);
+            var e = textGS.substring(textbox.selectionEnd, textGS.length);
+            $('#gs').val(b + f + e);
+        }
+
+        function addparam() {
+
+        }
+
+        function dcChange() {
+            var step = 0;
+            var dc = $('#decimalDigitCount').val();
+            if (dc === null || dc === "") {
+                step = 1;
+            }
+            else {
+                step = 1 / Math.pow(10, dc);
+            }
+            $('.disparam').attr("step", step);
+        }
+    </script>
+}
+<div id="editTab">
+    <div class="bordered">基本设置</div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td width="10%">实验名称</td>
+                <td width="90%"> <input id="titleTextBox" type="text" value="@Model.Title" style="display: block; width: 100%;" /> </td>
+            </tr>
+            <tr>
+                <td width="10%">循环次数</td>
+                <td width="90%">
+                    <input id="runNum" type="number" value="" style="display: block; width: 100%;">
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">有效小数位数</td>
+                <td width="90%">
+                    <input id="decimalDigitCount" type="number" min="0" max="8" step="1" style="display: block; width: 100%;" onchange="dcChange()">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div class="bordered">变量</div>
+    <table class="table" id="variableTable">
+        <thead>
+            <tr>
+                <th width="30%">名称</th>
+                <th width="10%">函数类型</th>
+                <th width="50%">参数</th>
+                <th width="10%"></th>
+            </tr>
+        </thead>
+        <tbody id="variableList">
+            <tr>
+                <td hidden="hidden" name="param1" />
+                <td width="30%">
+                    <input class='name' type='text' value='' style="display: block; max-width: 900px; width: 100%;" />
+                </td>
+                <td width="10%">
+                    <select name="planType" class='type'>
+                        <option>正态分布</option>
+                        <option>均匀分布</option>
+                        <option>三角分布</option>
+                        <option>T分布</option>
+                        <option>贝努利分布</option>
+                    </select>
+                </td>
+                <td width="50%">
+                    mean=
+                    <input name="disParam1" class="disparam" type="number" step="0.01" />
+                    stddev=
+                    <input name="disParam2" class="disparam" type="number" step="0.01" />
+                </td>
+                <td width="10%">
+                    <a class='delete' href='javascript:deleteRow(0);'>删除</a>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="button" class="button" value="添加" onclick="javascript: addparam(0);" />
+
+    <div class="bordered">计算表达式</div>
+    <div class="form-group">
+        <a class="btn btn-info" onclick="javascript: getFunc('pow');">xⁿ </a>
+        <a class="btn btn-info" onclick="javascript: getFunc('root');"> √¯ </a>
+        <a class="btn btn-info" onclick="javascript: getFunc('lg');">lg </a>
+        <a class="btn btn-info" onclick="javascript: getFunc('ln');">ln </a>
+        <a class="btn btn-info" onclick="javascript: getFunc('log');">log </a>
+        <a class="btn btn-info" onclick="showDocs()">科学文档</a>
+    </div>
+    <label style="float:left;margin-top:4px">  y = </label>
+    <input id="gs" type="text" value="" style="width:900px;max-width:900px; display: block;margin-top:10px;" title="鼠标选中内容再点击相应函数，选中内容可直接作为参数">
+    <hr />
+    <div id="message" class="error-message"></div>
+    <br />
+    <input class="btn btn-primary" type="button" value="保存" onclick="javascript: save();" />
+</div>
+

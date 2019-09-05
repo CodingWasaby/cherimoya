@@ -76,7 +76,8 @@ namespace Petunia
                 Author = p.Author,
                 Description = plan.Description,
                 CreateTime = DateTime.Now,
-                PlanType = p.PlanType
+                PlanType = p.PlanType,
+                PlanCategory = p.PlanCategory
             };
             PlanStorage.Save(lm);
             return lm;
@@ -93,7 +94,7 @@ namespace Petunia
             plan.Expressions = newPlan.Expressions;
             plan.Styles = newPlan.Styles;
             plan.PlanType = newPlan.PlanType;
-
+            plan.PlanCategory = newPlan.PlanCategory;
             AppStore.PlanRepository.Save(id, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(new JsonSerializer() { PrettifyJson = true }.SerializeToString(plan))));
 
 
@@ -283,8 +284,8 @@ namespace Petunia
 
         public static FuncDoc[] GetFuncDocs()
         {
-            if (AppStore.Docs == null)
-            {
+            //if (AppStore.Docs == null)
+            //{
                 FuncDoc[] docs = new JsonDeserializer().DeserializeString(System.IO.File.ReadAllText(AppStore.PathResolver.FuncDocPath, System.Text.Encoding.UTF8), typeof(FuncDoc[])) as FuncDoc[];
 
                 foreach (FuncDoc doc in docs)
@@ -294,7 +295,7 @@ namespace Petunia
 
 
                 AppStore.Docs = docs;
-            }
+            //}
 
 
             return AppStore.Docs;

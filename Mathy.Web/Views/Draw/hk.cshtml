@@ -1,6 +1,13 @@
 ﻿@{
     Layout = null;
 }
+@using Mathy.Model.Draw
+@using Mathy.Maths
+@using Newtonsoft.Json
+@model  HK
+@{
+    var matrix = Model.Matrix as Matrix;
+}
 <!DOCTYPE html>
 <html style="height: 100%">
 <head>
@@ -15,67 +22,33 @@
         var app = {};
         option = null;
 
-        var yearCount = 7;
-        var categoryCount = 30;
+        var matrix = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(matrix))');
+        var rowCount =  @matrix.RowCount;
+        var colCount = @matrix.ColumnCount;
 
         var xAxisData = [];
         var customData = [];
-        var legendData = [];
         var dataList = [];
+        var hLine = [];
+        var lLine = [];
 
-        legendData.push('trend');
-        var encodeY = [];
-        for (var i = 0; i < yearCount; i++) {
-            legendData.push((2010 + i) + '');
+        for (var c = 0; c < colCount; c++) {
             dataList.push([]);
-            encodeY.push(1 + i);
         }
 
-        for (var i = 0; i < categoryCount; i++) {
-            var val = Math.random() * 1000;
-            xAxisData.push('category' + i);
-            var customVal = [i];
+        for (var r = 0; r < rowCount; r++)
+        {
+            hLine.push('@Model.H');
+            lLine.push('@Model.L');
+            xAxisData.push(r+1);
+            var customVal = [r];
             customData.push(customVal);
-
-            var data = dataList[0];
-            for (var j = 0; j < dataList.length; j++) {
-                var value = j === 0
-                    ? echarts.number.round(val, 2)
-                    : echarts.number.round(Math.max(0, dataList[j - 1][i] + (Math.random() - 0.5) * 200), 2);
-                dataList[j].push(value);
-                customVal.push(value);
+            var row = matrix.Rows[r];
+            for (var j = 0; j < colCount; j++)
+            {
+                dataList[j].push(row[j]);
+                customVal.push(row[j]);
             }
-        }
-
-        function renderItem(params, api) {
-            var xValue = api.value(0);
-            var currentSeriesIndices = api.currentSeriesIndices();
-            var barLayout = api.barLayout({
-                barGap: '30%', barCategoryGap: '20%', count: currentSeriesIndices.length - 1
-            });
-
-            var points = [];
-            for (var i = 0; i < currentSeriesIndices.length; i++) {
-                var seriesIndex = currentSeriesIndices[i];
-                if (seriesIndex !== params.seriesIndex) {
-                    var point = api.coord([xValue, api.value(seriesIndex)]);
-                    point[0] += barLayout[i - 1].offsetCenter;
-                    point[1] -= 20;
-                    points.push(point);
-                }
-            }
-            var style = api.style({
-                stroke: api.visual('color'),
-                fill: null
-            });
-            return null;
-            //return {
-            //    type: 'polyline',
-            //    shape: {
-            //        points: points
-            //    },
-            //    style: style
-            //};
         }
 
         option = {
@@ -93,43 +66,57 @@
                     saveAsImage: {}
                 }
             },
-            legend: {
-                data: legendData
-            },           
             xAxis: {
                 data: xAxisData
             },
             yAxis: {},
             series: [{
                 type: 'custom',
-                name: 'trend',
-                renderItem: renderItem,
                 itemStyle: {
                     normal: {
                         borderWidth: 2
                     }
                 },
-                encode: {
-                    x: 0,
-                    y: encodeY
-                },
                 data: customData,
                 z: 100
-            }].concat(echarts.util.map(dataList, function (data, index) {
-                return {
-                    type: 'bar',
-                    //animation: false,
-                    name: legendData[index + 1],
-                    itemStyle: {
+            }                , {
+                    name: 'H=' +@Model.H,
+                    type: 'line',
+                    data:hLine,
+                    lineStyle: {
                         normal: {
-                            opacity: 0.5
+                            width: 2,
+                            type: 'dashed'
                         }
                     },
-                    color:'blue',
+                    color: 'red'
+                }, {
+                    name: 'L='+ @Model.L,
+                    type: 'line',
+                    data: lLine,
+                    lineStyle: {
+                        normal: {
+                            width: 2,
+                            type: 'dashed'
+                        }
+                    },
+                    color: 'red'
+                }
+            ].concat(echarts.util.map(dataList, function (data, index) {
+                return {
+                    type: 'bar',
+                    barGap: 0.05,
+                    name: '结果：'+(index+1),
+                    itemStyle: {
+                        normal: {
+                            opacity: 0.7
+                        }
+                    },
+                    color: 'black',
                     data: data
                 };
             }))
-        };;
+        };
         if (option && typeof option === "object") {
             myChart.setOption(option, true);
         }

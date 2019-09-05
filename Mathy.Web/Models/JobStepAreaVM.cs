@@ -45,7 +45,7 @@ namespace Mathy.Web.Models
 
                     string styleRowName = style == null || string.IsNullOrEmpty(style.RowName) ? null : style.RowName;
                     string[] styleRowNames = styleRowName == null || !styleRowName.Contains(",") ? null : styleRowName.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    
+
 
                     rowNames = new string[m.RowCount];
                     for (int row = 0; row <= m.RowCount - 1; row++)
@@ -114,8 +114,8 @@ namespace Mathy.Web.Models
                 }
 
 
-                ResultVariables[i] = new ResultVariableVM() 
-                { 
+                ResultVariables[i] = new ResultVariableVM()
+                {
                     Name = step.OutVariables[i],
                     ColumnCount = columnCount,
                     RowNames = rowNames,
@@ -137,10 +137,21 @@ namespace Mathy.Web.Models
                     Name = variable.Name,
                     Type = Strings.Of(variable),
                     IsMatrix = variable.Type == DataType.Matrix || variable.Type == DataType.Vector,
-                    Value = step.InValues[i] == null ? string.Empty : step.InValues[i].ToString(),
+                    Value = step.InValues[i] == null ? string.Empty : getValue(step.InValues[i], context),
                     Description = step.InSourceVariables[i].Description,
                 };
             }
+        }
+
+        private string getValue(object value, EvaluationContext e)
+        {
+            if (value is double[])
+            {
+                double[] datas = (double[])value;
+                datas = (datas as double[]).Where(j => !double.IsNaN(j)).Select(j => Math.Round(j, e.Settings.DecimalDigitCount)).ToArray();
+                return string.Join(",", datas);
+            }
+            return value.ToString();
         }
 
 

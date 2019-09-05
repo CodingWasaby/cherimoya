@@ -56,8 +56,9 @@ namespace Mathy.Language
             vc.AddMethodExtender(typeof(StatisticsFuncs));
             vc.AddMethodExtender(typeof(ExpressionFuncs));
             vc.AddMethodExtender(typeof(CustomFuncFactory));
-            vc.AddMethodExtender(typeof(Distribution)); 
-
+            vc.AddMethodExtender(typeof(Distribution));
+            vc.AddMethodExtender(typeof(DrawFuncs));
+            
             return vc;
         }
     }

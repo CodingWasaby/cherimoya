@@ -128,13 +128,10 @@ namespace Mathy.Web.Controllers
         }
 
 
-        public ActionResult PlansTotal(int? pageIndex, string planName, string begindate, string enddate, string content)
+        public ActionResult PlansTotal(int? pageIndex, string planName, string begindate, string enddate, string content, string category)
         {
             pageIndex = pageIndex == null ? 1 : pageIndex;
-            //if (Session["PlanPageIndex"] != null)
-            //{
-            //    pageIndex = (int)Session["PlanPageIndex"];
-            //}
+            ViewBag.category = category;
             return View(GetPlanList(pageIndex, planName, begindate, enddate, content));
         }
 
@@ -333,7 +330,6 @@ namespace Mathy.Web.Controllers
             Script.InitEvaluationContext(context, job);
 
             context.Update();
-
             return View(new JobVM(context, job));
         }
 
@@ -911,6 +907,12 @@ namespace Mathy.Web.Controllers
         public ActionResult DrawTest()
         {
             return View();
+        }
+
+        [CheckLogin]
+        public ActionResult MCM()
+        {
+            return View(new EditPlanVM());
         }
     }
 }

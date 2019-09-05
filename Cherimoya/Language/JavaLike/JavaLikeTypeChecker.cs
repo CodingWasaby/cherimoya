@@ -458,7 +458,7 @@ namespace Cherimoya.Language.JavaLike
             }
 
             Type[] parameterClasses = e.Parameters.Select(i => i.Type).ToArray();
-            if (e.MethodName == "Loop" || e.MethodName.Contains("MCM"))
+            if (e.MethodName == "Loop" || e.MethodName.Contains("MCM") || e.MethodName.Contains("Draw_"))
             {
                 var list = parameterClasses.ToList();
                 list.Add(typeof(object));

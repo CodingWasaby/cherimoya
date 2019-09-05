@@ -20,6 +20,7 @@ namespace Mathy.Web.Controllers
             var result = dal.GetCoefficients(new Model.Common.PageInfo { PageIndex = pageIndex, PageSize = 5 }, coefficientName);
             ViewBag.pageIndex = pageIndex;
             ViewBag.TotalPage = result.Page.TotalCount / result.Page.PageSize + 1;
+            ViewBag.CoefficientName = coefficientName;
             return View(result.Data);
         }
 

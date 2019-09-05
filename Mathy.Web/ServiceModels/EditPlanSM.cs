@@ -19,6 +19,8 @@ namespace Mathy.Web.ServiceModels
         public string Author { get; set; }
 
         public int PlanType { get; set; }
+        public string PlanCategory { get; set; }
+        
 
         public EditVariableSM[] Variables { get; set; }
 
@@ -96,6 +98,7 @@ namespace Mathy.Web.ServiceModels
                 ).ToArray(),
                 Styles = ToStyles(),
                 PlanType = PlanType,
+                PlanCategory = PlanCategory
             };
         }
 

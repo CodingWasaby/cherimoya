@@ -14,10 +14,19 @@
             </a>
         </div>
     }
-    
-    
-    <br/>
+
+
+    <br />
     <input type="button" class="@Model.ExportButtonClass" onclick="@Model.ExportButtonCode" value="导出为Word" />
-    <input type="button" class="@Model.ViewGraphButtonClass" onclick="@Model.ViewGraphButtonCode" value="查看结果图" />
+    if (Model.IsCompleted && Model.IsDraw)
+    {
+        int i = 0;
+        foreach (var n in Model.DrawSourceVariables)
+        {
+            i++;
+            <input type="button" class="button" onclick="viewGraph('@n')" value="查看结果图 (@i)" />
+        }
+
+    }
     <input type="button" class="button" onclick="javascript: saveJobPlan();" value="保存实验" />
 }

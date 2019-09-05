@@ -23,6 +23,10 @@ namespace Mathy.Planning
             {
                 return new Vector(0);
             }
+            else if (dataType == DataType.Array)
+            {
+                return new double[0];
+            }
             else
             {
                 return new Matrix(0, 0);
@@ -42,6 +46,10 @@ namespace Mathy.Planning
             else if (type == DataType.Vector)
             {
                 return Matrix.Parse(s).ToVector();
+            }
+            else if (type == DataType.Vector)
+            {
+                return Matrix.Parse(s).ToVector().Items;
             }
             else
             {

@@ -24,6 +24,7 @@
                         <option @(item.Type.DisplayName == "字符串" ? "selected" : "")>字符串</option>
                         <option @(item.Type.DisplayName == "矩阵" ? "selected" : "")>矩阵</option>
                         <option @(item.Type.DisplayName == "向量" ? "selected" : "")>向量</option>
+                        <option @(item.Type.DisplayName == "数组" ? "selected" : "")>数组</option>
                     </select>
                     <div class='type-size'>长度：<input type='text' value='@item.Style.Size' /></div>
                     <div class='type-column-names'>列标题：<input type='text' value="@item.Style.ColumnNames" /></div>

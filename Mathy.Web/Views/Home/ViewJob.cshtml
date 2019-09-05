@@ -10,7 +10,6 @@
     <script src="/Scripts/grid.js"></script>
     <script src="/Scripts/ui.js"></script>
     <script src="/Scripts/realtime-edit.js"></script>
-
     <script language="javascript">
 
         $(document).ready(function () {
@@ -182,7 +181,6 @@
             })
         }
 
-
         var isEnabled = true;
 
         function exportAsWordDocument() {
@@ -202,12 +200,28 @@
             window.location = "/Home/ExportAsWordDocument";
         }
 
-
-        function viewGraph() {
-
-            $("#stepAreaDiv").html("<a href=\"/Home/GetGraph\" target=\"_blank\"><img src=\"/Home/GetGraph\" style='max-width:900px;' /></a>");
+        function viewGraph(key) {
+            $.ajax({
+                url: "/draw/GetDraw?key=" + key,
+                success: function (html) {
+                    popup(
+                        "绘制图像",
+                        {
+                            width: 950,
+                            height: 500,
+                            okButton: false,
+                            cancelButton: true,
+                            ok: function () {
+                                closePopup();
+                            },
+                            cancel: function () {
+                                closePopup();
+                            }
+                        },
+                        html);
+                }
+            });
         }
-
 
         function onDeleteStepButtonClick() {
 
@@ -495,4 +509,5 @@
 
     </div>
 </div>
+@*@Html.Action("a", "draw");*@
 

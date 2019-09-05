@@ -186,9 +186,9 @@
                 </td>
             </tr>
             @*<tr>
-                    <td width="10%">作者</td>
-                    <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
-                </tr>*@
+            <td width="10%">作者</td>
+            <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
+        </tr>*@
             <tr>
                 <td width="10%">方案类型</td>
                 <td width="90%">
@@ -196,6 +196,24 @@
                         <option value="0" @(Model.PlanType == 0 ? "selected" : "")>公共</option>
                         <option value="1" @(Model.PlanType == 1 ? "selected" : "")>保护</option>
                         <option value="2" @(Model.PlanType == 2 ? "selected" : "")>私有</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">方案分组</td>
+                <td width="90%">
+                    <select class="type" id="category" >
+                        @if (Model.PlanCategory == "A")
+                        {
+                            <option value="A" selected="selected">类型A</option>
+                            <option value="B">类型B</option>
+                        }
+                        else
+                        {
+                            <option value="A">类型A</option>
+                            <option value="B" selected="selected">类型B</option>
+                        }
+
                     </select>
                 </td>
             </tr>

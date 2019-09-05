@@ -28,6 +28,7 @@ namespace Mathy.Web.Models
             PlanType = GetPlanType(lm.PlanType);
             IsCustom = string.IsNullOrEmpty(author);
             AuthFlag = lm.AuthFlag;
+            PlanCategory = "类型" + lm.PlanCategory;
         }
 
 
@@ -54,6 +55,7 @@ namespace Mathy.Web.Models
         public string CreateTime { get; private set; }
 
         public string PlanType { get; set; }
+        public string PlanCategory { get; set; }
 
         public int ReferenceCount { get; private set; }
 

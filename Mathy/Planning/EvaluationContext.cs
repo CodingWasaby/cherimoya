@@ -81,7 +81,7 @@ namespace Mathy.Planning
         public void SetValueString(string variableName, string s)
         {
             SourceVariable v = Plan.Variables.FirstOrDefault(i => i.Name == variableName);
-            if (v != null)
+            if (v != null && s != "System.Double[]")
             {
                 object value = string.IsNullOrEmpty(s) ? null : DataFuncs.DeserializeValue(v.Type, s);
 

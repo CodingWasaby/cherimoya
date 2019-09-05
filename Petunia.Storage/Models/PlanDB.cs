@@ -38,6 +38,9 @@ namespace Petunia.Storage.Models
         public int PlanType { get; set; }
 
         [Field]
+        public string PlanCategory { get; set; }
+
+        [Field]
         public int AuthFlag { get; set; }
 
         [Field]
@@ -56,8 +59,8 @@ namespace Petunia.Storage.Models
                 CreateTime = db.CreateTime,
                 ReferenceCount = db.ReferenceCount,
                 PlanType = db.PlanType,
-                AuthFlag = db.AuthFlag
-
+                AuthFlag = db.AuthFlag,
+                PlanCategory = db.PlanCategory
             };
         }
 
@@ -73,7 +76,8 @@ namespace Petunia.Storage.Models
                 CreateTime = lm.CreateTime,
                 ReferenceCount = lm.ReferenceCount,
                 PlanType = lm.PlanType,
-                AuthFlag = lm.AuthFlag
+                AuthFlag = lm.AuthFlag,
+                PlanCategory = lm.PlanCategory
             };
         }
 

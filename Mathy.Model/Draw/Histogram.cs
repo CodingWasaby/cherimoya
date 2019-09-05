@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mathy.Planning
+namespace Mathy.Model.Draw
 {
-    public enum DataType
+    public class Histogram
     {
-        Number,
-        String,
-        Matrix,
-        Vector,
-        Array
+        public List<string[]> Datas { get; set; }
     }
 }

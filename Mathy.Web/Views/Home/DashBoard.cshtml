@@ -55,7 +55,7 @@
                     <a><i class="glyphicon glyphicon-share-alt"></i> <span class="nav-label">公共实验室</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="@Url.Action("PlansTotal","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>模板共享</a></li>
-                        <li><a href="@Url.Action("Docs","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>科学文档</a></li>
+                        <li><a href="@Url.Action("Docs","home")" class="J_menuItem" id="docs"><i class="glyphicon glyphicon-share"></i>科学文档</a></li>
                         <li><a href="@Url.Action("index","Coefficient",new { pageindex=1})" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>系数表</a></li>
                     </ul>
                 </li>
@@ -72,21 +72,14 @@
                         <ul class="nav nav-second-level collapse">
                             <li><a href="@Url.Action("index", "User")" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>用户管理</a></li>
                             <li><a href="@Url.Action("Role", "User")" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>角色管理</a></li>
-                            @*<li><a href="dashboard_3.html" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>模板管理</a></li>
-                                <li><a href="dashboard_4_1.html" class="J_menuItem"><i class="glyphicon glyphicon-star-empty"></i>分析项目管理</a></li>*@
                         </ul>
                     </li>
                 }
                 <li>
                     <a><i class="glyphicon glyphicon-share-alt"></i> <span class="nav-label">绘制测试</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        @*<li><a href="@Url.Action("DrawTest","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>绘制测试</a></li>*@
-                        <li><a href="@Url.Action("a", "draw")" class="J_menuItem">平均值(极值)控制图</a></li>
                         <li><a href="@Url.Action("b", "draw")" class="J_menuItem">比对图</a></li>
-                        <li><a href="@Url.Action("c", "draw")" class="J_menuItem"> 线性回归图</a></li>
                         <li><a href="@Url.Action("d", "draw")" class="J_menuItem">直方图</a></li>
-                        <li><a href="@Url.Action("e", "draw")" class="J_menuItem">hk图</a></li>
-                        <li><a href="@Url.Action("upload", "draw")" class="J_menuItem">系数表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -105,49 +98,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">欢迎来到UES</span>
-                    </li>
-                    <li class="dropdown">
-                        @*<a class="dropdown-toggle count-info" data-toggle="dropdown">
-                                <i class="fa fa-envelope"></i>  <span class="label label-primary">8</span>
-                            </a>*@
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li>
-                                <a href="mailbox.html">
-                                    <div>
-                                        <i class="fa fa-envelope fa-fw"></i> You have 8 messages
-                                        <span class="pull-right text-muted small">4 minutes ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="profile.html">
-                                    <div>
-                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                        <span class="pull-right text-muted small">12 minutes ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="grid_options.html">
-                                    <div>
-                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                        <span class="pull-right text-muted small">4 minutes ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a href="notifications.html">
-                                        <strong>查看历史消息</strong>
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到UES</span>                       
                     </li>
                     <li>
                         <a onclick="loginOut()">
@@ -289,5 +240,6 @@
             });
         }
     }
+
 </script>
 

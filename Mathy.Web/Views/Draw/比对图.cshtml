@@ -1,6 +1,12 @@
 ﻿@{
     Layout = null;
 }
+@using Mathy.Model.Draw
+@model Comparison
+@{
+    Layout = null;
+    var datas = string.Join(",", Model.Datas);
+}
 <!DOCTYPE html>
 <html style="height: 100%">
 <head>
@@ -11,91 +17,79 @@
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
     <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/New/data.js"></script>
     <script type="text/javascript">
-        var dom = document.getElementById("container");
-        var myChart = echarts.init(dom);
-        var app = {};
-        option = null;
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
 
-        function splitData(rawData) {
-            var categoryData = [];
-            var values = [];
-            for (var i = 0; i < rawData.length; i++) {
-                categoryData.push(rawData[i][0]);
-                rawData[i][0] = i;
-                values.push(rawData[i]);
+            function splitData() {
+                var rawData = '@datas'.split(",");
+                var categoryData = [];
+                var values = [];
+                for (var i = 0; i < rawData.length; i++) {
+                    categoryData.push(i);
+                    var rd = rawData[i].split(":");
+                    var rdNew = [];
+                    rdNew.push(i+1);
+                    rdNew=  rdNew.concat(rd);
+                    values.push(rdNew);
+                }
+                categoryData.push(rawData.length);
+                categoryData.push(rawData.length+1);
+                return {
+                    categoryData: categoryData,
+                    values: values
+                };
             }
-            return {
-                categoryData: categoryData,
-                values: values
-            };
-        }
-
-
+        var data = splitData();
         function renderItem(params, api) {
-            var xValue = api.value(0);
-            var openPoint = api.coord([xValue, api.value(1)]);
-            var closePoint = api.coord([xValue, api.value(2)]);
-            var lowPoint = api.coord([xValue, api.value(3)]);
-            var highPoint = api.coord([xValue, api.value(4)]);
-            var halfWidth = api.size([1, 0])[0] * 0.35;
+
+                var xValue = api.value(0);
+                var closePoint = api.coord([xValue, api.value(1)]);
+                var lowPoint = api.coord([xValue, api.value(1)-api.value(2)]);
+                var highPoint = api.coord([xValue, api.value(1)+ api.value(2)]);
             var style = api.style({
-                stroke: api.visual('color')
+                stroke: api.visual('color'),
+                lineWidth: 3
             });
 
-            return {
-                type: 'group',
-                children: [{
-                    type: 'line',
-                    color:'black',
-                    shape: {
-                        x1: lowPoint[0], y1: lowPoint[1],
-                        x2: highPoint[0], y2: highPoint[1]
-                    },
-                    style: style
-                }, {
-                    type: 'line',
-                    shape: {
-                        x1: closePoint[0], y1: closePoint[1],
-                        x2: closePoint[0] - 2, y2: closePoint[1]
-                    },
-                    style: style,
-                    label: {
-                        show: true
-                    }
-                }, {
-                    type: 'line',
-                    shape: {
-                        x1: closePoint[0], y1: closePoint[1],
-                        x2: closePoint[0] + 2, y2: closePoint[1]
-                    },
-                    style: style,
-                    label: {
-                        show: true
-                    }
-                }]
-            };
-        }
-
-        fetch('https://echarts.baidu.com/examples/data/asset/data/stock-DJI.json', {
-            method: 'GET',
-            mode: 'no-cors'
-        }).then((response) => {
-            // console.log(response);
-            // console.log(response.json());
-            // var rawData = response.formData();
-            var json = getJJ().slice(0, 20);
-            var data = splitData(json);
-
+                return {
+                    type: 'group',
+                    children: [{
+                        type: 'line',
+                        color: 'black',
+                        shape: {
+                            x1: lowPoint[0], y1: lowPoint[1],
+                            x2: highPoint[0], y2: highPoint[1]
+                        },
+                        style: style
+                    }, {
+                        type: 'line',
+                        shape: {
+                            x1: closePoint[0], y1: closePoint[1],
+                            x2: closePoint[0] - 3, y2: closePoint[1]
+                        },
+                        style: style,
+                        label: {
+                            show: true
+                        }
+                    }, {
+                        type: 'line',
+                        shape: {
+                            x1: closePoint[0], y1: closePoint[1],
+                            x2: closePoint[0] + 3, y2: closePoint[1]
+                        },
+                        style: style,
+                        label: {
+                            show: true
+                        }
+                    }]
+                };
+            }
             myChart.setOption(option = {
                 backgroundColor: '#eee',
                 animation: false,
-                legend: {
-                    bottom: 10,
-                    left: 'center',
-                    data: ['比对图']
-                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -123,22 +117,9 @@
                 },
                 toolbox: {
                     feature: {
-                        dataZoom: {
-                            yAxisIndex: false
-                        },
-                        brush: {
-                            type: ['lineX', 'clear']
-                        },
                         saveAsImage: {}
                     }
                 },
-                grid: [
-                    {
-                        left: '10%',
-                        right: '8%',
-                        bottom: 150
-                    }
-                ],
                 xAxis: [
                     {
                         type: 'category',
@@ -148,8 +129,8 @@
                         axisLine: { onZero: false },
                         splitLine: { show: false },
                         splitNumber: 20,
-                        min: 'dataMin',
-                        max: 'dataMax',
+                        min: 0,
+                        max: data.categoryData.length,
                         axisPointer: {
                             z: 100
                         }
@@ -168,20 +149,19 @@
                         name: '比对图',
                         type: 'custom',
                         renderItem: renderItem,
-                        dimensions: [null, 'open', 'close', 'lowest', 'highest'],
+                        dimensions: [null,'mean', 'std'],
                         encode: {
                             x: 0,
-                            y: [1, 2, 3, 4],
-                            tooltip: [1, 2, 3, 4]
+                            y: [1, 2],
+                            tooltip: [1, 2]
                         },
                         data: data.values
                     }
                 ]
             }, true);
-        });
-        if (option && typeof option === "object") {
-            myChart.setOption(option, true);
-        }
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
     </script>
 </body>
 </html>

@@ -23,6 +23,8 @@ namespace Mathy.Planning
 
         public int PlanType { get; set; }
 
+        public string PlanCategory { get; set; }
+
         public SourceExpression[] Expressions { get; set; }
 
         public SourceVariable[] Variables { get; set; }

@@ -1,4 +1,9 @@
 ﻿using Aspose.Cells;
+using Mathy.Maths;
+using Mathy.Model.Draw;
+using Mathy.Planning;
+using Mathy.Web.Models.Draw;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,26 +14,54 @@ namespace Mathy.Web.Controllers
 {
     public class DrawController : Controller
     {
-        // GET: Draw
-        public ActionResult a()
+
+        public ActionResult GetDraw(string key)
         {
-            return View("均值");
+            EvaluationContext context = (EvaluationContext)Session["Context"];
+            var data = context.SourceVariables[key];
+            if (key.Contains("Draw_MeanValue"))
+            {
+                return MV((MeanValue)data);
+            }
+            if (key.Contains("Draw_HK"))
+            {
+                return HK((HK)data);
+            }
+            if (key.Contains("Draw_LinearRegression"))
+            {
+                return LR((LinearRegression)data);
+            }
+            if (key.Contains("Draw_Histogram"))
+            {
+                return His((Histogram)data);
+            }
+            if (key.Contains("Draw_Comparison"))
+            {
+                return COM((Comparison)data);
+            }
+            return View();
         }
-        public ActionResult b()
+
+        public ActionResult MV(MeanValue meanValue)
         {
-            return View("比对图");
+            return View("均值", meanValue);
         }
-        public ActionResult c()
+
+        public ActionResult COM(Comparison com)
         {
-            return View("线性回归");
+            return View("比对图", com);
         }
-        public ActionResult d()
+        public ActionResult LR(LinearRegression lr)
         {
-            return View("直方图");
+            return View("线性回归", lr);
         }
-        public ActionResult e()
+        public ActionResult His(Histogram his)
         {
-            return View("hk");
+            return View("直方图", his);
+        }
+        public ActionResult HK(HK hk)
+        {
+            return View("hk", hk);
         }
 
         public ActionResult Upload()

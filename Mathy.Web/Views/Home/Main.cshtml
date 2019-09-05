@@ -1,16 +1,70 @@
 ﻿
 @{
     ViewBag.Title = "Main";
-    //Layout = null;
     Layout = "~/Views/Shared/_Login.cshtml";
 }
 <script src="~/Scripts/flot/jquery.flot.js"></script>
 <script src="~/Scripts/flot/jquery.flot.tooltip.min.js"></script>
 <script src="~/Content/d3/d3.min.js"></script>
 <body style="background-color: #f3f3f4;" id="aa">
-    <div class="middle-box text-center animated fadeInDown">
-        <h2>欢迎登陆</h2>
-        <h3 class="font-bold">Uncertainty Evaluation System</h3>
+    <div class="middle-box text-center animated fadeInDown" style="max-width:1000px">
+        <h2 class="font-bold">Uncertainty Evaluation System</h2>
+        <div>
+            <div class="media list-group-item  gray-bg">
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        蒙特卡洛模拟计算
+                    </h3>
+                    <p>
+                        这是说明
+                    </p><p>
+                        这是说明
+                    </p><p>
+                        这是说明
+                    </p>
+                </div>
+                <div class="form-group" style="margin-top:10px">
+                    <a href="@Url.Action("mcm","home",new { MCM=1})" class="btn-lg btn-info J_menuItem_Child">蒙特卡洛模拟计算</a>
+                    <a href="@Url.Action("mcm","home",new { MCM=2})" class="btn-lg btn-info J_menuItem_Child">蒙特卡洛模拟计算（自适应）</a>
+                </div>
+            </div>
+
+            <div class="media list-group-item  gray-bg ">
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        类型A
+                    </h3>
+                    <p>
+                        这是说明
+                    </p><p>
+                        这是说明
+                    </p><p>
+                        这是说明
+                    </p>
+                </div>
+                <div class="form-group" style="margin-top:10px">
+                    <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-lg btn-info J_menuItem_Child">浏览类型A实验</a>
+                </div>
+            </div>
+
+            <div class="media list-group-item  gray-bg">
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        类型B
+                    </h3>
+                    <p>
+                        这是说明
+                    </p><p>
+                        这是说明
+                    </p><p>
+                        这是说明
+                    </p>
+                </div>
+                <div class="form-group" style="margin-top:10px">
+                    <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-lg btn-info J_menuItem_Child">浏览类型B实验</a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

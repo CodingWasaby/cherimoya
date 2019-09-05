@@ -1,5 +1,12 @@
-﻿@{
+﻿
+@using Mathy.Model.Draw
+@model LinearRegression
+@{
     Layout = null;
+    var datas = string.Join(",", Model.Datas);
+    var formatter = "y= " + Model.K + " * x + " + Model.B;
+    var markB = Model.B;
+    var markE = (Model.Datas.Count() + 1) * Model.K + Model.B;
 }
 <!DOCTYPE html>
 <html style="height: 100%">
@@ -9,31 +16,25 @@
 <body style="height: 100%; margin: 0">
     <div id="container" style="height: 100%"></div>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-    <script type="text/javascript">var dom = document.getElementById("container");
+    <script type="text/javascript">
+        var dataAll =[];
+        var datas = '@datas';
+        var a = datas.split(",");
+        for (var i = 0; i < a.length; i++) {
+            var ad = [];
+            ad.push(i + 1);
+            ad.push(a[i]);
+            dataAll.push(ad);
+        }
+        var dom = document.getElementById("container");
         var myChart = echarts.init(dom);
-        var app = {};
         option = null;
-        var dataAll = [
-            [
-                [10.0, 8.04],
-                [8.0, 6.95],
-                [13.0, 7.58],
-                [9.0, 8.81],
-                [11.0, 8.33],
-                [14.0, 9.96],
-                [6.0, 7.24],
-                [4.0, 4.26],
-                [12.0, 10.84],
-                [7.0, 4.82],
-                [5.0, 5.68]
-            ]
-        ];
 
         var markLineOpt = {
             animation: false,
             label: {
                 normal: {
-                    formatter: 'y = 0.5 * x + 3',
+                    formatter: '@formatter',
                     textStyle: {
                         align: 'right'
                     }
@@ -45,17 +46,17 @@
                 }
             },
             tooltip: {
-                formatter: 'y = 0.5 * x + 3'
+                formatter:  '@formatter'
             },
             data: [[{
-                coord: [0, 6],
+                coord: [0, @markB],
                 symbol: 'none'
             }, {
-                coord: [20, 8],
+                coord: [@(Model.Datas.Count()+1), @markE],
                 symbol: 'none'
             }]]
         };
-
+        console.log(markLineOpt);
         option = {
             title: {
                 text: '线性回归图',
@@ -65,9 +66,6 @@
             toolbox: {
                 show: true,
                 feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
                     dataView: { readOnly: true },
                     restore: {},
                     saveAsImage: {}
@@ -77,31 +75,30 @@
                 formatter: 'Test {a}: ({c})'
             },
             xAxis: [
-                { gridIndex: 0, min: 0, max: 20 },
+                { gridIndex: 0, min: 0, max: '@(Model.Datas.Count()+1)' }
             ],
             yAxis: [
-                { gridIndex: 0, min: 0, max: 15 },
+                { gridIndex: 0, min: @(markB-1), max: '@(markE+1)' }
             ],
             series: [
                 {
-                    name: 'I',
+                    name: '一元线性回归',
                     type: 'scatter',
                     xAxisIndex: 0,
                     yAxisIndex: 0,
-                    data: dataAll[0],
+                    data: dataAll,
                     markLine: markLineOpt,
-                    label:{
-                        show:true,
-                        position:'right',
-                        color:'black'
+                    label: {
+                        show: true,
+                        position: 'right',
+                        color: 'black'
 
                     }
 
                 }
             ]
-        };;
-        if (option && typeof option === "object") {
-            myChart.setOption(option, true);
-        }</script>
+        };
+        myChart.setOption(option, true);
+    </script>
 </body>
 </html>

@@ -250,7 +250,7 @@ namespace Cherimoya.Language.JavaLike
                 parameters.Add(context);
             }
 
-            if (expression.MethodName == "Loop" || expression.MethodName.Contains("MCM"))
+            if (expression.MethodName == "Loop" || expression.MethodName.Contains("MCM") || expression.MethodName.Contains("Draw_"))
             {
                 parameters.Add(context.GetValue("_EvaluationContext"));
             }

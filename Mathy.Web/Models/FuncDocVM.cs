@@ -42,8 +42,8 @@ namespace Mathy.Web.Models
             Name = lm.Name;
             Title = lm.Title;
             Description = lm.Description;
-            Parameters = lm.Parameters.Select(i => new ParameterDocVM() 
-            { 
+            Parameters = lm.Parameters.Select(i => new ParameterDocVM()
+            {
                 Name = i.Name,
                 Type = string.Join(", ", i.Type.Select(j => Funcs.GetDataTypeDisplayName(j))),
                 Description = i.Description
@@ -53,6 +53,7 @@ namespace Mathy.Web.Models
                 Type = string.Join(", ", i.Type.Select(j => Funcs.GetDataTypeDisplayName(j))),
                 Description = i.Description
             }).ToArray();
+            Article = new FuncArticleVM(lm.Article);
         }
     }
 
