@@ -14,6 +14,7 @@ namespace Mathy.Libs
     public class DrawFuncs
     {
         /// <summary>
+        ///  HK
         ///  每行是一组，每列为一个柱
         /// </summary>
         /// <param name="matrix"></param>
@@ -33,6 +34,7 @@ namespace Mathy.Libs
         }
 
         /// <summary> 
+        ///  比对
         /// 每行为一个点，列1 mean，列2 standardDeviation
         /// </summary>
         /// <param name="matrix"></param>
@@ -50,6 +52,7 @@ namespace Mathy.Libs
         }
 
         /// <summary>
+        /// 均值
         /// 数组
         /// </summary>
         /// <param name="datas"></param>
@@ -71,6 +74,7 @@ namespace Mathy.Libs
 
 
         /// <summary>
+        /// 线性回归
         /// 数组
         /// </summary>
         /// <param name="datas"></param>
@@ -114,6 +118,7 @@ namespace Mathy.Libs
 
 
         /// <summary>
+        ///  直方图
         /// 每行为一条线。第一条线有阴影
         /// </summary>
         /// <param name="datas"></param>
@@ -125,11 +130,15 @@ namespace Mathy.Libs
             h.Datas = new List<string[]>();
             foreach (var n in matrix.Rows)
             {
-                double mean = n.Mean();
-                double standardDeviation = n.StandardDeviation();
-                double step = (n.Max() - n.Min()) / n.Count();
+                var cn = n.Count();
+                cn = cn < 20 ? 20 : cn;
+                //cn = cn > 200 ? 200 : cn;
+                var temp = n.OrderBy(m => m).ToArray();
+                double mean = temp.Mean();
+                double standardDeviation = temp.StandardDeviation();
+                double step = (temp.Max() - temp.Min()) / temp.Count();
                 var pdfs = new List<string>();
-                for (var i = -10; i <= 10; i++)
+                for (var i = -cn / 2; i <= cn / 2; i++)
                 {
                     double p = Normal.PDF(mean, standardDeviation, mean + step * i);
                     pdfs.Add(Math.Round(mean + step * i, e.Settings.DecimalDigitCount) + ":" + Math.Round(p, e.Settings.DecimalDigitCount));
@@ -137,6 +146,35 @@ namespace Mathy.Libs
                 h.Datas.Add(pdfs.ToArray());
             }
             e.SetValueAcrossSteps("Draw_Histogram" + Guid.NewGuid().ToString().Replace("-", ""), h);
+        }
+
+        /// <summary>
+        ///  直方图
+        /// 每行为一条线。第一条线有阴影
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <param name="ec"></param>
+        public static Model.Draw.Histogram Draw_Histogram(List<double[]> datas, int dit)
+        {
+            var h = new Model.Draw.Histogram();
+            h.Datas = new List<string[]>();
+            foreach (var n in datas)
+            {
+                var cn = n.Count();
+                cn = cn < 20 ? 20 : cn;
+                //cn = cn > 200 ? 200 : cn;
+                double mean = n.Mean();
+                double standardDeviation = n.StandardDeviation();
+                double step = (n.Max() - n.Min()) / n.Count();
+                var pdfs = new List<string>();
+                for (var i = -cn / 2; i <= cn / 2; i++)
+                {
+                    double p = Normal.PDF(mean, standardDeviation, mean + step * i);
+                    pdfs.Add(Math.Round(mean + step * i, dit) + ":" + Math.Round(p, dit));
+                }
+                h.Datas.Add(pdfs.ToArray());
+            }
+            return h;
         }
     }
 }

@@ -14,7 +14,9 @@
             var dom = document.getElementById("container");
             var myChart = echarts.init(dom);
             var datas = getData();
-            var app = {};
+        var app = {};
+        var l = datas.d1.length > 19 ? 20 : datas.d1.length-1;
+        console.log(l);
             option = null;
             option = {
                 title: {
@@ -38,21 +40,23 @@
                     }
                 },
                 dataZoom: [{
-                    start: 0,
-                    end:20
+                    startValue: 0,
+                    endValue: datas.d1.length>20?20:datas.d1.length
                 }, {
                     type: 'inside'
                 }],
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: datas.d1
+                    data: datas.d1,
+                    min:"dataMin"
                 },
                 yAxis: {
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}'
-                    }
+                    },
+                      min:"dataMin"
                 },
                 series: [
                     {

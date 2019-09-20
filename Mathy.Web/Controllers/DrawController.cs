@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using Mathy.Libs;
 using Mathy.Maths;
 using Mathy.Model.Draw;
 using Mathy.Planning;
@@ -38,6 +39,19 @@ namespace Mathy.Web.Controllers
             if (key.Contains("Draw_Comparison"))
             {
                 return COM((Comparison)data);
+            }
+            if (key.Contains("MCM"))
+            {
+                Histogram his;
+                if (data is double[])
+                {
+                    his = DrawFuncs.Draw_Histogram(new List<double[]> { (double[])data }, context.Settings.DecimalDigitCount);
+                }
+                else
+                {
+                    his = DrawFuncs.Draw_Histogram((List<double[]>)data, context.Settings.DecimalDigitCount);
+                }
+                return His(his);
             }
             return View();
         }

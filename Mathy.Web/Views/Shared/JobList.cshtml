@@ -75,7 +75,15 @@
                                                 <td>@item.UpdateTime</td>
                                                 <td>@(item.IsComplete ? "是" : "否")</td>
                                                 <td>
-                                                    <a href="@Html.Raw(item.ViewLink)" class="J_menuItem_Child">查看</a>&nbsp;
+                                                    @if (item.PlanTitle.Contains("蒙特卡洛计算"))
+                                                    {
+                                                        <a href="@Url.Action("MCM_J",new { jobId=item.AutoID })" class="J_menuItem_Child">查看</a>;
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="@Html.Raw(item.ViewLink)" class="J_menuItem_Child">查看</a>;
+                                                    }
+
                                                     @if (ViewBag.isall == 0)
                                                     {
                                                         <a href="@Html.Raw(item.UpdateLink)" class="J_menuItem_Child">修改</a>

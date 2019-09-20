@@ -11,6 +11,7 @@ namespace Mathy.Web.Models
     {
         public JobListCellVM(JobLM lm, int pageIndex)
         {
+            AutoID = lm.AutoID;
             Name = lm.Name;
             PlanTitle = lm.PlanTitle;
             IsComplete = lm.IsComplete;

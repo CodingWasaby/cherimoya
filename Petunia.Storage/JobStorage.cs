@@ -11,12 +11,13 @@ namespace Petunia.Storage
 {
     public class JobStorage
     {
-        public static void Save(JobLM lm)
+        public static int Save(JobLM lm)
         {
             JobDB db = JobDB.ToDB(lm);
             db.Save();
 
             lm.AutoID = db.AutoID;
+            return lm.AutoID;
         }
 
         public static JobLM Get(int autoID)

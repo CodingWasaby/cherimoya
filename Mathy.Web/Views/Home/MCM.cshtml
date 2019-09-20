@@ -1,18 +1,23 @@
 ﻿@using Mathy.Web.Models
-@model EditPlanVM
+@model MCMVM
 @{
     ViewBag.Title = "MCM";
+    var diss = ViewBag.Diss as List<Dis>;
 }
 @section scripts {
     <script src="/Scripts/realtime-edit.js?a=@DateTime.Now.Ticks"></script>
+    <script src="/Scripts/grid.js"></script>
+    <script src="/Scripts/ui.js"></script>
+    <style>
+        .disparam input {
+            width: 120px;
+        }
+    </style>
     <script language="javascript">
         var c = "";
         function showDocs() {
             window.parent.document.getElementById("docs").click();
         }
-        $(document).ready(function () {
-
-        });
         // 跨浏览器获取用户在文本框中选中的文本
         function getSelectedText() {
             var textbox = document.getElementById("gs");
@@ -52,11 +57,7 @@
             $('#gs').val(b + f + e);
         }
 
-        function addparam() {
-
-        }
-
-        function dcChange() {
+        function doChange() {
             var step = 0;
             var dc = $('#decimalDigitCount').val();
             if (dc === null || dc === "") {
@@ -65,28 +66,208 @@
             else {
                 step = 1 / Math.pow(10, dc);
             }
-            $('.disparam').attr("step", step);
+            $('#variableList').find('input[type="number"]').attr("step", step);
         }
+
+        function selectChange(obj) {
+            var val = $(obj).val();
+            $(obj).parent().next("td").find(".disparam").hide();
+            $(obj).parent().next("td").find("[dataType=" + val + "]").show();
+        }
+
+        function deleteRow(obj) {
+            $(obj).parent().parent("tr").remove();
+        }
+
+        function addparam() {
+            var row = $('#variableList_foradd').children("tr");
+            var newRow = row.clone();
+            if ($('#variableList').children().length > 0)
+                $('#variableList').children().last("tr").after(newRow);
+            else
+                $('#variableList').html(newRow);
+            doChange();
+        }
+
+        function getData() {
+            var data = {};
+            data.Title = $('#Title').val();
+            data.RunNum = $('#runNum').val();
+            data.DecimalDigitCount = $('#decimalDigitCount').val();
+            data.GS = $('#gs').val();
+            data.MCMType = $('#MCMType').val();
+            data.JobID = $('#JobID').val();
+            data.p = $('#mcmP').val();
+            data.n_dig = $('#n_dig').val();
+            data.Diss = [];
+            var variableList = $('#variableList').find("tr");
+            for (var i = 0; i < variableList.length; i++) {
+                var p = {};
+                p.Name = $(variableList.get(i)).find(".name").val();
+                p.DisType = $(variableList.get(i)).find("select[name='disType']").val();
+                p.DisParams = [];
+                var paramDiv = $(variableList.get(i)).find('.disparam');
+                paramDiv.each((x, dom) => {
+                    if ($(dom).css("display") === "block") {
+                        var paramTd = $(dom).find("input");
+                        paramTd.each((x, dom) => {
+                            p.DisParams.push($(dom).val());
+                        });
+                    }
+                });
+                data.Diss.push(p);
+            }
+
+            if (data.GS === null || data.GS === '') {
+                data.error = "请设置计算表达式！";
+            }
+            if (data.RunNum === null || data.RunNum === '') {
+                data.error = "请设置计算次数！";
+            }
+            if (data.Title === null || data.Title === '') {
+                data.error = "请设置标题！";
+            }
+            if (data.Diss.length === 0) {
+                data.error = "请设置参数！";
+            }
+            return data;
+        }
+
+        function mcmRun(obj) {
+            $(obj).attr("disabled", true);
+            $(obj).val("正在计算...");
+            var data = getData();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            else {
+                $.ajax({
+                    url: "/Home/MCMRun",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (flag) {
+                        $(obj).attr("disabled", false);
+                        $(obj).val("计算结果");
+                        if (flag.message === "success") {
+                            var str;
+                            if (flag.result.length === 2) {
+                                str = "mean=" + flag.result[0] + ",standardDeviation=" + flag.result[1];
+                            }
+                            if (flag.result.length === 4) {
+                                str = "mean=" + flag.result[0] + ",resultsMean=" + flag.result[1] + ",yLow=" + flag.result[2] + ",yHigh=" + flag.result[3];
+                            }
+                            $('#message').html("<p>" + str + " </p>");
+                            $('#viewGraph').show();
+                        }
+                        else {
+                            alert(flag.message);
+                            $('viewGraph').hide();
+                        }
+                    },
+                    error: function (mes) {
+                        $(obj).attr("disabled", false);
+                        $(obj).val("计算结果");
+                    }
+                });
+            }
+        }
+
+        function mcmSave() {
+            var data = getData();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            else {
+                $.ajax({
+                    url: "/Home/MCMsave",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (flag) {
+                        if (flag.message === "success") {
+                            $('#JobID').val(flag.jobid);
+                            alert("保存成功！");
+                        }
+                        else {
+                            alert(flag.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        function viewGraph(key) {
+            $.ajax({
+                url: "/draw/GetDraw?key=" + key,
+                success: function (html) {
+                    popup(
+                        "绘制图像",
+                        {
+                            width: 950,
+                            height: 500,
+                            okButton: false,
+                            cancelButton: true,
+                            ok: function () {
+                                closePopup();
+                            },
+                            cancel: function () {
+                                closePopup();
+                            }
+                        },
+                        html);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            doChange();
+        });
     </script>
 }
 <div id="editTab">
-    <div class="bordered">基本设置</div>
+    <input hidden="hidden" id="MCMType" value="@Model.MCMType" />
+    <input hidden="hidden" id="MCMID" value="@Model.MCMID" />
+    <input hidden="hidden" id="JobID" value="@Model.JobID" />
+    <div class="bordered">@(Model.MCMType == 1 ? "蒙特卡洛计算 " : "蒙特卡洛计算（自适应） ")基本参数设置</div>
     <table class="table">
+        <thead>
+            <tr>
+                <th width="15%" style="text-align:right">名称</th>
+                <th width="80%">函数类型</th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
-                <td width="10%">实验名称</td>
-                <td width="90%"> <input id="titleTextBox" type="text" value="@Model.Title" style="display: block; width: 100%;" /> </td>
+                <td style="text-align:right">实验名称</td>
+                <td>
+                    <input id="Title" type="text" value="@Model.Title" style="width:100%" />
+                </td>
             </tr>
-            <tr>
-                <td width="10%">循环次数</td>
-                <td width="90%">
-                    <input id="runNum" type="number" value="" style="display: block; width: 100%;">
+            <tr @(Model.MCMType == 1 ? "" : "hidden")>
+                <td style="text-align:right">循环计算次数</td>
+                <td>
+                    <input id="runNum" type="number" value="@Model.RunNum" min="1" max="10000000" style="width:100%">
+                </td>
+            </tr>
+            <tr @(Model.MCMType == 1 ? "hidden" : "")>
+                <td style="text-align:right">概率P</td>
+                <td>
+                    <input id="mcmP" type="number" value="@Model.p" min="0" max="1" step="0.001" style="width:100%">
+                </td>
+            </tr>
+            <tr @(Model.MCMType == 1 ? "hidden" : "")>
+                <td style="text-align:right">数值容差计算深度n_dig</td>
+                <td>
+                    <input id="n_dig" type="number" value="@Model.n_dig" step="1" style="width:100%">
                 </td>
             </tr>
             <tr>
-                <td width="10%">有效小数位数</td>
-                <td width="90%">
-                    <input id="decimalDigitCount" type="number" min="0" max="8" step="1" style="display: block; width: 100%;" onchange="dcChange()">
+                <td style="text-align:right">有效小数位数</td>
+                <td>
+                    <input id="decimalDigitCount" type="number" min="0" max="8" step="1" onchange="doChange()" value="@Model.DecimalDigitCount" style="width:100%">
                 </td>
             </tr>
         </tbody>
@@ -96,40 +277,77 @@
     <table class="table" id="variableTable">
         <thead>
             <tr>
-                <th width="30%">名称</th>
+                <th width="20%">名称</th>
                 <th width="10%">函数类型</th>
-                <th width="50%">参数</th>
+                <th width="60%">参数</th>
                 <th width="10%"></th>
             </tr>
         </thead>
         <tbody id="variableList">
-            <tr>
-                <td hidden="hidden" name="param1" />
-                <td width="30%">
-                    <input class='name' type='text' value='' style="display: block; max-width: 900px; width: 100%;" />
-                </td>
-                <td width="10%">
-                    <select name="planType" class='type'>
-                        <option>正态分布</option>
-                        <option>均匀分布</option>
-                        <option>三角分布</option>
-                        <option>T分布</option>
-                        <option>贝努利分布</option>
-                    </select>
-                </td>
-                <td width="50%">
-                    mean=
-                    <input name="disParam1" class="disparam" type="number" step="0.01" />
-                    stddev=
-                    <input name="disParam2" class="disparam" type="number" step="0.01" />
-                </td>
-                <td width="10%">
-                    <a class='delete' href='javascript:deleteRow(0);'>删除</a>&nbsp;
-                </td>
-            </tr>
+            @foreach (var n in Model.Diss)
+            {
+                var normalFlag = n.DisType == "normal";
+                var continuousFlag = n.DisType == "continuous";
+                var triangularFlag = n.DisType == "triangular";
+                var studentTFlag = n.DisType == "studentT";
+                var bernoulliTFlag = n.DisType == "bernoulli";
+                <tr>
+                    <td width="20%">
+                        <input class='name' type='text' value="@n.Name" style="display: block; max-width: 900px; width: 100%;" />
+                    </td>
+                    <td width="10%">
+                        <select name="disType" onchange="selectChange(this)" value="@n.DisType">
+                            <option value="normal" @(normalFlag ? "selected" : "")>正态分布</option>
+                            <option value="continuous" @(continuousFlag ? "selected" : "")>均匀分布</option>
+                            <option value="triangular" @(triangularFlag ? "selected" : "")>三角分布</option>
+                            <option value="studentT" @(studentTFlag ? "selected" : "")>t分布</option>
+                            <option value="bernoulli" @(bernoulliTFlag ? "selected" : "")>贝努利分布</option>
+                        </select>
+                    </td>
+                    <td width="60%">
+                        @{
+                            <div dataType="normal" class="disparam" style="display:@(normalFlag ? "block" : "none")">
+                                mean=
+                                <input name="disParam1" type="number" value="@(normalFlag?n.DisParams[0]:0)" />
+                                stddev=
+                                <input name="disParam2" type="number" value="@(normalFlag?n.DisParams[1]:0)" />
+                            </div>
+                            <div dataType="continuous" class="disparam" style="display:@(continuousFlag ? "block" : "none")">
+                                lower=
+                                <input name="disParam1" type="number" value="@(continuousFlag?n.DisParams[0]:0)" />
+                                upper=
+                                <input name="disParam2" type="number" value="@(continuousFlag?n.DisParams[1]:0)" />
+                            </div>
+                            <div dataType="triangular" class="disparam" style="display:@(triangularFlag ? "block" : "none")">
+                                lower=
+                                <input name="disParam1" type="number" value="@(triangularFlag?n.DisParams[0]:0)" />
+                                upper=
+                                <input name="disParam2" type="number" value="@(triangularFlag?n.DisParams[1]:0)" />
+                                mode=
+                                <input name="disParam3" type="number" value="@(triangularFlag?n.DisParams[2]:0)" />
+                            </div>
+                            <div dataType="studentT" class="disparam" style="display:@(studentTFlag ? "block" : "none")">
+                                location=
+                                <input name="disParam1" type="number" value="@(studentTFlag?n.DisParams[0]:0)" />
+                                scale=
+                                <input name="disParam2" type="number" value="@(studentTFlag?n.DisParams[1]:0)" />
+                                freedom=
+                                <input name="disParam3" type="number" value="@(studentTFlag?n.DisParams[2]:0)" />
+                            </div>
+                            <div dataType="bernoulli" class="disparam" style="display:@(bernoulliTFlag ? "block" : "none")">
+                                probability=
+                                <input name="disParam1" min="0" max="1" type="number" value="@(bernoulliTFlag?n.DisParams[0]:0)" />
+                            </div>
+                        }
+                    </td>
+                    <td width="10%">
+                        <a class='delete' href='javascript:void(0);' onclick="deleteRow(this)">删除</a>&nbsp;
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-    <input type="button" class="button" value="添加" onclick="javascript: addparam(0);" />
+    <input type="button" class="button" value="添加" onclick="javascript: addparam();" />
 
     <div class="bordered">计算表达式</div>
     <div class="form-group">
@@ -141,10 +359,71 @@
         <a class="btn btn-info" onclick="showDocs()">科学文档</a>
     </div>
     <label style="float:left;margin-top:4px">  y = </label>
-    <input id="gs" type="text" value="" style="width:900px;max-width:900px; display: block;margin-top:10px;" title="鼠标选中内容再点击相应函数，选中内容可直接作为参数">
+    <input id="gs" type="text" value="@Model.GS" style="width:900px;max-width:900px; display: block;margin-top:10px;" title="鼠标选中内容再点击相应函数，选中内容可直接作为参数">
     <hr />
     <div id="message" class="error-message"></div>
     <br />
-    <input class="btn btn-primary" type="button" value="保存" onclick="javascript: save();" />
+    <input class="btn btn-primary" type="button" value="计算结果" onclick="mcmRun(this);" style="margin-bottom:30px" />
+    <input class="btn btn-primary" type="button" value="查看结果图" onclick="viewGraph('MCM')" style="margin-bottom:30px;display:none"  id="viewGraph" />
+    <input class="btn btn-primary" type="button" value="保存设置" onclick="mcmSave();" style="margin-bottom:30px" />
+</div>
+
+<div hidden="hidden">
+    <table>
+        <tbody id="variableList_foradd">
+            <tr>
+                <td hidden="hidden" name="param1" />
+                <td width="20%">
+                    <input class='name' type='text' value='' style="display: block; max-width: 900px; width: 100%;" />
+                </td>
+                <td width="10%">
+                    <select name="disType" class='type' onchange="selectChange(this)">
+                        <option value="normal">正态分布</option>
+                        <option value="continuous">均匀分布</option>
+                        <option value="triangular">三角分布</option>
+                        <option value="studentT">T分布</option>
+                        <option value="bernoulli">贝努利分布</option>
+                    </select>
+                </td>
+                <td width="60%">
+                    <div dataType="normal" class="disparam">
+                        mean=
+                        <input name="disParam1" type="number" />
+                        stddev=
+                        <input name="disParam2" type="number" />
+                    </div>
+                    <div dataType="continuous" hidden="hidden" class="disparam">
+                        lower=
+                        <input name="disParam1" type="number" />
+                        upper=
+                        <input name="disParam2" type="number" />
+                    </div>
+                    <div dataType="triangular" hidden="hidden" class="disparam">
+                        lower=
+                        <input name="disParam1" type="number" />
+                        upper=
+                        <input name="disParam2" type="number" />
+                        mode=
+                        <input name="disParam3" type="number" />
+                    </div>
+                    <div dataType="studentT" hidden="hidden" class="disparam">
+                        location=
+                        <input name="disParam1" type="number" />
+                        scale=
+                        <input name="disParam2" type="number" />
+                        freedom=
+                        <input name="disParam3" type="number" />
+                    </div>
+                    <div dataType="bernoulli" hidden="hidden" class="disparam">
+                        probability=
+                        <input name="disParam1" min="0" max="1" type="number" />
+                    </div>
+                </td>
+                <td width="10%">
+                    <a class='delete' href='javascript:void(0);' onclick="deleteRow(this)">删除</a>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 

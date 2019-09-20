@@ -7,7 +7,7 @@
 
 @section scripts {
 
-    <script src="/Scripts/grid.js"></script>
+    <script src="/Scripts/grid.js?sysid=cherimoya"></script>
 
     <script language="javascript">
 
@@ -23,7 +23,7 @@
         function getStepList() {
 
             $.ajax({
-                url: "/Home/GetPlanStepList",
+                url: "/Home/GetPlanStepList?sysid=cherimoya",
                 success: function (html) {
                     $("#stepListDiv").html(html);
                 }
@@ -35,7 +35,7 @@
             currentStepIndex = stepIndex;
 
             $.ajax({
-                url: "/Home/GetPlanStepArea?stepIndex=" + stepIndex,
+                url: "/Home/GetPlanStepArea?sysid=cherimoya&stepIndex=" + stepIndex,
                 success: function (html) {
                     $("#stepAreaDiv").html(html);
                     //  addGrids(stepIndex);
@@ -45,7 +45,7 @@
 
         function passPlan() {
             $.ajax({
-                url: "/Home/PassPlan?planID=" + '@Model.PlanID',
+                url: "/Home/PassPlan?sysid=cherimoya&planID=" + '@Model.PlanID',
                 method: "POST",
                 success: function (flag) {
                     window.parent.closeThisTab_sh();
@@ -55,7 +55,7 @@
 
         function rejectPlan() {
             $.ajax({
-                url: "/Home/ReJectPlan?planID=" + '@Model.PlanID',
+                url: "/Home/ReJectPlan?sysid=cherimoya&planID=" + '@Model.PlanID',
                 method: "POST",
                 success: function (flag) {
                     window.parent.closeThisTab_sh();

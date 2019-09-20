@@ -15,7 +15,7 @@ namespace Mathy.Planning
 {
     public class EvaluationContext
     {
-        internal EvaluationContext(Plan plan, Step[] steps)
+        public EvaluationContext(Plan plan, Step[] steps)
         {
             Plan = plan;
             Steps = steps;
@@ -54,7 +54,10 @@ namespace Mathy.Planning
             get { return sourceVariables.ToDictionary(i => i.Key, i => i.Value); }
         }
 
-
+        public void RemoveSourceVariable(string key)
+        {
+            sourceVariables.Remove(key);
+        }
 
         public string[] Variables
         {

@@ -156,6 +156,7 @@
     <Compile Include="Models\FuncDocVM.cs" />
     <Compile Include="Models\ImageCache.cs" />
     <Compile Include="Models\JobListCellVM.cs" />
+    <Compile Include="Models\MCMVM.cs" />
     <Compile Include="Models\PlanStepAreaVM.cs" />
     <Compile Include="Models\PlanStepListCellVM.cs" />
     <Compile Include="Models\PlanVM.cs" />

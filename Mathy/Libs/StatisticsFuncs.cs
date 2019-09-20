@@ -997,21 +997,28 @@ namespace Mathy.Libs
                 }
                 textEC.Update();
                 var r = textEC.SourceVariables.Last(m => !e.Variables.Contains(m.Key));
-                results[i] = (double)r.Value;
+                var rv = (double)r.Value;
+                if (double.IsNaN(rv) || double.IsInfinity(rv))
+                {
+                    // rv = 0;
+                }
+                else
+                {
+                    results[i] = rv;
+                }
             }
-            Array.Sort(results); // 顺序递增排序
+            //Array.Sort(results); // 顺序递增排序
             double mean = results.Mean(); // 平均值 作为 估计值
             double standardDeviation = results.StandardDeviation(); // 标准差作为不确定度
-
+            mean = PandZero(mean, e.Settings.DecimalDigitCount);
+            standardDeviation = PandZero(standardDeviation, e.Settings.DecimalDigitCount);
+            e.SetValueAcrossSteps("MCM", results);
             return new double[] { mean, standardDeviation };
         }
 
         /// <summary>
         /// 蒙特卡洛模拟计算不确定度过程 报告结果部分 2)
         /// </summary>
-        /// <param name="simulateNum">模拟次数</param>
-        /// <param name="func">自定义输入量与输出量之间的函数关系</param>
-        /// <param name="distribution">自定义分布</param>
         /// <returns></returns>
         public static double[] MCM_2(double p, int n_dig, string text, object ec)
         {
@@ -1050,14 +1057,22 @@ namespace Mathy.Libs
                     }
                     textEC.Update();
                     var r = textEC.SourceVariables.Last(m => !e.Variables.Contains(m.Key));
-                    results[i] = (double)r.Value;
+                    var rv = (double)r.Value;
+                    if (double.IsNaN(rv) || double.IsInfinity(rv))
+                    {
+                        // rv = 0;
+                    }
+                    else
+                    {
+                        results[i] = rv;
+                    }
                 }
 
 
                 Array.Sort(results); // 顺序递增排序
                 double mean = results.Mean(); // 平均值 作为 估计值
                 double standardDeviation = results.StandardDeviation(); // 标准差作为不确定度
-                double[] ySection = getSection(false, 0.95, simulateNum, true, results); // 包含区间获取
+                double[] ySection = getSection(false, p, simulateNum, true, results); // 包含区间获取
                 double yLow = ySection[0], yHigh = ySection[1]; // 包含区间的左右端点
 
                 resultsList.Add(results);
@@ -1088,9 +1103,21 @@ namespace Mathy.Libs
                 {
                     h++; continue;
                 }
+                e.SetValueAcrossSteps("MCM", resultsList);
+
+                mean = PandZero(mean, e.Settings.DecimalDigitCount);
+                resultsMean = PandZero(resultsMean, e.Settings.DecimalDigitCount);
+                yLow = PandZero(yLow, e.Settings.DecimalDigitCount);
+                yHigh = PandZero(yHigh, e.Settings.DecimalDigitCount);
+
                 return new double[] { mean, resultsMean, yLow, yHigh };
             }
 
+        }
+
+        public static double PandZero(double d, int digits)
+        {
+            return Math.Round(Convert.ToDouble(d.ToString("f" + digits)), digits);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿
+﻿@using Mathy.Web.Models
 @{
     ViewBag.Title = "Main";
     Layout = "~/Views/Shared/_Login.cshtml";
@@ -13,7 +13,7 @@
             <div class="media list-group-item  gray-bg">
                 <div class="media-body">
                     <h3 class="media-heading">
-                        蒙特卡洛模拟计算
+                        蒙特卡洛方法不确定度评定
                     </h3>
                     <p>
                         这是说明
@@ -24,15 +24,14 @@
                     </p>
                 </div>
                 <div class="form-group" style="margin-top:10px">
-                    <a href="@Url.Action("mcm","home",new { MCM=1})" class="btn-lg btn-info J_menuItem_Child">蒙特卡洛模拟计算</a>
-                    <a href="@Url.Action("mcm","home",new { MCM=2})" class="btn-lg btn-info J_menuItem_Child">蒙特卡洛模拟计算（自适应）</a>
+                    <a href="@Url.Action("mcm","home",new MCMVM { MCMType =1, DecimalDigitCount=3})" class="btn-lg btn-info J_menuItem_Child">蒙特卡洛模拟计算</a>
+                    <a href="@Url.Action("mcm","home",new MCMVM { MCMType=2,DecimalDigitCount=3})" class="btn-lg btn-info J_menuItem_Child">蒙特卡洛模拟计算（自适应）</a>
                 </div>
             </div>
-
             <div class="media list-group-item  gray-bg ">
                 <div class="media-body">
                     <h3 class="media-heading">
-                        类型A
+                        检测数据处理
                     </h3>
                     <p>
                         这是说明
@@ -43,14 +42,14 @@
                     </p>
                 </div>
                 <div class="form-group" style="margin-top:10px">
-                    <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-lg btn-info J_menuItem_Child">浏览类型A实验</a>
+                    <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-lg btn-info J_menuItem_Child">浏览检测数据处理实验</a>
                 </div>
             </div>
 
             <div class="media list-group-item  gray-bg">
                 <div class="media-body">
                     <h3 class="media-heading">
-                        类型B
+                        标准物质不确定度评定
                     </h3>
                     <p>
                         这是说明
@@ -61,7 +60,7 @@
                     </p>
                 </div>
                 <div class="form-group" style="margin-top:10px">
-                    <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-lg btn-info J_menuItem_Child">浏览类型B实验</a>
+                    <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-lg btn-info J_menuItem_Child">浏览标准物质不确定度评定实验</a>
                 </div>
             </div>
         </div>

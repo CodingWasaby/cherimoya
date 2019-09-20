@@ -22,11 +22,11 @@
             var myChart = echarts.init(dom);
             var app = {};
             option = null;
-
             function splitData() {
                 var rawData = '@datas'.split(",");
                 var categoryData = [];
                 var values = [];
+                var yDatas = [];
                 for (var i = 0; i < rawData.length; i++) {
                     categoryData.push(i);
                     var rd = rawData[i].split(":");
@@ -34,12 +34,19 @@
                     rdNew.push(i+1);
                     rdNew=  rdNew.concat(rd);
                     values.push(rdNew);
+                    yDatas.push( parseInt( rd[0]) + parseInt(rd[1])+parseInt( rd[0])*0.1);
+                            yDatas.push( parseInt( rd[0]) - parseInt(rd[1])-parseInt( rd[0])*0.1);
                 }
                 categoryData.push(rawData.length);
-                categoryData.push(rawData.length+1);
+                categoryData.push(rawData.length + 1);
+                yDatas.sort(function (a, b) {
+                  return a-b;
+                });
                 return {
                     categoryData: categoryData,
-                    values: values
+                    values: values,
+                    min:yDatas[0],
+                    max:yDatas[yDatas.length-1]
                 };
             }
         var data = splitData();
@@ -138,6 +145,8 @@
                 ],
                 yAxis: [
                     {
+                        min: data.min,
+                        max:data.max,
                         scale: true,
                         splitArea: {
                             show: true
@@ -155,7 +164,8 @@
                             y: [1, 2],
                             tooltip: [1, 2]
                         },
-                        data: data.values
+                        data: data.values,
+
                     }
                 ]
             }, true);

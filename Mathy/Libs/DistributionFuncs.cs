@@ -27,21 +27,24 @@ namespace Mathy.Libs
 
         public Distribution(String DistributionName, params double[] vs) // 构造函数 根据名字初始化分布
         {
-            switch (DistributionName)
+            switch (DistributionName.ToUpper())
             {
-                case "Normal":
+                case "NORMAL":
                     normalDis = new Normal(vs[0], vs[1]); // double mean, double stddev
                     break;
-                case "ContinuousUniform":
+                case "CONTINUOUS":
                     continuousUniformDis = new ContinuousUniform(vs[0], vs[1]); // int lower, int upper
                     break;
-                case "Triangular":
+                case "TRIANGULAR":
                     triangularDis = new Triangular(vs[0], vs[1], vs[2]); //double lower, double upper, double mode  (lower ≤ mode ≤ upper)
                     break;
-                case "StudentT":
+                case "STUDENTT":
                     studentTDis = new StudentT(vs[0], vs[1], vs[2]);//double location, double scale, double freedom
                     break;
-                case "DiscreteUniform":
+                case "BERNOULLI":
+                    bernoulliDis = new Bernoulli(vs[0]);
+                    break;
+                case "DISCRETEUNIFORM":
                     discreteUniform = new DiscreteUniform((int)vs[0], (int)vs[1]); // int lower, int upper
                     break;
             }

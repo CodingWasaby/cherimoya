@@ -160,32 +160,48 @@ namespace Petunia
         }
         */
 
-        public static void CreateJob(int userAutoID, int planAutoID, string name, int decimalCount)
+        public static int CreateJob(int userAutoID, int planAutoID, string name, int decimalCount)
         {
-            PlanLM planLM = GetPlanLM(planAutoID);
-            Plan plan = GetPlan(planLM.AutoID);
             DateTime now = DateTime.Now;
+            if (planAutoID > 0)
+            {
+                PlanLM planLM = GetPlanLM(planAutoID);
+                Plan plan = GetPlan(planLM.AutoID);
 
-            string id = Guid.NewGuid().ToString();
-            AppStore.PlanRepository.Copy(planLM.ID, id);
+                string id = Guid.NewGuid().ToString();
+                AppStore.PlanRepository.Copy(planLM.ID, id);
+                planLM.ReferenceCount++;
+                PlanStorage.Save(planLM);
+                return JobStorage.Save(
+                    new JobLM()
+                    {
+                        Name = name,
+                        CreateTime = now,
+                        IsComplete = plan.Variables.Length == 0,
+                        PlanAutoID = planAutoID,
+                        PlanID = id,
+                        PlanTitle = plan.Title,
+                        UpdateTime = now,
+                        UserAutoID = userAutoID,
+                        Variables = new JsonSerializer().SerializeToString(new Dictionary<string, object>()),
+                        DecimalCount = decimalCount
+                    });
+            }
 
-            JobStorage.Save(
-                new JobLM()
-                {
-                    Name = name,
-                    CreateTime = now,
-                    IsComplete = plan.Variables.Length == 0,
-                    PlanAutoID = planAutoID,
-                    PlanID = id,
-                    PlanTitle = plan.Title,
-                    UpdateTime = now,
-                    UserAutoID = userAutoID,
-                    Variables = new JsonSerializer().SerializeToString(new Dictionary<string, object>()),
-                    DecimalCount = decimalCount
-                });
-
-            planLM.ReferenceCount++;
-            PlanStorage.Save(planLM);
+            return JobStorage.Save(
+                   new JobLM()
+                   {
+                       Name = name,
+                       CreateTime = now,
+                       IsComplete = false,
+                       PlanAutoID = planAutoID,
+                       PlanID = "",
+                       PlanTitle = planAutoID == -1 ? "蒙特卡洛计算" : "蒙特卡洛计算（自适应）",
+                       UpdateTime = now,
+                       UserAutoID = userAutoID,
+                       Variables = new JsonSerializer().SerializeToString(new Dictionary<string, object>()),
+                       DecimalCount = decimalCount
+                   });
         }
 
         public static void UpdateJob(int autoID, string name)
@@ -260,10 +276,12 @@ namespace Petunia
             JobLM job = JobStorage.Get(autoID);
 
             JobStorage.Delete(autoID);
-
-            PlanLM plan = PlanStorage.Get(job.PlanAutoID);
-            plan.ReferenceCount--;
-            PlanStorage.Save(plan);
+            if (job != null && job.PlanAutoID > 0)
+            {
+                PlanLM plan = PlanStorage.Get(job.PlanAutoID);
+                plan.ReferenceCount--;
+                PlanStorage.Save(plan);
+            }
         }
 
         public static void DeletePlan(int autoID)
@@ -286,15 +304,15 @@ namespace Petunia
         {
             //if (AppStore.Docs == null)
             //{
-                FuncDoc[] docs = new JsonDeserializer().DeserializeString(System.IO.File.ReadAllText(AppStore.PathResolver.FuncDocPath, System.Text.Encoding.UTF8), typeof(FuncDoc[])) as FuncDoc[];
+            FuncDoc[] docs = new JsonDeserializer().DeserializeString(System.IO.File.ReadAllText(AppStore.PathResolver.FuncDocPath, System.Text.Encoding.UTF8), typeof(FuncDoc[])) as FuncDoc[];
 
-                foreach (FuncDoc doc in docs)
-                {
-                    doc.Article = Article.Parse(AppStore.PathResolver.GetFuncArticlePath(doc.Name));
-                }
+            foreach (FuncDoc doc in docs)
+            {
+                doc.Article = Article.Parse(AppStore.PathResolver.GetFuncArticlePath(doc.Name));
+            }
 
 
-                AppStore.Docs = docs;
+            AppStore.Docs = docs;
             //}
 
 

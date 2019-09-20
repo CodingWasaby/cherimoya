@@ -10,6 +10,7 @@ using Mathy.Web.Controllers.New.Filter;
 using Mathy.Web.Filters;
 using Mathy.Web.Models;
 using Mathy.Web.ServiceModels;
+using Newtonsoft.Json;
 using Petunia;
 using Petunia.LogicModel;
 using Petunia.Storage;
@@ -437,7 +438,17 @@ namespace Mathy.Web.Controllers
             try
             {
                 EvaluationContext context = Session["Context"] as EvaluationContext;
+                List<string> deletaKeys = new List<string>();
+                foreach (var n in context.SourceVariables)
+                {
 
+                    if (n.Key.Contains("Draw_"))
+                    {
+                        deletaKeys.Add(n.Key);
+                    }
+                }
+
+                deletaKeys.ForEach(m => context.RemoveSourceVariable(m));
                 foreach (InVariableSM variable in variables)
                 {
                     context.SetValueString(variable.Name, variable.Value);
@@ -910,9 +921,103 @@ namespace Mathy.Web.Controllers
         }
 
         [CheckLogin]
-        public ActionResult MCM()
+        public ActionResult MCM(MCMVM mcm)
         {
-            return View(new EditPlanVM());
+            var _m = Session["MCM"];
+            if (_m != null)
+            {
+                mcm = _m as MCMVM;
+                Session.Remove("MCM");
+            }
+            mcm.Diss = mcm.Diss == null ? new Dis[] { } : mcm.Diss;
+            return View(mcm);
+        }
+
+        [CheckLogin]
+        public ActionResult MCM_J(int jobId)
+        {
+            var dal = new MCMDAL();
+            var mcmE = dal.GetMCM(jobId);
+            var mcm = JsonConvert.DeserializeObject<MCMVM>(mcmE.MCMInfo);
+            mcm.JobID = jobId;
+            Session["mcm"] = mcm;
+            return RedirectToAction("MCM", mcm);
+        }
+
+        [CheckLogin]
+        [HttpPost]
+        public JsonResult MCMRun(MCMVM mcm)
+        {
+            EvaluationContext ec = new EvaluationContext(new Plan(), new Step[] { });
+
+            ec.Settings = new Settings();
+            ec.Settings.DecimalDigitCount = mcm.DecimalDigitCount;
+            if (mcm.MCMType == 2)
+            {
+                double J, M;
+                J = Math.Floor(100 / (1 - mcm.p));
+                M = J > 1e4 ? J : 1e4;
+                mcm.RunNum = (int)M;
+            }
+            foreach (var n in mcm.Diss)
+            {
+                if (n.Name.ToUpper() == "Y")
+                {
+                    return Json(new { message = "参数名称不能够为y" });
+                }
+                var values = GetSample(n.DisType, mcm.RunNum, n.DisParams);
+                ec.SetValueAcrossSteps(n.Name, values);
+                ec.SetValue(n.Name, values);
+            }
+            Session["Context"] = ec;
+            if (mcm.MCMType == 1)
+            {
+                var result = StatisticsFuncs.MCM_1(mcm.RunNum, "y=" + mcm.GS, ec);
+                return Json(new { message = "success", result });
+            }
+            else
+            {
+                var result = StatisticsFuncs.MCM_2(mcm.p, mcm.n_dig, "y=" + mcm.GS, ec);
+                return Json(new { message = "success", result });
+            }
+        }
+
+        [CheckLogin]
+        [HttpPost]
+        public JsonResult MCMSave(MCMVM mcm)
+        {
+            foreach (var n in mcm.Diss)
+            {
+                if (n.Name.ToUpper() == "Y")
+                {
+                    return Json(new { message = "参数名称不能够为y" });
+                }
+            }
+            var userid = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value);
+            Script.DeleteJob(mcm.JobID);
+            var jobid = Script.CreateJob(userid, -mcm.MCMType, mcm.Title, mcm.DecimalDigitCount);
+            var dal = new MCMDAL();
+            var mcmID = dal.SaveMCM(new MCM { JobID = jobid, MCMInfo = JsonConvert.SerializeObject(mcm) });
+            return Json(new { message = "success", mcmID, jobid });
+        }
+
+
+        private double[] GetSample(string disType, int runTimes, params double[] vs)
+        {
+            switch (disType.ToUpper())
+            {
+                case "NORMAL":
+                    return Distribution.normal(vs[0], vs[1], runTimes);
+                case "CONTINUOUS":
+                    return Distribution.continuousUniform(vs[0], vs[1], runTimes);
+                case "TRIANGULAR":
+                    return Distribution.triangular(vs[0], vs[1], vs[2], runTimes);
+                case "STUDENTT":
+                    return Distribution.studentT(vs[0], vs[1], vs[2], runTimes);
+                case "BERNOULLI":
+                    return Distribution.bernoulli(vs[0], runTimes).Select(m => Convert.ToDouble(m)).ToArray();
+            }
+            return null;
         }
     }
 }

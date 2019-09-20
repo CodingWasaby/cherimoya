@@ -56,12 +56,12 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Home/CreateComputationTree',
+                    url: '/Home/CreateComputationTree?sysid=cherimoya&',
                     data: JSON.stringify(plan),
                     success: function (result) {
 
                         if (result.success) {
-                            $('#image')[0].src = '/Home/GetImage?id=' + result.id;
+                            $('#image')[0].src = '/Home/GetImage?sysid=cherimoya&id=' + result.id;
                             $('#resultDiv').html('');
                         }
                         else {
