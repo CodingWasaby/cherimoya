@@ -972,7 +972,7 @@ namespace Mathy.Web.Controllers
             Session["Context"] = ec;
             if (mcm.MCMType == 1)
             {
-                var result = StatisticsFuncs.MCM_1(mcm.RunNum, "y=" + mcm.GS, ec);
+                var result = StatisticsFuncs.MCM_1(mcm.RunNum, mcm.p, "y=" + mcm.GS, ec);
                 return Json(new { message = "success", result });
             }
             else

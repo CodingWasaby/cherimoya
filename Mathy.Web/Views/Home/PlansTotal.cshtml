@@ -44,7 +44,7 @@
     <div class="wrapper wrapper-content animated fadeIn">
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-sm-1">
+                @*<div class="col-sm-1">
                     <div class="form-group">
                         <label class="control-label">类型</label>
                         <div class="row" style="padding-left:20px">
@@ -56,7 +56,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label class="control-label" for="product_name">模板名称</label>
@@ -70,13 +70,13 @@
                             <select class="form-control" id="category" style="width:80%">
                                 @if (ViewBag.category == "A")
                                 {
-                                    <option value="A" selected="selected">类型A</option>
-                                    <option value="B">类型B</option>
+                                    <option value="A" selected="selected">检测数据处理</option>
+                                    <option value="B">标准物质不确定度评定</option>
                                 }
                                 else
                                 {
-                                    <option value="A" >类型A</option>
-                                    <option value="B" selected="selected">类型B</option>
+                                    <option value="A">检测数据处理</option>
+                                    <option value="B" selected="selected">标准物质不确定度评定</option>
                                 }
 
                             </select>

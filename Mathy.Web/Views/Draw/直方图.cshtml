@@ -5,7 +5,19 @@
 @model Histogram
 @{
     Layout = null;
-    var datas = string.Join("&", Model.Datas.Select(m => string.Join(",", m)));
+    var titles = new List<string>();
+    var rates = new List<double>();
+    if (Model != null && Model.Datas != null)
+    {
+        foreach (var n in Model.Datas)
+        {
+            titles.Add(n.Item1 + "-" + n.Item2);
+            rates.Add(n.Item3);
+        }
+    }
+    var strT = string.Join(",", titles);
+    var strR = string.Join(",", rates);
+    var maxRate = Model.Datas.Max(m => m.Item3);
 }
 <!DOCTYPE html>
 <html style="height: 100%">
@@ -16,83 +28,69 @@
     <div id="container" style="height: 100%"></div>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
     <script type="text/javascript">
+
+        var titles = '@strT';
+        var rates = '@strR';
+
         var dom = document.getElementById("container");
         var myChart = echarts.init(dom);
-        var app = {};
-        option = null;
-        app.title = '直方图';
-
-        var dataAll = [];
-        var dataNames = [];
-        var series = [];
-        dataAll = '@datas'.split('&');
-        for (var i = 0; i < dataAll.length; i++) {
-            dataNames.push("数据" + (i + 1));
-            var sdata = [];
-            var sd = dataAll[i].split(',');
-            for (var j = 0; j < sd.length; j++) {
-                sdata.push(sd[j].split(':'));
-            }
-            if (i === 0) {
-                var s = {
-                    name: "数据" + (i + 1),
-                    type: 'line',
-                    smooth: true,
-                    areaStyle: {
-                        color: 'blue'
-                    },
-                    color: 'blue',
-                    data: sdata
-                };
-                series.push(s);
-            }
-            else {
-                var s1 = {
-                    name: "数据" + (i + 1),
-                    type: 'line',
-                    smooth: true,
-                    data: sdata
-                };
-                series.push(s1);
-            }
-        }
-
         option = {
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: { readOnly: true },
-                    restore: {},
-                    saveAsImage: {}
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
                 }
             },
-            tooltip: {
-                trigger: 'none',
-                axisPointer: {
-                    type: 'cross'
+            toolbox: {
+                feature: {
+                    dataView: { show: true, readOnly: false },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
                 }
             },
             legend: {
-                data: dataNames
+                data: ['概率密度', '拟合曲线']
             },
             xAxis: [
                 {
-                    type: 'value',
-                      min:"dataMin"
-                }               
+                    type: 'category',
+                    data: titles.split(','),
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    axisLabel: { rotate: 60, interval: 0 }
+                }
             ],
             yAxis: [
                 {
                     type: 'value',
-                      min:"dataMin"
-                }               
+                    name: '概率',
+                    min: 0,
+                    max: @(maxRate*1.1),
+                    interval: 0.1
+                }
             ],
-            series: series
+            series: [
+                {
+                    name: '概率密度',
+                    type: 'bar',
+                    data: rates.split(',')
+                },
+                {
+                    name: '拟合曲线',
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: {
+                        width: 3,
+                    },
+                    data: rates.split(',')
+                }
+            ]
         };
-        ;
-        if (option && typeof option === "object") {
-            myChart.setOption(option, true);
-        }
+        myChart.setOption(option, true);
     </script>
 </body>
 </html>

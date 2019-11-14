@@ -42,7 +42,6 @@ C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\bin\De
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\bin\Debug\Dapper.xml
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\bin\Debug\zh-Hans\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\obj\Debug\Mathy.TestCases.csprojAssemblyReference.cache
-C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\obj\Debug\Mathy.TestCases.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\obj\Debug\Mathy.TestCases.csproj.CopyComplete
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\obj\Debug\Mathy.TestCases.dll
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.TestCases\obj\Debug\Mathy.TestCases.pdb

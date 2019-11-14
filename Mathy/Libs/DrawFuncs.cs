@@ -8,6 +8,7 @@ using System.Text;
 using Mathy.Maths;
 using MathNet.Numerics.Statistics;
 using MathNet.Numerics.Distributions;
+using System.Drawing;
 
 namespace Mathy.Libs
 {
@@ -57,18 +58,16 @@ namespace Mathy.Libs
         /// </summary>
         /// <param name="datas"></param>
         /// <param name="ec"></param>
-        public static void Draw_MeanValue(double[] datas, object ec)
+        public static void Draw_MeanValue(double[] datas, double m, double h, double l, object ec)
         {
             EvaluationContext e = ec as EvaluationContext;
             datas = (datas as double[]).Where(j => !double.IsNaN(j)).Select(j => Math.Round(j, e.Settings.DecimalDigitCount)).ToArray();
-            double mean = datas.Mean();
-            double standardDeviation = datas.StandardDeviation();
             e.SetValueAcrossSteps("Draw_MeanValue" + Guid.NewGuid().ToString().Replace("-", ""), new MeanValue
             {
                 Datas = string.Join(",", datas),
-                H = Math.Round(mean + standardDeviation, e.Settings.DecimalDigitCount),
-                L = Math.Round(mean - standardDeviation, e.Settings.DecimalDigitCount),
-                M = Math.Round(mean, e.Settings.DecimalDigitCount),
+                H = Math.Round(h, e.Settings.DecimalDigitCount),
+                L = Math.Round(l, e.Settings.DecimalDigitCount),
+                M = Math.Round(m, e.Settings.DecimalDigitCount),
             });
         }
 
@@ -79,37 +78,17 @@ namespace Mathy.Libs
         /// </summary>
         /// <param name="datas"></param>
         /// <param name="ec"></param>
-        public static void Draw_LinearRegression(double[] datas, object ec)
+        public static void Draw_LinearRegression(Matrix matrix, double k, double b, object ec)
         {
-            double k = 0, b = 0;
-            double sumX = 0, sumY = 0;
-            double avgX = 0, avgY = 0;
-            int i = 1;
-            foreach (var v in datas)
+            var points = new List<Tuple<double, double>>();
+            for (int i = 0; i < matrix.RowCount; i++)
             {
-                sumX += i;
-                sumY += v;
-                i++;
+                points.Add(new Tuple<double, double>(matrix[i, 0], matrix[i, 1]));
             }
-            avgX = sumX / (datas.Count());
-            avgY = sumY / (datas.Count());
-
-            //sumA=(x-avgX)(y-avgY)的和 sumB=(x-avgX)平方
-            double sumA = 0, sumB = 0;
-            i = 1;
-            foreach (var v in datas)
-            {
-                sumA += (i - avgX) * (v - avgY);
-                sumB += (i - avgX) * (i - avgX);
-                i++;
-            }
-            k = sumA / (sumB + 0.0);
-            b = avgY - k * avgX;
-
             EvaluationContext e = ec as EvaluationContext;
             LinearRegression line = new LinearRegression()
             {
-                Datas = (datas as double[]).Where(j => !double.IsNaN(j)).Select(j => Math.Round(j, e.Settings.DecimalDigitCount)).ToArray(),
+                Datas = points,
                 K = Math.Round(k, e.Settings.DecimalDigitCount),
                 B = Math.Round(b, e.Settings.DecimalDigitCount)
             };
@@ -123,58 +102,54 @@ namespace Mathy.Libs
         /// </summary>
         /// <param name="datas"></param>
         /// <param name="ec"></param>
-        public static void Draw_Histogram(Matrix matrix, object ec)
+        public static void Draw_Histogram(double[] datas, object ec)
         {
             EvaluationContext e = ec as EvaluationContext;
-            var h = new Model.Draw.Histogram();
-            h.Datas = new List<string[]>();
-            foreach (var n in matrix.Rows)
-            {
-                var cn = n.Count();
-                cn = cn < 20 ? 20 : cn;
-                //cn = cn > 200 ? 200 : cn;
-                var temp = n.OrderBy(m => m).ToArray();
-                double mean = temp.Mean();
-                double standardDeviation = temp.StandardDeviation();
-                double step = (temp.Max() - temp.Min()) / temp.Count();
-                var pdfs = new List<string>();
-                for (var i = -cn / 2; i <= cn / 2; i++)
-                {
-                    double p = Normal.PDF(mean, standardDeviation, mean + step * i);
-                    pdfs.Add(Math.Round(mean + step * i, e.Settings.DecimalDigitCount) + ":" + Math.Round(p, e.Settings.DecimalDigitCount));
-                }
-                h.Datas.Add(pdfs.ToArray());
-            }
-            e.SetValueAcrossSteps("Draw_Histogram" + Guid.NewGuid().ToString().Replace("-", ""), h);
+            var part = GetPartNum(datas.Count());
+            var his = Draw_Histogram(datas, e.Settings.DecimalDigitCount, part);
+            e.SetValueAcrossSteps("Draw_Histogram" + Guid.NewGuid().ToString().Replace("-", ""), his);
         }
 
-        /// <summary>
-        ///  直方图
-        /// 每行为一条线。第一条线有阴影
-        /// </summary>
-        /// <param name="datas"></param>
-        /// <param name="ec"></param>
-        public static Model.Draw.Histogram Draw_Histogram(List<double[]> datas, int dit)
+        public static Model.Draw.Histogram Draw_Histogram(double[] datas, int ddc, int partCount)
         {
-            var h = new Model.Draw.Histogram();
-            h.Datas = new List<string[]>();
-            foreach (var n in datas)
+            var his = new Model.Draw.Histogram();
+            his.Datas = new List<Tuple<double, double, double>>();
+            var dataTemp = datas.ToList();
+            var part = GetPartNum(datas.Count());
+            var l = dataTemp.Min() * 0.95;
+            var h = dataTemp.Max() * 1.05;
+            var pand = ddc == 0 ? 1 : 1 / (10 * ddc);
+            var partDis = (h - l) / part;
+            for (var i = 0; i < part; i++)
             {
-                var cn = n.Count();
-                cn = cn < 20 ? 20 : cn;
-                //cn = cn > 200 ? 200 : cn;
-                double mean = n.Mean();
-                double standardDeviation = n.StandardDeviation();
-                double step = (n.Max() - n.Min()) / n.Count();
-                var pdfs = new List<string>();
-                for (var i = -cn / 2; i <= cn / 2; i++)
-                {
-                    double p = Normal.PDF(mean, standardDeviation, mean + step * i);
-                    pdfs.Add(Math.Round(mean + step * i, dit) + ":" + Math.Round(p, dit));
-                }
-                h.Datas.Add(pdfs.ToArray());
+                var p = i > 0 ? 1 : 0;
+                var _b = Math.Round(l + i * partDis, ddc) + p * pand;
+                var _e = Math.Round(l + (i + 1) * partDis, ddc);
+                var count = dataTemp.Where(m => m > _b && m < _e).Count();
+                var rate = Math.Round((double)count / dataTemp.Count, ddc);
+                his.Datas.Add(new Tuple<double, double, double>(_b, _e, rate));
             }
-            return h;
+            return his;
+        }
+
+        private static int GetPartNum(int dataCount)
+        {
+            return dataCount > 12 ? 12 : dataCount;
+            ////30以内
+            //if (dataCount <= 30)
+            //{
+            //    return dataCount > 10 ? 10 : dataCount;
+            //}
+            ////30-999
+            //else if (dataCount > 30 && dataCount < 10000)
+            //{
+            //    return 20;
+            //}
+            //else if (dataCount >= 10000)
+            //{
+            //    return 30;
+            //}
+            //return dataCount;
         }
     }
 }

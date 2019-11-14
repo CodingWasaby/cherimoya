@@ -16,7 +16,7 @@ namespace Mathy.Web.Controllers
     public class DrawController : Controller
     {
 
-        public ActionResult GetDraw(string key)
+        public ActionResult GetDraw(string key, int? count)
         {
             EvaluationContext context = (EvaluationContext)Session["Context"];
             var data = context.SourceVariables[key];
@@ -42,15 +42,7 @@ namespace Mathy.Web.Controllers
             }
             if (key.Contains("MCM"))
             {
-                Histogram his;
-                if (data is double[])
-                {
-                    his = DrawFuncs.Draw_Histogram(new List<double[]> { (double[])data }, context.Settings.DecimalDigitCount);
-                }
-                else
-                {
-                    his = DrawFuncs.Draw_Histogram((List<double[]>)data, context.Settings.DecimalDigitCount);
-                }
+                Histogram his = DrawFuncs.Draw_Histogram((double[])data, context.Settings.DecimalDigitCount, count.Value);
                 return His(his);
             }
             return View();

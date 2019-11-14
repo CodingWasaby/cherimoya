@@ -79,34 +79,33 @@
         </div>
     </nav>
     <div id="page-wrapper" class="gray-bg">
-        <div class="row border-bottom">
-            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header">
-                    <a id="minimal" class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
-                    <div role="search" class="navbar-form-custom">
-                        <div class="form-group">
-                            <input type="text" placeholder="输入您想要查询的信息..." class="form-control" name="top-search" id="top-search">
+        @*<div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a id="minimal" class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
+                        <div role="search" class="navbar-form-custom">
+                            <div class="form-group">
+                                <input type="text" placeholder="输入您想要查询的信息..." class="form-control" name="top-search" id="top-search">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <ul class="nav navbar-top-links navbar-right">
-                    <li>
-                        <span class="m-r-sm text-muted welcome-message">欢迎来到UES</span>                       
-                    </li>
-                    <li>
-                        <a onclick="loginOut()">
-                            <i class="fa fa-sign-out"></i> 退出
-                        </a>
-                    </li>
-                    <li>
-                        <a class="right-sidebar-toggle count-info">
-                            <i class="fa fa-tasks"></i>
-                            @*<span class="label label-warning-light">X</span>*@
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">欢迎来到UES</span>
+                        </li>
+                        <li>
+                            <a onclick="loginOut()">
+                                <i class="fa fa-sign-out"></i> 退出
+                            </a>
+                        </li>
+                        <li>
+                            <a class="right-sidebar-toggle count-info">
+                                <i class="fa fa-tasks"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>*@
         <div class="row content-tabs">
             <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
             <nav class="page-tabs J_menuTabs">
@@ -170,7 +169,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#content-main').height(document.body.clientHeight - 105);
+        $('#content-main').height(document.body.clientHeight - 45);
         window.setInterval(reloadAllframes, 3000 * 60 * 60);
         //$('#minimal').click();
     });

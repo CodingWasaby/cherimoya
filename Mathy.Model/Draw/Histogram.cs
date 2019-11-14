@@ -8,6 +8,10 @@ namespace Mathy.Model.Draw
 {
     public class Histogram
     {
-        public List<string[]> Datas { get; set; }
+
+        /// <summary>
+        ///  begin end rate
+        /// </summary>
+        public List<Tuple<double, double, double>> Datas { get; set; }
     }
 }

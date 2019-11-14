@@ -974,7 +974,7 @@ namespace Mathy.Libs
         /// <param name="func">自定义输入量与输出量之间的函数关系</param>
         /// <param name="distribution">自定义分布</param>
         /// <returns></returns>
-        public static double[] MCM_1(int simulateNum, string text, object ec)
+        public static double[] MCM_1(int simulateNum, double p, string text, object ec)
         {
             EvaluationContext e = ec as EvaluationContext;
             var textEC = GetEvaluationContext(text, e);
@@ -1007,13 +1007,17 @@ namespace Mathy.Libs
                     results[i] = rv;
                 }
             }
-            //Array.Sort(results); // 顺序递增排序
+            Array.Sort(results); // 顺序递增排序
             double mean = results.Mean(); // 平均值 作为 估计值
             double standardDeviation = results.StandardDeviation(); // 标准差作为不确定度
             mean = PandZero(mean, e.Settings.DecimalDigitCount);
             standardDeviation = PandZero(standardDeviation, e.Settings.DecimalDigitCount);
             e.SetValueAcrossSteps("MCM", results);
-            return new double[] { mean, standardDeviation };
+            double[] ySection = getSection(false, p, simulateNum, true, results); // 包含区间获取
+            double yLow = ySection[0], yHigh = ySection[1]; // 包含区间的左右端点
+            yLow = PandZero(yLow, e.Settings.DecimalDigitCount);
+            yHigh = PandZero(yHigh, e.Settings.DecimalDigitCount);
+            return new double[] { mean, standardDeviation, yLow, yHigh };
         }
 
         /// <summary>
@@ -1103,7 +1107,7 @@ namespace Mathy.Libs
                 {
                     h++; continue;
                 }
-                e.SetValueAcrossSteps("MCM", resultsList);
+                e.SetValueAcrossSteps("MCM", results);
 
                 mean = PandZero(mean, e.Settings.DecimalDigitCount);
                 resultsMean = PandZero(resultsMean, e.Settings.DecimalDigitCount);

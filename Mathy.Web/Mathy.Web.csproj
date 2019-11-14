@@ -217,6 +217,7 @@
     <None Include="Properties\PublishProfiles\r1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datapicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\echarts.min.js" />
     <Content Include="Scripts\flot\curvedLines.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -3,10 +3,12 @@
 @model LinearRegression
 @{
     Layout = null;
-    var datas = string.Join(",", Model.Datas);
+    var datas = string.Join(",", Model.Datas.Select(m => m.Item1 + "_" + m.Item2));
     var formatter = "y= " + Model.K + " * x + " + Model.B;
-    var markB = Model.B;
-    var markE = (Model.Datas.Count() + 1) * Model.K + Model.B;
+    var minX = Model.Datas.Min(m => m.Item1) * 0.9;
+    var maxX = Model.Datas.Max(m => m.Item1) * 1.1;
+    var markB = minX * Model.K + Model.B;
+    var markE = maxX * Model.K + Model.B;
 }
 <!DOCTYPE html>
 <html style="height: 100%">
@@ -21,9 +23,10 @@
         var datas = '@datas';
         var a = datas.split(",");
         for (var i = 0; i < a.length; i++) {
+            var d = a[i].split("_");
             var ad = [];
-            ad.push(i + 1);
-            ad.push(a[i]);
+            ad.push(d[0]);
+            ad.push(d[1]);
             dataAll.push(ad);
         }
         var dom = document.getElementById("container");
@@ -49,17 +52,16 @@
                 formatter:  '@formatter'
             },
             data: [[{
-                coord: [0, @markB],
+                coord: [@minX, @markB],
                 symbol: 'none'
             }, {
-                coord: [@(Model.Datas.Count()+1), @markE],
+                coord: [@maxX, @markE],
                 symbol: 'none'
             }]]
         };
-        console.log(markLineOpt);
         option = {
             title: {
-                text: '线性回归图',
+                text: '@formatter',
                 x: 'center',
                 y: 0
             },
@@ -72,17 +74,17 @@
                 }
             },
             tooltip: {
-                formatter: 'Test {a}: ({c})'
+                formatter: '({c})'
             },
             xAxis: [
-                { gridIndex: 0, min: 0, max: '@(Model.Datas.Count()+1)' }
+                { gridIndex: 0, min: @minX, max:@maxX }
             ],
             yAxis: [
-                { gridIndex: 0, min: @(markB-1), max: '@(markE+1)' }
+                { gridIndex: 0, min: @(markB*0.9), max: '@(markE*1.1)' }
             ],
             series: [
                 {
-                    name: '一元线性回归',
+                    name:  '@formatter',
                     type: 'scatter',
                     xAxisIndex: 0,
                     yAxisIndex: 0,

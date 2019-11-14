@@ -14,7 +14,6 @@ C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\bin\Debug\Ma
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\bin\Debug\Mathy.Model.pdb
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\bin\Debug\Dapper.xml
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\obj\Debug\Mathy.DAL.csprojAssemblyReference.cache
-C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\obj\Debug\Mathy.DAL.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\obj\Debug\Mathy.DAL.csproj.CopyComplete
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\obj\Debug\Mathy.DAL.dll
 C:\Users\Administrator\Desktop\汪工\Cherimoya\Cherimoya\Mathy.DAL\obj\Debug\Mathy.DAL.pdb
