@@ -1,6 +1,0 @@
-D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Model\bin\Release\Mathy.Model.dll
-D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Model\bin\Release\Mathy.Model.pdb
-D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Model\obj\Release\Mathy.Model.csprojAssemblyReference.cache
-D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Model\obj\Release\Mathy.Model.csproj.CoreCompileInputs.cache
-D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Model\obj\Release\Mathy.Model.dll
-D:\个人\Cherimoya20161008\Cherimoya20180726\Cherimoya\Mathy.Model\obj\Release\Mathy.Model.pdb
