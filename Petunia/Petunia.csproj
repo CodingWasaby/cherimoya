@@ -39,7 +39,7 @@
     </Reference>
     <Reference Include="Roselle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Roselle.dll</HintPath>
+      <HintPath>..\ref\Roselle.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
