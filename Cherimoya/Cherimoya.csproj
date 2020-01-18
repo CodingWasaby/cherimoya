@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dandelion">
-      <HintPath>..\..\Dandelion\Dandelion\bin\Debug\Dandelion.dll</HintPath>
+      <HintPath>..\ref\Dandelion.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
