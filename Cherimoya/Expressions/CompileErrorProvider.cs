@@ -1,6 +1,5 @@
 using Cherimoya.Lexicons;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Cherimoya.Expressions
@@ -8,7 +7,7 @@ namespace Cherimoya.Expressions
     public class CompileErrorProvider
     {
 
-    //    private List<int> starts = new List<int>();
+        //    private List<int> starts = new List<int>();
 
         private string source;
 
@@ -49,7 +48,7 @@ namespace Cherimoya.Expressions
                     tildes.Append("~");
                 }
             }
-            
+
             throw new CompileException(string.Format("\r\n{0}\r\n{1}\r\n{2}", source, tildes.ToString(), message));
         }
 

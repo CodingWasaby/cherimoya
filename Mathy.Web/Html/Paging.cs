@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Mathy.Web.Html
+﻿namespace Mathy.Web.Html
 {
     /// <summary>
     /// Paging is intended for implementing paging bars in HTML pages. <br/>

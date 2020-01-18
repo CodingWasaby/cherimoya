@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -61,7 +57,7 @@ namespace Mathy.Visualization.Expressions.Nodes
 
 
             SetDesiredSize(
-                (float)(widthSpec.Mode == MeasureSpecMode.Fixed ? widthSpec.Size : Body.DesiredWidth + size.Width * 2), 
+                (float)(widthSpec.Mode == MeasureSpecMode.Fixed ? widthSpec.Size : Body.DesiredWidth + size.Width * 2),
                 (float)(Math.Max(size.Height / 2, Body.FindMaxTop()) + Math.Max(size.Height / 2, Body.FindMaxBottom())));
         }
 

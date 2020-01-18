@@ -1,5 +1,3 @@
-using System;
-
 namespace Cherimoya.Lexicons
 {
     public class CharLexicon : Lexicon

@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Mathy.Maths;
 using Mathy.Planning;
-using Mathy.Maths;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Text;
 
 namespace Mathy.TestCases
@@ -192,7 +192,7 @@ namespace Mathy.TestCases
 
 
             StringBuilder b = new StringBuilder();
-            
+
             b.Append("3.59,3.57,3.57;");
             b.Append("3.59,3.58,3.58;");
             b.Append("3.57,3.56,3.57;");

@@ -1,9 +1,4 @@
-﻿using Dandelion;
-using Mathy.Planning;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Mathy.Planning;
 
 namespace Mathy.Web.Models
 {
@@ -24,6 +19,6 @@ namespace Mathy.Web.Models
 
         public string Expression { get; set; }
 
-        public string Condition { get; set; } 
+        public string Condition { get; set; }
     }
 }

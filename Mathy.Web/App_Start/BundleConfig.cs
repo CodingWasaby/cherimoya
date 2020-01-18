@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace Mathy.Web
 {
@@ -22,7 +21,7 @@ namespace Mathy.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                       //"~/Content/new_file.css",
+                      //"~/Content/new_file.css",
                       "~/Content/Site.css"));
         }
     }

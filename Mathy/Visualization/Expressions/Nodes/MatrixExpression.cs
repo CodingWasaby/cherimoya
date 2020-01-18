@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -87,7 +83,7 @@ namespace Mathy.Visualization.Expressions.Nodes
 
 
             SetDesiredSize(
-                maxCellWidth.Sum() + (columnCount + 1) * spacing, 
+                maxCellWidth.Sum() + (columnCount + 1) * spacing,
                 maxCellTopHeight.Sum() + maxCellBottomHeight.Sum() + (rowIndex + 1) * spacing);
         }
 

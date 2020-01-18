@@ -1,20 +1,13 @@
 ﻿using Cherimoya.Diff;
-using Cherimoya.Evaluation;
 using Cherimoya.Expressions;
-using Cherimoya.Language;
 using Dandelion.Serialization;
 using Mathy.Language;
-using Mathy.Libs;
 using Mathy.Maths;
-using Mathy.Planning;
 using Mathy.Visualization.Expressions;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy
 {

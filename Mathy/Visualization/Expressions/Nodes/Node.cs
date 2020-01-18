@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -39,9 +35,9 @@ namespace Mathy.Visualization.Expressions.Nodes
 
         public void Draw(Graphics g, Font font, Style style)
         {
-           // g.Clip = new Region(new Rectangle(Left, Top, Width, Height));
-              OnDraw(g, font, style);
-         //   g.Clip = new Region();
+            // g.Clip = new Region(new Rectangle(Left, Top, Width, Height));
+            OnDraw(g, font, style);
+            //   g.Clip = new Region();
         }
 
 

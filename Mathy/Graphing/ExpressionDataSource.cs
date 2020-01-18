@@ -1,11 +1,4 @@
-﻿using Cherimoya.Evaluation;
-using Cherimoya.Expressions;
-using Mathy.Language;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Mathy.Language;
 
 namespace Mathy.Graphing
 {

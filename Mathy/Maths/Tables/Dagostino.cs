@@ -1,9 +1,6 @@
 ﻿using Dandelion.Collections;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Maths.Table
 {
@@ -11,7 +8,7 @@ namespace Mathy.Maths.Table
     {
         static Dagostino()
         {
-            table = SearchTable<int, int, string>.Load(MathyContext.PathResolver.GetTablesFilePath("dagostino.txt")).Map(i => 
+            table = SearchTable<int, int, string>.Load(MathyContext.PathResolver.GetTablesFilePath("dagostino.txt")).Map(i =>
             {
                 string[] sections = i.Split('~').Select(j => j.Trim()).ToArray();
                 return new Tuple<float, float>(float.Parse(sections[0]), float.Parse(sections[1]));

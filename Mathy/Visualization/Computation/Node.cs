@@ -1,11 +1,7 @@
 ﻿using Mathy.Language;
 using Mathy.Maths;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Computation
 {
@@ -74,7 +70,7 @@ namespace Mathy.Visualization.Computation
         public abstract void Layout(TreeStyle style, double left, double top);
 
         public virtual void PostLayout(TreeStyle style)
-        { 
+        {
         }
 
         public abstract void Draw(Graphics g, TreeStyle style);

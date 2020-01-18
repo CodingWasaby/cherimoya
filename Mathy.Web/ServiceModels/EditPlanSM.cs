@@ -1,8 +1,6 @@
 ﻿using Mathy.Planning;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Mathy.Web.ServiceModels
 {
@@ -20,7 +18,7 @@ namespace Mathy.Web.ServiceModels
 
         public int PlanType { get; set; }
         public string PlanCategory { get; set; }
-        
+
 
         public EditVariableSM[] Variables { get; set; }
 
@@ -89,7 +87,7 @@ namespace Mathy.Web.ServiceModels
                 Variables = ToSourceVariables(),
                 Expressions = Expressions == null ? new SourceExpression[] { } : Expressions.Select(i =>
                     new SourceExpression()
-                    { 
+                    {
                         Title = i.Title,
                         Description = i.Description,
                         Expression = i.Expression,
@@ -105,13 +103,13 @@ namespace Mathy.Web.ServiceModels
         public Style[] ToStyles()
         {
             return Variables == null ? new Style[] { } : Variables.Where(i => i.Style != null).Select(i => new Style()
-                {
-                    Target = i.Name,
-                    Size = string.IsNullOrEmpty(i.Style.Size) ? 0 : int.Parse(i.Style.Size),
-                    ColumnNames = string.IsNullOrEmpty(i.Style.ColumnNames) ? null : i.Style.ColumnNames.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                    RowHeaderWidth = string.IsNullOrEmpty(i.Style.RowHeaderWidth) ? 0 : int.Parse(i.Style.RowHeaderWidth),
-                    RowName = string.IsNullOrEmpty(i.Style.RowName) ? null : i.Style.RowName
-                }).ToArray();
+            {
+                Target = i.Name,
+                Size = string.IsNullOrEmpty(i.Style.Size) ? 0 : int.Parse(i.Style.Size),
+                ColumnNames = string.IsNullOrEmpty(i.Style.ColumnNames) ? null : i.Style.ColumnNames.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                RowHeaderWidth = string.IsNullOrEmpty(i.Style.RowHeaderWidth) ? 0 : int.Parse(i.Style.RowHeaderWidth),
+                RowName = string.IsNullOrEmpty(i.Style.RowName) ? null : i.Style.RowName
+            }).ToArray();
         }
     }
 

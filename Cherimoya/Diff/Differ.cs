@@ -1,12 +1,6 @@
-﻿using Cherimoya.Evaluation;
-using Cherimoya.Expressions;
-using Cherimoya.Language;
-using Dandelion;
+﻿using Cherimoya.Expressions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cherimoya.Diff
 {
@@ -148,10 +142,10 @@ namespace Cherimoya.Diff
                           BinaryOperator.Multiply,
                           new UnaryExpression(UnaryOperator.Negation, binary.Left, binary.Left.FromPosition, binary.Left.ToPosition),
                           new FunctionCallExpression("pow",
-                              new Expression[] 
+                              new Expression[]
                               {
-                                  binary.Right, 
-                                  ConstantExpression.create(-2, binary.Right.FromPosition, binary.Right.ToPosition) 
+                                  binary.Right,
+                                  ConstantExpression.create(-2, binary.Right.FromPosition, binary.Right.ToPosition)
                               },
                               binary.Right.FromPosition,
                               binary.Right.ToPosition));

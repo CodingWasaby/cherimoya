@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Mathy.Web.Models
+﻿namespace Mathy.Web.Models
 {
     public class MCMVM
     {
@@ -16,7 +11,7 @@ namespace Mathy.Web.Models
         public string GS { get; set; }
         public Dis[] Diss { get; set; }
         public double[] Result { get; set; }
-        
+
         public double p { get; set; }
         public int n_dig { get; set; }
     }

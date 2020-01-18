@@ -1,12 +1,7 @@
-﻿using Cherimoya;
-using Dandelion;
-using Mathy.Planning;
+﻿using Dandelion;
 using Mathy.Visualization.Expressions.Nodes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions
 {
@@ -90,7 +85,7 @@ namespace Mathy.Visualization.Expressions
         private static bool IsInvididualExpression(Cherimoya.Expressions.Expression expression)
         {
             return expression is Cherimoya.Expressions.VariableExpression ||
-                   expression is Cherimoya.Expressions.ConstantExpression || 
+                   expression is Cherimoya.Expressions.ConstantExpression ||
                    expression is Cherimoya.Expressions.FunctionCallExpression;
         }
 
@@ -191,8 +186,8 @@ namespace Mathy.Visualization.Expressions
 
 
             return new BinaryExpression()
-            { 
-                Left = left, 
+            {
+                Left = left,
                 Operator = new BinaryOperatorNode() { Operator = op },
                 ActualOperator = new BinaryOperatorNode() { Operator = prevOp },
                 Right = right
@@ -246,15 +241,15 @@ namespace Mathy.Visualization.Expressions
                 }
 
                 return new SumExpression()
-                { 
-                    Sigmas = new SigmaConfig[] { new SigmaConfig() }, 
+                {
+                    Sigmas = new SigmaConfig[] { new SigmaConfig() },
                     Operand = operand
                 };
             }
             else if (e.Method.Name == "lg" || e.Method.Name == "ln" || e.Method.Name == "log")
             {
                 Cherimoya.Expressions.Expression xExpr = e.Method.Name == "log" ? e.Parameters[1] : e.Parameters[0];
-                
+
                 bool hasParanthese = xExpr is Cherimoya.Expressions.BinaryExpression && (xExpr as Cherimoya.Expressions.BinaryExpression).Operator != Cherimoya.Expressions.BinaryOperator.Divide;
 
                 Expression b = e.Method.Name == "log" ? Convert(e.Parameters[0], parantheseLevel) : null;
@@ -264,7 +259,7 @@ namespace Mathy.Visualization.Expressions
             }
             else if (e.Method.Name == "transpose")
             {
-                return new SuperscriptExpression() { Body = Convert(e.Parameters[0], parantheseLevel), Superscript = new TextExpression("T", false),HasBracket = true };
+                return new SuperscriptExpression() { Body = Convert(e.Parameters[0], parantheseLevel), Superscript = new TextExpression("T", false), HasBracket = true };
             }
             else if (e.Method.Name == "stdvar")
             {
@@ -342,9 +337,9 @@ namespace Mathy.Visualization.Expressions
         private Expression ConvertIfElseExpression(Cherimoya.Expressions.IfElseExpression e, int parantheseLevel)
         {
             return new IfElseExpression()
-            { 
-                Condition = Convert(e.Condition, parantheseLevel), 
-                PositiveBranch = Convert(e.PositiveBranch, parantheseLevel), 
+            {
+                Condition = Convert(e.Condition, parantheseLevel),
+                PositiveBranch = Convert(e.PositiveBranch, parantheseLevel),
                 NegativeBranch = Convert(e.NegativeBranch, parantheseLevel)
             };
         }
@@ -362,19 +357,19 @@ namespace Mathy.Visualization.Expressions
             }
 
 
-            return new SumExpression() 
-            { 
+            return new SumExpression()
+            {
                 Sigmas = e.Variables.Select(i => new SigmaConfig()
-                { 
+                {
                     To = Convert(i.To, parantheseLevel),
                     From = new BinaryExpression()
-                    { 
+                    {
                         Left = new TextExpression(i.Name, true),
-                        Right = Convert(i.From, parantheseLevel), 
+                        Right = Convert(i.From, parantheseLevel),
                         Operator = new BinaryOperatorNode() { Operator = BinaryOperator.Equal },
                         ActualOperator = new BinaryOperatorNode() { Operator = BinaryOperator.Equal }
                     }
-                }).ToArray(), 
+                }).ToArray(),
                 Operand = operand
             };
         }

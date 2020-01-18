@@ -1,9 +1,7 @@
 ﻿using Dandelion.Text;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Maths
 {
@@ -29,7 +27,7 @@ namespace Mathy.Maths
 
         public double this[int index]
         {
-            get 
+            get
             {
                 return Items[index];
             }

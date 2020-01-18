@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -51,14 +48,14 @@ namespace Mathy.Visualization.Expressions.Nodes
             variablesSize = new SizeF(Variables.Max(i => i.DesiredWidth), Variables.Sum(i => i.DesiredHeight));
 
             SetDesiredSize(
-                variablesSize.Width + 20 + Body.DesiredWidth, 
+                variablesSize.Width + 20 + Body.DesiredWidth,
                 Math.Max(variablesSize.Height / 2, Body.FindMaxTop()) + Math.Max(variablesSize.Height / 2, Body.FindMaxBottom()));
         }
 
 
         protected override void OnLayout(float left, float top, float width, float height, Graphics g, Font font, Style style)
         {
-            float baseLine =  height - Math.Max(variablesSize.Height / 2, Body.FindMaxBottom());
+            float baseLine = height - Math.Max(variablesSize.Height / 2, Body.FindMaxBottom());
 
             Body.Layout(this, variablesSize.Width + 20, baseLine - Body.FindMaxTop(), Body.DesiredWidth, Body.DesiredHeight, g, font, style);
 

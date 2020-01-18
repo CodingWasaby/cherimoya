@@ -1,10 +1,6 @@
 ﻿using Mathy.Visualization.Text;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Computation
 {
@@ -23,7 +19,7 @@ namespace Mathy.Visualization.Computation
             Text.Measure(g, style.Font, f);
             f.Dispose();
 
-            SizeF[] lines = new SizeF[] 
+            SizeF[] lines = new SizeF[]
             {
                 g.MeasureString(Description, style.Font),
                 Text.Size,

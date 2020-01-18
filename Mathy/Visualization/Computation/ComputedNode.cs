@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Computation
 {
@@ -26,7 +24,7 @@ namespace Mathy.Visualization.Computation
 
         private double branchesHeight;
 
-        
+
         public override void Measure(Graphics g, TreeStyle style)
         {
             foreach (Branch branch in Branches)
@@ -220,7 +218,7 @@ namespace Mathy.Visualization.Computation
 
 
             double y = NodeTop;
-            
+
             g.DrawString(Description, style.Font, Brushes.Black, (float)NodeLeft, (float)y);
             y += g.MeasureString(Description, style.Font).Height;
 

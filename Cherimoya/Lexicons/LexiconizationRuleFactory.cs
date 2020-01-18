@@ -186,8 +186,8 @@ namespace Cherimoya.Lexicons
             {
                 Punctuations = new Punctuations(new string[]
                 {
-				    "!=", "<=", ">=", "==", "++", "--", "->", "&&", "||", "+=", "-=", "*=", "/=", "&=", "|=", "~=", "..."
-				}
+                    "!=", "<=", ">=", "==", "++", "--", "->", "&&", "||", "+=", "-=", "*=", "/=", "&=", "|=", "~=", "..."
+                }
                 ),
                 StringEnclosers = new char[] { '"' },
                 CharEnclosers = new char[] { '\'' },
@@ -207,8 +207,8 @@ namespace Cherimoya.Lexicons
             {
                 Punctuations = new Punctuations(new string[]
                 {
-				    "!=", "<=", ">=", "==", "++", "--", "->", "&&", "||", "+=", "-=", "*=", "/=", "&=", "|=", "~=", "..."
-				}
+                    "!=", "<=", ">=", "==", "++", "--", "->", "&&", "||", "+=", "-=", "*=", "/=", "&=", "|=", "~=", "..."
+                }
                 ),
                 StringEnclosers = new char[] { '\'', '"' },
                 CharEnclosers = new char[] { },

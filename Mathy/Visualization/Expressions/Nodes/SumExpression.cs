@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -94,7 +90,7 @@ namespace Mathy.Visualization.Expressions.Nodes
             }
 
 
-            SetDesiredSize((float)desiredWidth, 
+            SetDesiredSize((float)desiredWidth,
                 Math.Max(SigmaHeight / 2 + Sigmas.Max(i => i.From == null ? 0 : i.From.DesiredHeight), Operand.FindMaxBottom()) +
                 Math.Max(SigmaHeight / 2 + Sigmas.Max(i => i.To == null ? 0 : i.To.DesiredHeight), Operand.FindMaxTop()) + 6);
         }
@@ -113,7 +109,7 @@ namespace Mathy.Visualization.Expressions.Nodes
 
                     sigma.To.Layout(this, x + (sectionWidth - sigma.To.DesiredWidth), (float)(y - sigma.To.DesiredHeight), sigma.To.DesiredWidth, sigma.To.DesiredHeight, g, font, style);
                     sigma.From.Layout(this, x + (sectionWidth - sigma.From.DesiredWidth), (float)(y + SigmaHeight + 1), sigma.From.DesiredWidth, sigma.From.DesiredHeight, g, font, style);
-                    
+
                     x += sectionWidth + 5;
                 }
                 else
@@ -135,7 +131,7 @@ namespace Mathy.Visualization.Expressions.Nodes
         {
             float left = Left;
             float y = Top + GetSigmaTop();
- 
+
             Operand.Draw(g, font, style);
 
             foreach (SigmaConfig sigma in Sigmas)

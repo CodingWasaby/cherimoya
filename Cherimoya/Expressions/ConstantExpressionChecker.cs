@@ -1,5 +1,3 @@
-
-using System;
 namespace Cherimoya.Expressions
 {
     public class ConstantExpressionChecker

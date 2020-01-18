@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Model.Entity
 {
@@ -17,8 +14,8 @@ namespace Mathy.Model.Entity
     }
 
     [Serializable]
-    public class CoefficientVM: Coefficient
-    {  
+    public class CoefficientVM : Coefficient
+    {
         public List<CoefficientDetail> CoefficientDetails { get; set; }
     }
 }

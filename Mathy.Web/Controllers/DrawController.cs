@@ -1,10 +1,7 @@
 ﻿using Aspose.Cells;
 using Mathy.Libs;
-using Mathy.Maths;
 using Mathy.Model.Draw;
 using Mathy.Planning;
-using Mathy.Web.Models.Draw;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;

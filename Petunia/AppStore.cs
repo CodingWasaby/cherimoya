@@ -1,11 +1,6 @@
 ﻿using Mathy.Planning;
 using Petunia.Auth;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Petunia
 {
@@ -23,7 +18,7 @@ namespace Petunia
 
         public static void Init()
         {
-            PathResolver = new PathResolver(ConfigurationManager.AppSettings["RootPath"]);
+            PathResolver = new PathResolver(System.AppDomain.CurrentDomain.BaseDirectory);
             UrlResolver = new UrlResolver(ConfigurationManager.AppSettings["RootUrl"]);
 
             PlanRepository = new PlanRepository();

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Mathy.Web
 {
     public class Funcs
     {
         private static Dictionary<string, string> nameToDisplay = new Dictionary<string, string>();
-        private static Dictionary<string, string> displayToName = new Dictionary<string,string>();
+        private static Dictionary<string, string> displayToName = new Dictionary<string, string>();
 
         static Funcs()
         {

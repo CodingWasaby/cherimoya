@@ -42,7 +42,7 @@ namespace Cherimoya.Expressions
             }
         }
         */
-         
+
         public override bool IsConstantExpression()
         {
             return From.IsConstantExpression() && To.IsConstantExpression() && By.IsConstantExpression();

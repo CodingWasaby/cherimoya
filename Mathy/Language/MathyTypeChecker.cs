@@ -1,15 +1,10 @@
-﻿using Cherimoya;
-using Cherimoya.Evaluation;
-using Cherimoya.Expressions;
+﻿using Cherimoya.Expressions;
 using Cherimoya.Language.JavaLike;
 using Dandelion;
 using Mathy.Maths;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Language
 {

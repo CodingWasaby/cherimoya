@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mathy.Graphing
+﻿namespace Mathy.Graphing
 {
     public class Inset
     {
         public Inset(int size)
-            :this(size, size, size, size)
-        { 
+            : this(size, size, size, size)
+        {
         }
 
         public Inset(int left, int top, int right, int bottom)

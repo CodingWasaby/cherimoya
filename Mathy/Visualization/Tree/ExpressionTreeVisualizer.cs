@@ -1,11 +1,6 @@
-﻿using Mathy.Planning;
-using Mathy.Tree;
-using System;
+﻿using Mathy.Tree;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Tree
 {
@@ -18,7 +13,7 @@ namespace Mathy.Visualization.Tree
             Graphics g = Graphics.FromImage(bitmap);
             Font font = new Font("宋体", 12);
 
-            RenderBranch primary = RenderTreeConverter.Convert(expressionTree, variables, g, font);            
+            RenderBranch primary = RenderTreeConverter.Convert(expressionTree, variables, g, font);
             primary.Draw(g, font);
 
             font.Dispose();

@@ -1,14 +1,9 @@
-﻿using Mathy.Model.Draw;
+﻿using Mathy.Maths;
+using Mathy.Model.Draw;
 using Mathy.Planning;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using Mathy.Maths;
-using MathNet.Numerics.Statistics;
-using MathNet.Numerics.Distributions;
-using System.Drawing;
 
 namespace Mathy.Libs
 {

@@ -1,15 +1,9 @@
-﻿using Cherimoya.Expressions;
-using Cherimoya.Evaluation;
+﻿using Cherimoya.Evaluation;
+using Cherimoya.Expressions;
 using Cherimoya.Language;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mathy.Maths;
 using Mathy.Libs;
+using Mathy.Maths;
 using System.Drawing;
-using Mathy.Planning;
 
 namespace Mathy.Language
 {
@@ -58,7 +52,7 @@ namespace Mathy.Language
             vc.AddMethodExtender(typeof(CustomFuncFactory));
             vc.AddMethodExtender(typeof(Distribution));
             vc.AddMethodExtender(typeof(DrawFuncs));
-            
+
             return vc;
         }
     }

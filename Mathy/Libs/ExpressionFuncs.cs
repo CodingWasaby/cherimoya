@@ -2,12 +2,7 @@
 using Cherimoya.Expressions;
 using Dandelion;
 using Mathy.Language;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Libs
 {
@@ -56,7 +51,7 @@ namespace Mathy.Libs
             {
                 vc.Set(variableName, variables[variableName]);
             }
-            
+
             object result = new MathyLanguageService().CreateEvaluator().Evaluate(expression is VariableContextExpression ? (expression as VariableContextExpression).Expression : expression, vc);
 
             foreach (string variableName in variables.Keys)

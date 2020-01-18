@@ -1,12 +1,9 @@
 ﻿using Mathy.DAL;
-using Mathy.Web.Controllers.New.Filter;
-using Mathy.Web;
+using Mathy.Model.Entity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Mathy.Model.Entity;
 
 namespace Mathy.Web.Controllers.New
 {

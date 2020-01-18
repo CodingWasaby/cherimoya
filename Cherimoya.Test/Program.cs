@@ -1,17 +1,5 @@
-﻿using Cherimoya.Diff;
-using Cherimoya.Expressions;
-using Dandelion.Collections;
-using Mathy;
-using Mathy.Graphing;
-using Mathy.Planning;
+﻿using Mathy.Planning;
 using Mathy.Visualization.Computation;
-using Petunia;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cherimoya.Test
 {
@@ -20,8 +8,8 @@ namespace Cherimoya.Test
         static void Main(string[] args)
         {
 
-         //   TestDiff.TestDiffPlan();
-         //   return;
+            //   TestDiff.TestDiffPlan();
+            //   return;
 
 
 

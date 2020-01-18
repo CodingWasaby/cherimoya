@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JacarandaX">
-      <HintPath>..\..\JacarandaX\JacarandaX\bin\Debug\JacarandaX.dll</HintPath>
+    <Reference Include="JacarandaX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ref\JacarandaX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -43,7 +44,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tulip.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Tulip\Tulip\bin\Debug\Tulip.Interfaces.dll</HintPath>
+      <HintPath>..\ref\Tulip.Interfaces.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

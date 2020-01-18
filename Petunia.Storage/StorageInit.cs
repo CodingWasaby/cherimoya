@@ -1,11 +1,6 @@
 ﻿using JacarandaX;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Petunia.Storage
 {
@@ -15,7 +10,7 @@ namespace Petunia.Storage
         {
             Database.AddConfig(ConfigurationManager.AppSettings["ConnectionString"], JacarandaX.DatabaseType.SqlServer);
             Database.Register(Assembly.GetExecutingAssembly());
- 
+
             // Database.Create(false);
         }
     }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -69,7 +66,7 @@ namespace Mathy.Visualization.Expressions.Nodes
                 {
                     operand.Measure(MeasureSpec.MakeAtMost(widthSpec.Size), heightSpec, g, font, style);
                     float puncWidth = g.MeasureString(index == Operands.Length - 1 ? ")" : ",", font).Width;
-                    
+
                     if (width + operand.DesiredWidth + puncWidth > widthSpec.Size)
                     {
                         operand.Measure(MeasureSpec.MakeAtMost(widthSpec.Size - width), heightSpec, g, font, style);

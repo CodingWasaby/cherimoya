@@ -1,17 +1,15 @@
 ﻿using Cherimoya.Expressions;
+using MathNet.Numerics;
+using MathNet.Numerics.Statistics;
 using Mathy.Language;
 using Mathy.Maths;
 using Mathy.Maths.Table;
-using Excel = Microsoft.Office.Interop.Excel;
+using Mathy.Planning;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.Statistics;
-using MathNet.Numerics;
-using System.Collections;
-using Mathy.Planning;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Mathy.Libs
 {

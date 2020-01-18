@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -240,7 +236,7 @@ namespace Mathy.Visualization.Expressions.Nodes
                 Operator.Layout(this, Left.DesiredWidth, opTop, Operator.DesiredWidth, Operator.DesiredHeight, g, font, style);
                 Right.Layout(this, Left.DesiredWidth + GetOperatorWidth(), rightTop, Right.DesiredWidth, Right.DesiredHeight, g, font, style);
             }
-            else 
+            else
             {
                 Left.Layout(this, 0, 0, Left.DesiredWidth, Left.DesiredHeight, g, font, style);
                 Operator.Layout(this, 0, FindMaxTop() - Operator.DesiredHeight / 2, Operator.DesiredWidth, Operator.DesiredHeight, g, font, style);

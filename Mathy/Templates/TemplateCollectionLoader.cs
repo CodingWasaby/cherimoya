@@ -1,11 +1,8 @@
 ﻿using Dandelion.Serialization;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Templates
 {
@@ -13,8 +10,8 @@ namespace Mathy.Templates
     {
         public static TemplateCollection Load(string folderPath)
         {
-            return new TemplateCollection() 
-            { 
+            return new TemplateCollection()
+            {
                 Name = folderPath.Substring(folderPath.LastIndexOf("\\") + 1),
                 Templates = Directory.GetFiles(folderPath).Select(i => ParseTemplate(File.ReadAllText(i, System.Text.Encoding.UTF8))).ToArray(),
                 SubCollections = Directory.GetDirectories(folderPath).Select(i => Load(i)).ToArray()
@@ -48,7 +45,7 @@ namespace Mathy.Templates
                 Description = dict["Description"] as string,
                 Name = dict["Name"] as string,
                 Type = (DataType)Enum.Parse(typeof(DataType), dict["Type"] as string),
-                Unit= dict["Unit"] as string
+                Unit = dict["Unit"] as string
             };
         }
     }

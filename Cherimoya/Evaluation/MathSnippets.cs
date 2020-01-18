@@ -1,5 +1,3 @@
-using System;
-
 namespace Cherimoya.Evaluation
 {
     class MathSnippets
@@ -314,7 +312,7 @@ namespace Cherimoya.Evaluation
         {
             if (numberClassIndex == 0)
             {
-                return (double)t1 !=(double)t2;
+                return (double)t1 != (double)t2;
             }
             else if (numberClassIndex == 1)
             {

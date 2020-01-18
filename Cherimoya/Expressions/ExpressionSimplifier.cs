@@ -1,5 +1,4 @@
 using Cherimoya.Evaluation;
-using System;
 
 namespace Cherimoya.Expressions
 {

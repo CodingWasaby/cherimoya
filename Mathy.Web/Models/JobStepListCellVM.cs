@@ -1,8 +1,4 @@
 ﻿using Mathy.Planning;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Mathy.Web.Models
 {
@@ -12,7 +8,7 @@ namespace Mathy.Web.Models
         {
             Title = step.SourceExpression.Title;
             Description = step.SourceExpression.Description;
-            
+
             if (step.State == StepState.Unready)
             {
                 ImageFileName = "error.jpg";

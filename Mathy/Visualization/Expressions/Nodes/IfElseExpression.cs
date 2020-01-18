@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -44,7 +40,7 @@ namespace Mathy.Visualization.Expressions.Nodes
             NegativeBranch.Measure(widthSpec, heightSpec, g, font, style);
 
             SetDesiredSize(
-                Condition.DesiredWidth + 20 + Math.Max(PositiveBranch.DesiredWidth, NegativeBranch.DesiredWidth), 
+                Condition.DesiredWidth + 20 + Math.Max(PositiveBranch.DesiredWidth, NegativeBranch.DesiredWidth),
                 Condition.DesiredHeight + 20 + PositiveBranch.DesiredHeight + NegativeBranch.DesiredHeight);
         }
 

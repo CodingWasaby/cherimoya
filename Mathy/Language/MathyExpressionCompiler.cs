@@ -1,13 +1,10 @@
-﻿using Cherimoya;
-using Cherimoya.Expressions;
+﻿using Cherimoya.Expressions;
 using Cherimoya.Language;
 using Cherimoya.Language.JavaLike;
 using Dandelion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Language
 {
@@ -116,8 +113,8 @@ namespace Mathy.Language
 
             SkipPunctuation("}");
 
-            Expression result = 
-                variables.Count == 0 ? 
+            Expression result =
+                variables.Count == 0 ?
                 (Expression)new VariableExpression(variables[0], PeekPos(), Pos) :
                 (Expression)new MultipleVariableExpression(variables.ToArray(), PeekPos(), Pos);
 
@@ -274,7 +271,7 @@ namespace Mathy.Language
                     }
                 }
             }
-            
+
             SkipPunctuation("}");
 
 

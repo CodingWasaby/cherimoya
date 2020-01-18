@@ -4,11 +4,7 @@ using Mathy.Visualization.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Planning
 {
@@ -72,7 +68,7 @@ namespace Mathy.Planning
                    .Select(i => new NodeConverter().Convert(i))
                    .ToArray()).VisulizeAsBitmap();
 
-                Bitmap conditionImage = step.Conditions.Length == 0 ? null:
+                Bitmap conditionImage = step.Conditions.Length == 0 ? null :
                     new NodeVisualizer(
                      step.Conditions
                      .Select(i => new NodeConverter().Convert(i))

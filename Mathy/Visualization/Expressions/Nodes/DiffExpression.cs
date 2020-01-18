@@ -1,10 +1,5 @@
-﻿using Mathy.Visualization.Text;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -63,15 +58,15 @@ namespace Mathy.Visualization.Expressions.Nodes
             float padding = 2;
 
             SetDesiredSize(
-                Math.Max(f.DesiredWidth, x.DesiredWidth) + symbolSize.Width + padding * 2, 
+                Math.Max(f.DesiredWidth, x.DesiredWidth) + symbolSize.Width + padding * 2,
                 Math.Max(symbolSize.Height, f.DesiredHeight) + Math.Max(symbolSize.Height, x.DesiredHeight));
         }
 
         protected override void OnLayout(float left, float top, float width, float height, Graphics g, Font font, Style style)
         {
-            f.Layout(this, 
+            f.Layout(this,
                 (DesiredWidth - (symbolSize.Width + f.DesiredWidth)) / 2 + symbolSize.Width,
-                FindMaxTop() - Math.Max(symbolSize.Height / 2, f.FindMaxBottom()) - f.FindMaxTop(), 
+                FindMaxTop() - Math.Max(symbolSize.Height / 2, f.FindMaxBottom()) - f.FindMaxTop(),
                 f.DesiredWidth, f.DesiredHeight, g, font, style);
 
 
@@ -79,7 +74,7 @@ namespace Mathy.Visualization.Expressions.Nodes
 
             x.Layout(this,
                (DesiredWidth - (symbolSize.Width + x.DesiredWidth)) / 2 + symbolSize.Width,
-               pos + FindMaxBottom() - Math.Max(symbolSize.Height / 2, x.FindMaxBottom()) - x.FindMaxTop(), 
+               pos + FindMaxBottom() - Math.Max(symbolSize.Height / 2, x.FindMaxBottom()) - x.FindMaxTop(),
                x.DesiredWidth, x.DesiredHeight, g, font, style);
         }
 

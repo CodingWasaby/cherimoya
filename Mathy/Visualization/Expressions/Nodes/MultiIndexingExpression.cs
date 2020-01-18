@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Expressions.Nodes
 {
@@ -87,7 +83,7 @@ namespace Mathy.Visualization.Expressions.Nodes
             float x = Left + Operand.DesiredWidth;
 
             float index = 0;
-            
+
             foreach (Expression indexer in Indexers)
             {
                 indexer.Draw(g, style.SmallFont, style);

@@ -134,7 +134,7 @@ namespace Cherimoya.Expressions
                 errorProvider.ThrowException(message, source.Length, source.Length);
             }
             else
-            { 
+            {
                 errorProvider.ThrowException(message, Current.SourcePosition, Current.SourcePosition + Current.Length);
             }
         }

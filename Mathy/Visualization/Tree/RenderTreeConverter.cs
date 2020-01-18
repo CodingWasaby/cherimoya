@@ -1,6 +1,5 @@
 ﻿using Cherimoya.Expressions;
 using Mathy.Language;
-using Mathy.Planning;
 using Mathy.Tree;
 using Mathy.Visualization.Expressions;
 using System;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Visualization.Tree
 {

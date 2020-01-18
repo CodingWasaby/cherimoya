@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Petunia
+﻿namespace Petunia
 {
     public class FuncDoc
     {
@@ -18,7 +12,7 @@ namespace Petunia
 
         public ReturnDoc[] Returns { get; set; }
 
-        public Article Article { get; set; } 
+        public Article Article { get; set; }
     }
 
     public class ParameterDoc

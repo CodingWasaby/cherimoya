@@ -1,5 +1,3 @@
-using System;
-
 namespace Cherimoya.Expressions
 {
     public abstract class ExpressionReductor

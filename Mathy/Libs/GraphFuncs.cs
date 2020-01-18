@@ -1,13 +1,9 @@
-﻿using Cherimoya.Expressions;
-using Mathy.Graphing;
+﻿using Mathy.Graphing;
 using Mathy.Language;
 using Mathy.Maths;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathy.Libs
 {
@@ -71,8 +67,8 @@ namespace Mathy.Libs
             if (options.ContainsKey("xGridLine"))
             {
                 Array gridLine = options["xGridLine"] as Array;
-                grapher.XGridLineComputeMethod = new SpecifiedGridLineComputeMethod() 
-                { 
+                grapher.XGridLineComputeMethod = new SpecifiedGridLineComputeMethod()
+                {
                     From = Convert.ToDouble(gridLine.GetValue(0)),
                     To = Convert.ToDouble(gridLine.GetValue(1)),
                     GridLength = Convert.ToDouble(gridLine.GetValue(2))
