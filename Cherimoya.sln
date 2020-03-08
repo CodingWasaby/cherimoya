@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cherimoya", "Cherimoya\Cherimoya.csproj", "{BB24761F-236D-42DE-83CA-F01BDFBAC0E4}"
 EndProject
@@ -25,14 +25,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathy.Model", "Mathy.Model\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathy.DAL", "Mathy.DAL\Mathy.DAL.csproj", "{B8E036F4-A98D-4B7A-BBB8-7089D6B6EFD8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6C15B91-EE13-4C32-AC35-98FD8709585E}"
-	ProjectSection(SolutionItems) = preProject
-		C:\Users\aska_\Desktop\Program.cs = C:\Users\aska_\Desktop\Program.cs
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test1", "Test1\Test1.csproj", "{40B16283-1D03-4805-ABB1-BD6449945D51}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp4", "ConsoleApp4\ConsoleApp4.csproj", "{FDF23437-BD64-42DD-B709-4A8B4CBE9589}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{14A192B2-BB31-4B20-A170-730A6F37D929}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CherimoyaBlazorApp", "core\CherimoyaBlazorApp\CherimoyaBlazorApp.csproj", "{C1B1E9D2-DE68-452A-B92E-FD6CB600487E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,9 +91,16 @@ Global
 		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDF23437-BD64-42DD-B709-4A8B4CBE9589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1B1E9D2-DE68-452A-B92E-FD6CB600487E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B1E9D2-DE68-452A-B92E-FD6CB600487E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B1E9D2-DE68-452A-B92E-FD6CB600487E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B1E9D2-DE68-452A-B92E-FD6CB600487E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1B1E9D2-DE68-452A-B92E-FD6CB600487E} = {14A192B2-BB31-4B20-A170-730A6F37D929}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB94788C-9971-45B7-A03C-C75BC6CEEB4E}
