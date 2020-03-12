@@ -40,7 +40,8 @@ namespace Petunia.Storage.Models
 
         [Field]
         public int DecimalCount { get; set; }
-
+        [Field]
+        public int DeleteFlag { get; set; }
 
         public static JobLM ToLM(JobDB db)
         {
@@ -56,7 +57,8 @@ namespace Petunia.Storage.Models
                 CreateTime = db.CreateTime,
                 UpdateTime = db.UpdateTime,
                 Variables = db.Variables,
-                DecimalCount = db.DecimalCount
+                DecimalCount = db.DecimalCount,
+                DeleteFlag = db.DeleteFlag
             };
         }
 
@@ -74,7 +76,8 @@ namespace Petunia.Storage.Models
                 CreateTime = lm.CreateTime,
                 UpdateTime = lm.UpdateTime,
                 Variables = lm.Variables,
-                DecimalCount = lm.DecimalCount
+                DecimalCount = lm.DecimalCount,
+                DeleteFlag = lm.DeleteFlag
             };
         }
     }

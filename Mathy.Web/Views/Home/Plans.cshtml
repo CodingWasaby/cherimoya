@@ -127,18 +127,22 @@
                                         }
                                     </span>
                                     <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
-                                    <span class="badge" title="引用次数" style="margin-left:10px">@n.ReferenceCount</span>
+                                    <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
+                                    <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
                                 </h4>
-                                <h5>@(n.Author + "  " + n.CreateTime)</h5>
-                                @Html.Raw(n.Description)
+                                @if (!string.IsNullOrEmpty(n.Description))
+                                {
+                                    @Html.Raw(n.Description)
+                                }
                             </div>
                             <div class="media" style="margin-top:10px">
                                 @if (n.IsCustom)
                                 {
                                     if (n.PlanType == "公共")
                                     {
+                                        <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
                                         <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                                        <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">引用</a>
+
                                     }
                                     if (n.PlanType == "保护")
                                     {
@@ -147,9 +151,9 @@
                                 }
                                 else
                                 {
+                                    <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
                                     <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
                                     <a href="@Html.Raw(n.EditPlanUrl)" class="btn-sm btn-primary J_menuItem_Child">编辑</a>
-                                    <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">引用</a>
                                     <a href="@Html.Raw(n.DeletePlanUrl)" class="btn-sm btn-danger"> 删除</a>
                                 }
                             </div>

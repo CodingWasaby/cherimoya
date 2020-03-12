@@ -2,13 +2,105 @@
 @{
     ViewBag.Title = "Main";
     Layout = "~/Views/Shared/_Login.cshtml";
+    var planA = (IEnumerable<PlanListCellVM>)ViewBag.planA;
+    var planB = (IEnumerable<PlanListCellVM>)ViewBag.planB;
 }
 <script src="~/Scripts/flot/jquery.flot.js"></script>
 <script src="~/Scripts/flot/jquery.flot.tooltip.min.js"></script>
 <script src="~/Content/d3/d3.min.js"></script>
 <body style="background-color: #f3f3f4;" id="aa">
     <div class="animated fadeInDown" style="margin-left:20px;margin-right:40px">
-        <h1 class="font-bold" style="margin:50px 20px 40px 20px">Uncertainty Evaluation System</h1>
+        @*<h1 class="font-bold" style="margin:50px 20px 40px 20px">Uncertainty Evaluation System</h1>*@
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-title" style="font-size:x-large;font-weight:bold">
+                    标准物质不确定度评定
+                    <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-sm btn-success J_menuItem_Child  panel-title" style="font-size:large;font-weight:bold;text-decoration:underline">更多模型</a>
+                </div>
+
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive gray-bg">
+                    @foreach (var n in planB)
+                    {
+                        <div class="media list-group-item">
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    @n.Title
+                                    <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
+                                    <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
+                                    <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
+                                </h4>
+                                @*<h5>@(n.Author + "  " + n.CreateTime)</h5>*@
+                                @if (!string.IsNullOrEmpty(n.Description))
+                                {
+                                    @Html.Raw(n.Description)
+                                }
+                            </div>
+                            <div class="media" style="margin-top:10px">
+                                @if (n.IsCustom)
+                                {
+                                    if (n.PlanType == "公共")
+                                    {
+                                        <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
+                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                    }
+                                    if (n.PlanType == "保护")
+                                    {
+                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-title" style="font-size:x-large;font-weight:bold">
+                    检测数据处理实验
+                    <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-sm btn-success J_menuItem_Child  panel-title" style="font-size:large;font-weight:bold;text-decoration:underline">更多模型</a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive gray-bg">
+                    @foreach (var n in planA)
+                    {
+                        <div class="media list-group-item">
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    @n.Title
+                                    <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
+                                    <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
+                                    <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
+                                </h4>
+                                @if (!string.IsNullOrEmpty(n.Description))
+                                {
+                                    @Html.Raw(n.Description)
+                                }
+                            </div>
+                            <div class="media" style="margin-top:10px">
+                                @if (n.IsCustom)
+                                {
+                                    if (n.PlanType == "公共")
+                                    {
+                                        <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
+                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                    }
+                                    if (n.PlanType == "保护")
+                                    {
+                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
         <div class="panel panel-success">
             <div class="panel-heading">
                 <div class="panel-title" style="font-size:x-large;font-weight:bold"> 蒙特卡洛方法不确定度评定</div>
@@ -44,111 +136,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                @*<div class="panel-title" style="font-size:x-large;font-weight:bold"> 检测数据处理实验</div>*@
-                <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-lg btn-info J_menuItem_Child panel-title" style="font-size:x-large;font-weight:bold;text-decoration:underline">检测数据处理实验</a>
-            </div>
-            <div class="panel-body">
-                <div class="media col-lg-6">
-                    <div class="media-body">
-                        <div class="jumbotron">
-                            <h3 class="media-heading">一元线性回归测试</h3>
-                            <p>
-                                线性回归是利用数理统计中回归分析，来确定两种或两种以上变量间相互依赖的定量关系的一种统计分析方法，运用十分广泛。
-                            </p>
-                            <p>
-                                回归分析中，只包括一个自变量和一个因变量，且二者的关系可用一条直线近似表示，这种回归分析称为一元线性回归分析
-                            </p>
-                            <a href="/Home/CreateJob?planAutoID=55" class="btn-lg btn-info J_menuItem_Child">创建实验</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="media col-lg-6" style="margin-top:0px">
-                    <div class="media-body">
-                        <div class="jumbotron">
-                            <h3 class="media-heading">均值极差绘图测试</h3>
-                            <p>
-                                均值极差图（ˉX-R）是最常用、最基本的SPC计量型控制图，控制对象多为：长度、重量、强度、厚度、时间等计量值。
-                            </p>
-                            <a href="/Home/CreateJob?planAutoID=53" class="btn-lg btn-info J_menuItem_Child">创建实验</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-warning">
-            <div class="panel-heading">
-                @*<div class="panel-title" style="font-size:x-large;font-weight:bold"> 标准物质不确定度评定实验</div>*@
-                <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-lg btn-warning J_menuItem_Child  panel-title" style="font-size:x-large;font-weight:bold;text-decoration:underline">标准物质不确定度评定实验</a>
-
-            </div>
-            <div class="panel-body">
-                <div class="media col-lg-6">
-                    <div class="media-body">
-                        <div class="jumbotron">
-                            <h3 class="media-heading">一元线性回归测试</h3>
-                            <p>
-                                线性回归是利用数理统计中回归分析，来确定两种或两种以上变量间相互依赖的定量关系的一种统计分析方法，运用十分广泛。
-                            </p>
-                            <p>
-                                回归分析中，只包括一个自变量和一个因变量，且二者的关系可用一条直线近似表示，这种回归分析称为一元线性回归分析
-                            </p>
-                            <a href="/Home/CreateJob?planAutoID=55" class="btn-lg btn-warning J_menuItem_Child">创建实验</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="media col-lg-6" style="margin-top:0px">
-                    <div class="media-body">
-                        <div class="jumbotron">
-                            <h3 class="media-heading">均值极差绘图测试</h3>
-                            <p>
-                                均值极差图（ˉX-R）是最常用、最基本的SPC计量型控制图，控制对象多为：长度、重量、强度、厚度、时间等计量值。
-                            </p>
-                            <a href="/Home/CreateJob?planAutoID=53" class="btn-lg btn-warning J_menuItem_Child">创建实验</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @*<div>
-            <div class="media list-group-item  gray-bg ">
-                <div class="media-body">
-                    <h3 class="media-heading">
-                        检测数据处理
-                    </h3>
-                    <p>
-                        这是说明
-                    </p><p>
-                        这是说明
-                    </p><p>
-                        这是说明
-                    </p>
-                </div>
-                <div class="form-group" style="margin-top:10px">
-                    <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-lg btn-info J_menuItem_Child">浏览检测数据处理实验</a>
-                </div>
-            </div>
-
-            <div class="media list-group-item  gray-bg">
-                <div class="media-body">
-                    <h3 class="media-heading">
-                        标准物质不确定度评定
-                    </h3>
-                    <p>
-                        这是说明
-                    </p><p>
-                        这是说明
-                    </p><p>
-                        这是说明
-                    </p>
-                </div>
-                <div class="form-group" style="margin-top:10px">
-                    <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-lg btn-info J_menuItem_Child">浏览标准物质不确定度评定实验</a>
-                </div>
-            </div>
-        </div>*@
     </div>
 </body>
 

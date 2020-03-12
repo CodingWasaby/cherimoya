@@ -25,5 +25,7 @@ namespace Petunia.LogicModel
         public string Variables { get; set; }
 
         public int DecimalCount { get; set; }
+
+        public int DeleteFlag { get; set; }
     }
 }

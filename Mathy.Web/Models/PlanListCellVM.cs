@@ -22,7 +22,7 @@ namespace Mathy.Web.Models
             PlanType = GetPlanType(lm.PlanType);
             IsCustom = string.IsNullOrEmpty(author);
             AuthFlag = lm.AuthFlag;
-            PlanCategory = "类型" + lm.PlanCategory;
+            PlanCategory = lm.PlanCategory == "A" ? "检测数据处理" : "标准物质不确定度评定";
         }
 
 
