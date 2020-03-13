@@ -1,0 +1,26 @@
+{
+	"Title":"medTest",
+	"Description":"medTest",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"a",
+			"Description":"a",
+			"Expression":"z = column(m,0);\nx = med(z);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

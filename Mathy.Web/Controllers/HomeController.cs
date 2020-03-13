@@ -63,11 +63,18 @@ namespace Mathy.Web.Controllers
 
         public ActionResult Main()
         {
-            var planA = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "A");
-            var planB = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "B");
-            ViewBag.planA = planA;
-            ViewBag.planB = planB;
-            return View();
+            try
+            {
+                var planA = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "A");
+                var planB = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "B");
+                ViewBag.planA = planA;
+                ViewBag.planB = planB;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 

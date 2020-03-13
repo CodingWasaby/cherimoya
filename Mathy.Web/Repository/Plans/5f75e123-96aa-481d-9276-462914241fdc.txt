@@ -1,0 +1,27 @@
+{
+	"Title":"科克伦检验",
+	"Description":"要求各行内数据个数相同",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"检验过程",
+			"Description":"若有离群值，则移除m中的对应行",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\nss=pow(s,2);\nc=max(array(ss))\/sum(array(ss));\nm1=concatColumn([m,x,s]);\ny=cochran(m,5);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix",
+			"Description":"以行对数据进行分组，计算每行的标准偏差进行比较"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

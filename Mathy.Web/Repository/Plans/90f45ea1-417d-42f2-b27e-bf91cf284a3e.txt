@@ -1,0 +1,25 @@
+{
+	"Title":"重复性和再现性标准偏差",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"计算过程",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\nr_size=map(m,row->[size(row)]);\nar=sum(array(r_size));\nrr_size=pow(r_size,2);\narr=sum(array(rr_size));\nn=(ar-arr\/ar)\/(rowCount(m)-1);\nm1=concatColumn([m,x,s,r_size]);\nss=pow(s,2);\nc=max(array(ss))\/sum(array(ss));\ng=grubbsd(array(x),5);\n#{f,q1,q2,v1,v2,fvalue}=f(m, 5);\ns_b=root(q1\/v1,2);\ns_r=root(q2\/v2,2);\ns_L=root((pow(s_b,2)-pow(s_r,2))\/n,2);\ns_R=root(pow(s_L,2)+pow(s_r,2),2);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix",
+			"Description":"列代表实验室内重复次数，空值用-代替"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

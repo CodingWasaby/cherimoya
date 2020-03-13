@@ -1,0 +1,35 @@
+{
+	"Title":"标准物质均匀性（线性校正后单元间均匀性检验）",
+	"Description":"针对线性校正后的残差进行单因素方差分析，由于是对残差进行分析，组内自由度再减1",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"基本参数",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\nr_size=map(m,row->[size(row)]);\nar=sum(array(r_size));\nrr_size=pow(r_size,2);\narr=sum(array(rr_size));\nn=(ar-arr\/ar)\/(rowCount(m)-1);\nm1=concatColumn([m,x,s,r_size]);\nss=pow(s,2);\nc=max(array(ss))\/sum(array(ss));\ng=grubbsd(array(x),5);\n#{f,q1,q2,v1,v2,fvalue}=f(m, 5);\nre=q1\/v1\/(q2\/v2);\ns_r=root(q2\/(v2-1),2);\ns_bb=root((q1\/v1-q2\/(v2-1))\/n,2);\nub=root((q2\/(v2-1))\/n,2)*root(2\/(v2-1),4);"
+		},
+		{
+			"Title":"组间大于组内",
+			"Expression":"u=(s_r<s_bb?s_bb:(ub>s_r?ub:s_r))",
+			"Condition":"q1\/v1>q2\/(v2-1)"
+		},
+		{
+			"Title":"组间小于组内",
+			"Expression":"u=(ub>s_r?ub:s_r)",
+			"Condition":"q1\/v1<q2\/(v2-1)"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

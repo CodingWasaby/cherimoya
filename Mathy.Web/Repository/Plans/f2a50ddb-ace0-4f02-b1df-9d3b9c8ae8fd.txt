@@ -1,0 +1,17 @@
+{
+	"Title":"oddTest",
+	"Description":"oddTest",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"1",
+			"Description":"1",
+			"Expression":"a=odd(1);\nb=odd(2);\nc=odd(1.5);"
+		}
+	],
+	"Variables":[
+	],
+	"Styles":[
+	]
+}

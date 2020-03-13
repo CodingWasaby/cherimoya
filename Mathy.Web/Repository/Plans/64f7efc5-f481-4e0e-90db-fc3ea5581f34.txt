@@ -1,0 +1,17 @@
+{
+	"Title":"invTest",
+	"Description":"invTest",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"1",
+			"Description":"1",
+			"Expression":"a=tinv(0.05,1);\nb=finv(0.05,1,2);\nc=xinv(0.05,1);"
+		}
+	],
+	"Variables":[
+	],
+	"Styles":[
+	]
+}

@@ -1,0 +1,31 @@
+{
+	"Title":"标准物质均匀性（线性趋势校正）",
+	"Description":"进行线性校正得到残差",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"趋势校正",
+			"Description":"b0为截距，b1为斜率，sb为斜率标准偏差,res为残差",
+			"Expression":"x=column(lts,1);\ny=column(lts,2);\na_x=average(x);\na_y=average(y);\nnx=size(x);\nb1=isum(i:0->nx-1,(x[i]-a_x)*(y[i]-a_y))\/isum(i:0->nx-1,pow(x[i]-a_x,2));\nb0=a_y-b1*a_x;\nss=isum(i:0->nx-1,pow((y[i]-b0-b1*x[i]),2))\/(nx-2);\nsb=root(ss\/isum(i:0->nx-1,pow(x[i]-a_x,2)),2);\nt=abs(b1)\/sb;\nres=map(lts,row->[row[1]-b0-b1*row[0]]);\nfinal=concatColumn([lts,res]);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"lts",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"lts",
+			"Size":0,
+			"ColumnNames":[
+				"单元编号",
+				"位置",
+				"检测值"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

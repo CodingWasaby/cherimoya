@@ -1,0 +1,26 @@
+{
+	"Title":"quartileTest",
+	"Description":"quartileTest",
+	"Author":"2",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"1",
+			"Description":"1",
+			"Expression":"a=quartile(0.5,column(m,0));"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

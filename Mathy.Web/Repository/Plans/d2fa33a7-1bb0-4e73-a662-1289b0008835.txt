@@ -1,0 +1,26 @@
+{
+	"Title":"平均值一致性t检验",
+	"Description":"每行为一组，比较两行数据的平均值是否一致",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"计算过程",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\n#{f,q1,q2,v1,v2,fvalue}=f(m, 5);\nre=q1\/v1\/(q2\/v2);\nax1=average(row(m,0));\nax2=average(row(m,1));\ns1=stdvar(row(m,0));\ns2=stdvar(row(m,1));\nn1=size(row(m,0));\nn2=size(row(m,1));\nsc=root((pow(s1,2)*(n1-1)+pow(s2,2)*(n2-1))\/(n1+n2-2),2);\nv1=n1+n2-2;\nt1=abs(ax1-ax2)\/(sc*root(1\/n1+1\/n2,2));\nk=pow(s1,2)\/n1+pow(s2,2)\/n2;\nt2=abs(ax1-ax2)\/root(pow(s1,2)\/n1+pow(s2,2)\/n2,2);\nv2=1\/(pow(s1,4)\/(pow(k,2)*pow(n1,2)*(n1-1))+pow(s2,4)\/(pow(k,2)*pow(n2,2)*(n2-1)));\nresult=(f?t1:t2);\nv=(f?v1:v2);\nt=tinv(0.05,v);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix",
+			"Description":"以行为分组"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

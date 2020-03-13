@@ -1,0 +1,39 @@
+{
+	"Title":"标准物质均匀性检验",
+	"Description":"单因素方差分析",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"1",
+			"Description":"基本步骤",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\nr_size=map(m,row->[size(row)]);\nar=sum(array(r_size));\nrr_size=pow(r_size,2);\narr=sum(array(rr_size));\nn=(ar-arr\/ar)\/(rowCount(m)-1);\nm1=concatColumn([m,x,s,r_size]);\nss=pow(s,2);\nc=max(array(ss))\/sum(array(ss));\ng=grubbsd(array(x),5);\n#{f,q1,q2,v1,v2,fvalue}=f(m, 5);\nre=q1\/v1\/(q2\/v2);\ns_b=root(q1\/v1,2);\ns_r=root(q2\/v2,2);\ns_L=root((pow(s_b,2)-pow(s_r,2))\/n,2);\nub=root((q2\/v2)\/columnCount(m),2)*pow(2\/v2,1\/4);"
+		},
+		{
+			"Title":"2",
+			"Description":"组间均方大于组内",
+			"Expression":"u=(s_r<s_L?s_L:(ub>s_r?ub:s_r))",
+			"Condition":"q1\/v1>q2\/v2"
+		},
+		{
+			"Title":"3",
+			"Description":"组间均方小于组内",
+			"Expression":"u=(ub>s_r?ub:s_r)",
+			"Condition":"q1\/v1<q2\/v2"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix",
+			"Description":"以行进行分组"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}

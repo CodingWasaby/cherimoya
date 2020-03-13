@@ -1,0 +1,30 @@
+{
+	"Title":"精密度值与平均水平之间函数关系",
+	"Description":"通过原点的直线；截距为正的直线；指数关系",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"计算过程",
+			"Expression":"m=map(x,row->[row[0]]);\ns1=map(x,row->[row[1]]);\nw1=1.0\/pow(s1,2);\nt11=sum(array(s1));\nwm1=w1*m;\nt21=sum(array(wm1));\nwmm1=w1*pow(m,2);\nt31=sum(array(wmm1));\nws1=w1*s1;\nt41=sum(array(ws1));\nwms1=w1*m*s1;\nt51=sum(array(wms1));\na1=(t31*t41-t21*t51)\/(t11*t31-pow(t21,2));\nb1=(t11*t51-t21*t41)\/(t11*t31-pow(t21,2));\n\ns2=a1+b1*m;\nw2=1.0\/pow(s2,2);\nt12=sum(array(s2));\nwm2=w2*m;\nt22=sum(array(wm2));\nwmm2=w2*pow(m,2);\nt32=sum(array(wmm2));\nws2=w2*s2;\nt42=sum(array(ws2));\nwms2=w2*m*s2;\nt52=sum(array(wms2));\na2=(t32*t42-t22*t52)\/(t12*t32-pow(t22,2));\nb2=(t12*t52-t22*t42)\/(t12*t32-pow(t22,2));\n\ns3=a2+b2*m;\nw3=1.0\/pow(s3,2);\nt13=sum(array(s3));\nwm3=w3*m;\nt23=sum(array(wm3));\nwmm3=w3*pow(m,2);\nt33=sum(array(wmm3));\nws3=w3*s3;\nt43=sum(array(ws3));\nwms3=w3*m*s3;\nt53=sum(array(wms3));\na3=(t33*t43-t23*t53)\/(t13*t33-pow(t23,2));\nb3=(t13*t53-t23*t43)\/(t13*t33-pow(t23,2));\n\ns4=a3+b3*m;\nw4=1.0\/pow(s4,2);\nt14=sum(array(s4));\nwm4=w4*m;\nt24=sum(array(wm4));\nwmm4=w4*pow(m,2);\nt34=sum(array(wmm4));\nws4=w4*s4;\nt44=sum(array(ws4));\nwms4=w4*m*s4;\nt54=sum(array(wms4));\na4=(t34*t44-t24*t54)\/(t14*t34-pow(t24,2));\nb4=(t14*t54-t24*t44)\/(t14*t34-pow(t24,2));\n\nlm=map(m,row->[lg(row[0])]);\nlmm=pow(lm,2);\nls=map(m,row->[lg(row[1])]);\nlms=lm*ls;\ntl1=sum(array(lm));\ntl2=sum(array(lmm));\ntl3=sum(array(ls));\ntl4=sum(array(lms));\nq=rowCount(m);\nc=(tl2*tl3-tl1*tl4)\/(q*tl2-pow(tl1,2));\nd=(q*tl4-tl1*tl3)\/(q*tl2-pow(tl1,2));"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"x",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"x",
+			"Size":0,
+			"ColumnNames":[
+				"平均值（m）",
+				"标准偏差（s）",
+				"测量次数（n）"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

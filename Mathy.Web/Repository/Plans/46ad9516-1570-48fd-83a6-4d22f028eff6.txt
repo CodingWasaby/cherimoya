@@ -1,0 +1,28 @@
+{
+	"Title":"科克伦检验",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"检验过程",
+			"Description":"若y为空，则代表没有离群值",
+			"Expression":"x=map(m, row->[average(row)]);\ns=map(m, row->[stdvar(row)]);\nm1=concatColumn([m,x,s]);\ny=cochran(s,5);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"ColumnNames":[
+				"x"
+			],
+			"RowHeaderWidth":0
+		}
+	]
+}

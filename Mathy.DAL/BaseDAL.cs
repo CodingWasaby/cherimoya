@@ -26,9 +26,22 @@ namespace Mathy.DAL
             var countstr = @" SELECT  COUNT(*) totalcount
                                 FROM    ( {0}
                                         ) CountTable ";
+
+            string sqlPageStr = @"WITH    t AS ( {0}
+                                                 ),
+                                            t1
+                                              AS ( SELECT   ROW_NUMBER() OVER ( {1} ) rowid ,
+                                                            *
+                                                   FROM     t
+                                                 )
+                                        SELECT  *
+                                        FROM    t1
+                                        WHERE   rowid BETWEEN {2} 
+                                    ";
+            //@rowStart AND @rowEnd
             var sqlCount = string.IsNullOrEmpty(sqlCountCustom) ? string.Format(countstr, sql) : sqlCountCustom;
-            var sqlPage = sql + " Order By " + page.OrderField + " " + page.DescString;
-            sqlPage += " OFFSET " + page.OffSetRows + " ROWS FETCH NEXT " + page.PageSize + " ROWS ONLY";
+            var sqlPage = string.Format(sqlPageStr, sql, " Order By " + page.OrderField + " " + page.DescString, page.RowStart + "AND " + page.RowEnd);
+            //sqlPage += " OFFSET " + page.OffSetRows + " ROWS FETCH NEXT " + page.PageSize + " ROWS ONLY";
 
             using (var conn = GetDbConnection())
             {

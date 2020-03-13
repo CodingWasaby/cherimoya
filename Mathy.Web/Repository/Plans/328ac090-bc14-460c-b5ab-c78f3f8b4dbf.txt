@@ -1,0 +1,25 @@
+{
+	"Title":"标准物质均匀性检验（随机区组） ",
+	"Description":"无重复双因素方差分析",
+	"Author":"3",
+	"PlanType":0,
+	"Expressions":[
+		{
+			"Title":"基本参数",
+			"Expression":"x0=average(array(m));\nxa=map(m, row->[pow(average(row)-x0,2)]);\nxn=map(transpose(m),row->[pow(average(row)-x0,2)]);\nmv=pow(m-x0,2);\n\na=rowCount(m);\nn=columnCount(m);\nSSA=n*sum(array(xa));\nSSB=a*sum(array(xn));\nSST=sum(array(mv));\n\nMA=SSA\/(a-1);\nMW=(SST-SSA-SSB)\/((a-1)*(n-1));\nu=root((MA-MW)\/n,2);"
+		}
+	],
+	"Variables":[
+		{
+			"Name":"m",
+			"Type":"Matrix"
+		}
+	],
+	"Styles":[
+		{
+			"Target":"m",
+			"Size":0,
+			"RowHeaderWidth":0
+		}
+	]
+}
