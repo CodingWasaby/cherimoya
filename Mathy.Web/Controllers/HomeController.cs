@@ -63,6 +63,10 @@ namespace Mathy.Web.Controllers
 
         public ActionResult Main()
         {
+            var planA = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "A");
+            var planB = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "B");
+            ViewBag.planA = planA;
+            ViewBag.planB = planB;
             return View();
         }
 
@@ -91,13 +95,13 @@ namespace Mathy.Web.Controllers
                 userid = 0;
             //ViewData["PagingButtons"] = Paging(pageIndex, Script.GetJobCount(), "JobPageIndex", 10);
             ViewBag.pageIndex = pageIndex;
-            ViewBag.TotalPage = Script.GetJobCount(userid) / 5 + 1;
+            ViewBag.TotalPage = Script.GetJobCount(userid) / 10 + 1;
             ViewBag.jobName = jobName;
             ViewBag.planName = planName;
             ViewBag.begindate = begindate;
             ViewBag.enddate = enddate;
             ViewBag.isall = isall;
-            return Script.SearchJobs(userid, pageIndex - 1, 5, jobName, planName, begindate, enddate, isFinish).Select(i => new JobListCellVM(i, pageIndex - 1));
+            return Script.SearchJobs(userid, pageIndex - 1, 10, jobName, planName, begindate, enddate, isFinish).Select(i => new JobListCellVM(i, pageIndex - 1));
         }
 
         [CheckLogin]
@@ -128,9 +132,10 @@ namespace Mathy.Web.Controllers
 
         public ActionResult PlansTotal(int? pageIndex, string planName, string begindate, string enddate, string content, string category)
         {
+            category = string.IsNullOrEmpty(category) ? "A" : category;
             pageIndex = pageIndex == null ? 1 : pageIndex;
             ViewBag.category = category;
-            return View(GetPlanList(pageIndex, planName, begindate, enddate, content));
+            return View(GetPlanList(pageIndex, planName, begindate, enddate, content, "", true, category));
         }
 
         public ActionResult PlansAuth(int? pageIndex, string planName, string begindate, string enddate, string content)
@@ -139,48 +144,24 @@ namespace Mathy.Web.Controllers
             return View(GetPlanList(pageIndex, planName, begindate, enddate, content, "", false));
         }
 
-        private object GetPlanList(int? pageIndex, string planName, string begindate, string enddate, string content, string author = "", bool isAuth = true)
+        private object GetPlanList(int? pageIndex, string planName, string begindate, string enddate, string content, string author = "", bool isAuth = true, string category = "")
         {
             int pageSize = string.IsNullOrEmpty(author) ? 5 : 5;
-            //ViewData["PagingButtons"] = Paging(pageIndex, Script.GetPlanCount(author), "PlanPageIndex", pageSize);
-            IEnumerable<PlanLM> list = Script.SearchPlans(0, int.MaxValue, author, isAuth);
-            //Script.GetPlanCount(author, planName, begindate, enddate, content, isAuth)
+            var pageList = new PlanDAL().GetPlanList(pageIndex.Value, pageSize, planName, begindate, enddate, content, author, isAuth, category);
+            var list = pageList.Data;
             ViewBag.pageIndex = pageIndex;
-            var planCount = list.Count();
+            var planCount = pageList.Page.TotalCount;
             ViewBag.TotalPage = planCount / pageSize + 1;
             ViewBag.planName = planName;
             ViewBag.begindate = begindate;
             ViewBag.enddate = enddate;
             ViewBag.content = content;
-
-            if (!string.IsNullOrEmpty(planName))
-            {
-                list = list.Where(m => m.Title != null && m.Title.Contains(planName));
-            }
-            if (!string.IsNullOrEmpty(content))
-            {
-                list = list.Where(m => m.Description != null && m.Description.Contains(content));
-            }
-            if (!string.IsNullOrEmpty(begindate))
-            {
-                var d = DateTime.Now;
-                if (DateTime.TryParse(begindate, out d))
-                    list = list.Where(m => m.CreateTime >= d);
-            }
-            if (!string.IsNullOrEmpty(enddate))
-            {
-                var d = DateTime.Now;
-                if (DateTime.TryParse(enddate, out d))
-                    list = list.Where(m => m.CreateTime < d.Date.AddDays(1));
-            }
             var dal = new UserDAL();
             var users = dal.GetUsers(new Model.Serach.UserSearch());
-
             var setTemp = (from n in list
                            join u in users on n.Author equals u.UserID.ToString()
                            select n.Author = u.Name).ToList();
-            return list.Skip((pageIndex.Value - 1) * pageSize).Take(pageSize)
-                .Select(i => new PlanListCellVM(i, pageIndex.Value - 1, author)).ToList();
+            return list.Select(i => new PlanListCellVM(i, pageIndex.Value - 1, author)).ToList();
         }
 
 
@@ -250,16 +231,38 @@ namespace Mathy.Web.Controllers
         [OutputCache(Duration = 0)]
         public ActionResult CreateJob(int planAutoID)
         {
-            ViewData["PageTitle"] = "创建实验";
+            //ViewData["PageTitle"] = "创建实验";
 
             PlanLM plan = Script.GetPlanLM(planAutoID);
 
-            return View("EditJob", new EditJobVM(new JobLM()
+            //return View("EditJob", new EditJobVM(new JobLM()
+            //{
+            //    PlanAutoID = plan.AutoID,
+            //    Name = plan.Title,
+            //    PlanTitle = plan.Title
+            //}));
+            var job = new JobLM()
             {
                 PlanAutoID = plan.AutoID,
-                Name = plan.Title,
-                PlanTitle = plan.Title
-            }));
+                PlanID = plan.ID,
+                Name = plan.Title + "_" + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                PlanTitle = plan.Title,
+                DecimalCount = 3,
+                IsComplete = false,
+                Variables = "{}",
+                UserAutoID = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value)
+            };
+            var userid = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value);
+            job.AutoID = Script.CreateJob(userid, job.PlanAutoID, job.Name, 3);
+            Session["JobAutoID"] = job.AutoID;
+            Session["JobLM"] = job;
+            EvaluationContext context = Script.GetPlan(job.PlanAutoID, job.PlanID).CreateEvaluationContext();
+            context.Settings = new Settings() { DecimalDigitCount = job.DecimalCount };
+            Session["Context"] = context;
+            Script.InitEvaluationContext(context, job);
+            context.Update();
+            new JobDAL().DeleteJob(job.AutoID);
+            return View("ViewJob", new JobVM(context, job));
         }
 
         [CheckLogin]
@@ -279,7 +282,7 @@ namespace Mathy.Web.Controllers
         {
             if (job.AutoID != 0)
             {
-                Script.UpdateJob(job.AutoID, job.Name);
+                Script.UpdateJobName(job.AutoID, job.Name);
             }
             else
             {
@@ -287,8 +290,6 @@ namespace Mathy.Web.Controllers
                 var userid = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value);
                 Script.CreateJob(userid, job.PlanAutoID, job.Name, 3);
             }
-
-
             return Redirect("/Home/Index");
         }
 
@@ -302,7 +303,7 @@ namespace Mathy.Web.Controllers
                 //UserLM user = Session["User"] as UserLM;
                 var userid = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value);
                 ViewData["PagingButtons"] = Paging(pageIndex, Script.GetJobCount(userid), "JobPageIndex");
-                return View("JobList", Script.SearchJobs(userid, pageIndex, 3, "", "", "", "", "").Select(i => new JobListCellVM(i, pageIndex)));
+                return View("JobList", Script.SearchJobs(userid, pageIndex, 10, "", "", "", "", "").Select(i => new JobListCellVM(i, pageIndex)));
             }
             catch (Exception ex)
             {
@@ -402,22 +403,20 @@ namespace Mathy.Web.Controllers
 
         [CheckLogin]
         [OutputCache(Duration = 0)]
-        public ActionResult SaveJobPlan()
+        public ActionResult SaveJobPlan(string jobName)
         {
             try
             {
+                //int jobDeleteFlag = 0;
                 if (Session["JobAutoID"] != null)
                 {
                     int jobAutoID = (int)Session["JobAutoID"];
-                    string planID = Script.GetJob(jobAutoID).PlanID;
-
+                    Script.UpdateJobName(jobAutoID, jobName);
                     EvaluationContext context = Session["Context"] as EvaluationContext;
-
+                    string planID = Script.GetJob(jobAutoID).PlanID;
                     Script.UpdatePlan(planID, context.Plan);
                     Script.UpdateJob(jobAutoID, context);
                 }
-
-
                 return new JsonResult() { Data = new { success = true }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch (Exception ex)

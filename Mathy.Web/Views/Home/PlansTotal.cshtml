@@ -34,6 +34,10 @@
             if (content.length > 0) {
                 url += "&content=" + content + "&";
             }
+            var category = $('#category').val();
+            if (category.length > 0) {
+                url += "&category=" + category + "&";
+            }
             window.location.href = url;
         }
 
@@ -45,18 +49,18 @@
         <div class="col-lg-12">
             <div class="row">
                 @*<div class="col-sm-1">
-                    <div class="form-group">
-                        <label class="control-label">类型</label>
-                        <div class="row" style="padding-left:20px">
-                            <select class="form-control" id="dataRange" style="width:80%">
-                                <option value="不限">不限</option>
-                                <option value="公共">公共</option>
-                                <option value="保护">保护</option>
-                                <option value="私有">私有</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="control-label">类型</label>
+                            <div class="row" style="padding-left:20px">
+                                <select class="form-control" id="dataRange" style="width:80%">
+                                    <option value="不限">不限</option>
+                                    <option value="公共">公共</option>
+                                    <option value="保护">保护</option>
+                                    <option value="私有">私有</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label class="control-label" for="product_name">模板名称</label>
@@ -117,18 +121,21 @@
                             <h4 class="media-heading">
                                 @n.Title
                                 <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
-                                <span class="badge" title="引用次数" style="margin-left:10px">@n.ReferenceCount</span>
+                                <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
+                                <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
                             </h4>
-                            <h5>@(n.Author + "  " + n.CreateTime)</h5>
-                            @Html.Raw(n.Description)
+                            @if (!string.IsNullOrEmpty(n.Description))
+                            {
+                                @Html.Raw(n.Description)
+                            }
                         </div>
                         <div class="media" style="margin-top:10px">
                             @if (n.IsCustom)
                             {
                                 if (n.PlanType == "公共")
                                 {
+                                    <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
                                     <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                                    <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">引用</a>
                                 }
                                 if (n.PlanType == "保护")
                                 {

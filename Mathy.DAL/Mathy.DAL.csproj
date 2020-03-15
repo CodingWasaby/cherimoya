@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BaseDAL.cs" />
     <Compile Include="CoefficientDAL.cs" />
+    <Compile Include="JobDAL.cs" />
     <Compile Include="MCMDAL.cs" />
     <Compile Include="PlanDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,6 +60,10 @@
     <ProjectReference Include="..\Mathy.Model\Mathy.Model.csproj">
       <Project>{7282CD48-B228-4A5C-9163-62F8DDDCF6C1}</Project>
       <Name>Mathy.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Petunia.LogicModel\Petunia.LogicModel.csproj">
+      <Project>{BF44D113-164B-4846-AD28-6A69FAF4AB46}</Project>
+      <Name>Petunia.LogicModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

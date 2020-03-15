@@ -186,9 +186,9 @@
                 </td>
             </tr>
             @*<tr>
-            <td width="10%">作者</td>
-            <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
-        </tr>*@
+                    <td width="10%">作者</td>
+                    <td width="90%"> <input id="authorTextBox" type="text" value="@Model.Author" style="display: block; width: 100%;" /> </td>
+                </tr>*@
             <tr>
                 <td width="10%">方案类型</td>
                 <td width="90%">
@@ -202,16 +202,16 @@
             <tr>
                 <td width="10%">方案分组</td>
                 <td width="90%">
-                    <select class="type" id="category" >
+                    <select class="type" id="category">
                         @if (Model.PlanCategory == "A")
                         {
-                            <option value="A" selected="selected">类型A</option>
-                            <option value="B">类型B</option>
+                            <option value="A" selected="selected">检测数据处理</option>
+                            <option value="B">标准物质不确定度评定</option>
                         }
                         else
                         {
-                            <option value="A">类型A</option>
-                            <option value="B" selected="selected">类型B</option>
+                            <option value="A">检测数据处理</option>
+                            <option value="B" selected="selected">标准物质不确定度评定</option>
                         }
 
                     </select>

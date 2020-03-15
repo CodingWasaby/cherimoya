@@ -361,10 +361,14 @@
         }
 
         function saveJobPlan() {
-
+            var jobName = $('#jobName').val();
+            if (jobName == null || jobName == "") {
+                alert("实验名称不能为空！");
+                return;
+            }
             $.ajax({
-                url: "/Home/SaveJobPlan",
-                success: function (html) {
+                url: "/Home/SaveJobPlan?jobName=" + $('#jobName').val(),
+                success: function (data) {
                     alert("保存完成。");
                 },
                 error: function (res) {
@@ -443,12 +447,17 @@
 <iframe id="downloadFrame" style="display:none"></iframe>
 
 <input type="hidden" id="editID" value="@Model.EditID" />
-
-<h3>@Model.Name</h3>
-<div>@Model.PlanTitle</div>
-<hr />
-<div>@Html.Raw(Model.Description)</div>
-<br />
+<table style="width:100%;">
+    <tr>
+        <td>实验名称</td>
+        <td><input type="text" id="jobName" value="@Model.Name" name="Name" style="min-width:600px;" required /></td>
+    </tr>
+</table>
+@*<h3>@Model.Name</h3>
+    <div>@Model.PlanTitle</div>
+    <hr />
+    <div>@Html.Raw(Model.Description)</div>
+    <br />*@
 
 
 

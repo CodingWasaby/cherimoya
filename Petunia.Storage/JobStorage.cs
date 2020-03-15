@@ -42,7 +42,7 @@ namespace Petunia.Storage
             }
             if (userAutoID == 0)
                 return query.Skip(pageIndex * pageSize).Take(pageSize).OrderByDescending(i => i.UpdateTime).ToArray().Select(i => JobDB.ToLM(i)).ToArray();
-            return query.Where(i => i.UserAutoID == userAutoID).Skip(pageIndex * pageSize).Take(pageSize).OrderByDescending(i => i.UpdateTime).ToArray().Select(i => JobDB.ToLM(i)).ToArray();
+            return query.Where(i => i.UserAutoID == userAutoID && i.DeleteFlag == 0).Skip(pageIndex * pageSize).Take(pageSize).OrderByDescending(i => i.UpdateTime).ToArray().Select(i => JobDB.ToLM(i)).ToArray();
         }
 
         public static int GetCount(int userAutoID)

@@ -103,6 +103,7 @@ namespace Petunia
                 planLM.Description = newPlan.Description;
                 planLM.Author = newPlan.Author;
                 planLM.PlanType = newPlan.PlanType;
+                planLM.PlanCategory = newPlan.PlanCategory;
                 PlanStorage.Save(planLM);
             }
         }
@@ -182,7 +183,8 @@ namespace Petunia
                         UpdateTime = now,
                         UserAutoID = userAutoID,
                         Variables = new JsonSerializer().SerializeToString(new Dictionary<string, object>()),
-                        DecimalCount = decimalCount
+                        DecimalCount = decimalCount,
+                        DeleteFlag = 0
                     });
             }
 
@@ -198,15 +200,16 @@ namespace Petunia
                        UpdateTime = now,
                        UserAutoID = userAutoID,
                        Variables = new JsonSerializer().SerializeToString(new Dictionary<string, object>()),
-                       DecimalCount = decimalCount
+                       DecimalCount = decimalCount,
+                       DeleteFlag = 0
                    });
         }
 
-        public static void UpdateJob(int autoID, string name)
+        public static void UpdateJobName(int autoID, string name)
         {
             JobLM job = JobStorage.Get(autoID);
             job.Name = name;
-
+            job.DeleteFlag = 0;
             JobStorage.Save(job);
         }
 

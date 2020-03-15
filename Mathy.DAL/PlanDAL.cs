@@ -1,9 +1,52 @@
-﻿using Mathy.Model.Entity;
+﻿using Mathy.Model.Common;
+using Mathy.Model.Entity;
+using Petunia.LogicModel;
+using System;
 
 namespace Mathy.DAL
 {
     public class PlanDAL : BaseDAL
     {
+
+        public PageList<PlanLM> GetPlanList(int pageIndex, int pageSize, string planName, string begindate, string enddate, string content, string author = "", bool isAuth = true, string category = "")
+        {
+            string sql = @" SELECT
+	                                    *
+                                    FROM PlanDB(NOLOCK)
+                                    WHERE DeleteFlag = 0 ";
+
+            if (!string.IsNullOrEmpty(planName))
+            {
+                sql += " and Title LIKE '%" + planName + "%'";
+            }
+            if (!string.IsNullOrEmpty(content))
+            {
+                sql += " and Description LIKE '%" + content + "%'";
+            }
+            if (!string.IsNullOrEmpty(begindate))
+            {
+                sql += " and CreateTime >= @BeginDate";
+            }
+            if (!string.IsNullOrEmpty(enddate))
+            {
+                sql += " and CreateTime <= @EndDate";
+            }
+            if (!string.IsNullOrEmpty(author))
+            {
+                sql += " and Author =@Author ";
+            }
+            if (!string.IsNullOrEmpty(planName))
+            {
+                sql += " and Title LIKE '%" + planName + "%'";
+            }
+            if (!string.IsNullOrEmpty(category))
+            {
+                sql += " and PlanCategory =@PlanCategory ";
+            }
+            sql += isAuth ? " and AuthFlag=1 " : " and AuthFlag=0 and PlanType=0";
+            return QueryPage<PlanLM>(sql, new PageInfo { PageIndex = pageIndex, PageSize = pageSize, OrderField = "CreateTime", DescString = "DESC" }, new { BeginDate = begindate, EndDate = enddate, Author = author, PlanCategory = category });
+        }
+
         public bool UpdatePlanAuthFlag(string planID, int authFlag)
         {
             string sql = @"
