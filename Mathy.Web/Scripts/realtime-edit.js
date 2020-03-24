@@ -30,8 +30,8 @@ function init() {
     var expressionTemplate = "<tr id='{id}'>";
     expressionTemplate += "<td width='10%'><input class='title' type='text' style='display: block; width: 100%;' /></td>";
     expressionTemplate += "<td width='10%'><input class='desc' type='text' style='display: block; width: 100%;' /></td>";
-    expressionTemplate += "<td width='35%' height='90px'><textarea class='expression' style='display: block; width: 100%; height: 100%;' /></td>";
-    expressionTemplate += "<td width='35%' height='90px'><textarea class='condition' style='display: block; width: 100%; height: 100%;' /></td>";
+    expressionTemplate += "<td width='35%' height='200'><textarea class='expression' style='display: block; width: 100%; height: 100%;' /></td>";
+    expressionTemplate += "<td width='35%' height='200'><textarea class='condition' style='display: block; width: 100%; height: 100%;' /></td>";
     expressionTemplate += "<td width='10%'>";
     expressionTemplate += "<a class='delete' href='javascript:deleteRow(1, &apos;{id}&apos;);'>删除</a>&nbsp;";
     expressionTemplate += "<a class='moveUp' href='javascript:moveRow(1, {index}, -1);'>上移</a>&nbsp;";

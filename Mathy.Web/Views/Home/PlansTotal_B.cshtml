@@ -1,0 +1,163 @@
+﻿@using Mathy.Web.Models
+@using Mathy.Model.Entity
+@model IEnumerable<PlanListCellVM>
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+    var user = ViewBag.User as UserEntity;
+}
+@section scripts {
+
+    <script language="javascript">
+
+        $(function () {
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage_B,'B');
+            //window.parent.reheight();
+        })
+
+        function SearchPage_B(page) {
+            var url = "/home/PlansTotal_B/" + "?pageIndex=" + page;
+
+            var planName = $('#planName_B').val();
+            if (planName.length > 0) {
+                url += "&planName=" + planName + "&";
+            }
+
+            var begindate = $('#begindate_B').val();
+            if (begindate.length > 0) {
+                url += "&begindate=" + begindate + "&";
+            }
+
+            var enddate = $('#enddate_B').val();
+            if (enddate.length > 0) {
+                url += "&enddate=" + enddate + "&";
+            }
+
+            var content = $('#content_B').val();
+            if (content.length > 0) {
+                url += "&content=" + content + "&";
+            }
+            var category = $('#category_B').val();
+            if (category.length > 0) {
+                url += "&category=" + category + "&";
+            }
+             url += "&ran=" + Math.random();
+            $.get(url, function (data) {
+                           var pos = data.indexOf("<var>");
+                data = data.substr(pos,data.length);
+           $("#Btable").replaceWith(data);
+       });
+        }
+
+           function SeqChange_B(id) {
+            $("."+ id + "_Seq").toggle();
+        }
+
+        function SeqChange_Save_B(id) {
+            $("." + id + "_Seq").hide();
+            changeSeq(id, $('input.' + id + "_Seq").val(), () => {
+                 SearchPage_B(@ViewBag.pageIndex);
+            });
+        }
+    </script>
+}
+<var></var>
+<div class="gray-bg reheight" id="Btable">
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label" for="product_name">模板名称</label>
+                        <input type="text" id="planName_B" value="@ViewBag.planName" placeholder="模板名称" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label" for="product_name">模板类型</label>
+                        <div class="row" style="padding-left:20px">
+                            <select class="form-control" id="category_B" style="width:80%;" disabled="disabled">
+                                @if (ViewBag.category == "A")
+                                {
+                                    <option value="A" selected="selected">检测数据处理</option>
+                                    <option value="B">标准物质不确定度评定</option>
+                                }
+                                else
+                                {
+                                    <option value="A">检测数据处理</option>
+                                    <option value="B" selected="selected">标准物质不确定度评定</option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">开始时间</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="begindate_B" class="form-control" value="@ViewBag.begindate">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">结束时间</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate_B" class="form-control" value="@ViewBag.enddate">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">说明内容</label>
+                        <input type="text" id="content_B" name="regional" value="@ViewBag.content" placeholder="说明" class="form-control">
+                    </div>
+                </div>
+                <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="SearchPage_B(@ViewBag.pageIndex)">查询</a>
+            </div>
+            <div id="Paginator"> <ul id="pageLimitB"></ul> </div>
+            <div class="table-responsive gray-bg">
+                @foreach (var n in Model)
+                {
+                    <div class="media list-group-item">
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                @n.Title
+                                <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
+                                <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
+                                <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
+                            </h4>
+                            @if (!string.IsNullOrEmpty(n.Description))
+                            {
+                                @Html.Raw(n.Description)
+                            }
+                        </div>
+                        <div class="media" style="margin-top:10px">
+                            @if (n.IsCustom)
+                            {
+                                if (n.PlanType == "公共")
+                                {
+                                    <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
+                                    <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                }
+                                if (n.PlanType == "保护")
+                                {
+                                    <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
+                                }
+                                if (user.Role == "1")
+                                {
+                                    <a class="btn-sm btn-warning " onclick="SeqChange_A('@n.PlanAutoID')">顺序调整</a>
+                                    <input type="number" class="@(n.PlanAutoID+"_Seq")" min="1" step="1" style="display:none;width:70px" value="@n.SeqNo" />
+                                    <a class="btn-sm btn @(n.PlanAutoID+"_Seq")" name="" onclick="SeqChange_Save_A('@n.PlanAutoID')" style="display:none;">保存</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

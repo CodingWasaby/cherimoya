@@ -40,7 +40,7 @@ namespace Mathy.DAL
                                     ";
             //@rowStart AND @rowEnd
             var sqlCount = string.IsNullOrEmpty(sqlCountCustom) ? string.Format(countstr, sql) : sqlCountCustom;
-            var sqlPage = string.Format(sqlPageStr, sql, " Order By " + page.OrderField + " " + page.DescString, page.RowStart + "AND " + page.RowEnd);
+            var sqlPage = string.Format(sqlPageStr, sql, " Order By " + page.OrderField + " " + page.DescString, page.RowStart + " AND " + page.RowEnd);
             //sqlPage += " OFFSET " + page.OffSetRows + " ROWS FETCH NEXT " + page.PageSize + " ROWS ONLY";
 
             using (var conn = GetDbConnection())

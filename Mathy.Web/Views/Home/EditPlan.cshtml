@@ -244,8 +244,8 @@
                 <tr id="@id">
                     <td width="10%"><input class='title' type='text' style="display: block; width: 100%;" value='@item.Title' /></td>
                     <td width="10%"><input class='desc' type='text' style="display: block; width: 100%;" value='@item.Description' /></td>
-                    <td width="35%" height="90px;"><textarea class='expression' style="display: block; width: 100%; height: 100%;">@item.Expression</textarea></td>
-                    <td width="35%" height="90px;"><textarea class='condition' style="display: block; width: 100%; height: 100%;">@item.Condition</textarea></td>
+                    <td width="35%" style="height:100px"><textarea class='expression' style="display: block; width: 100%; height: 100%;">@item.Expression</textarea></td>
+                    <td width="35%" height="200"><textarea class='condition' style="display: block; width: 100%; height: 100%;">@item.Condition</textarea></td>
                     <td width="10%">
                         <a class='delete' href='javascript:deleteRow(0, &apos;@id&apos;);'>删除</a>&nbsp;
                         <a class='moveUp' href='javascript:moveRow(1, @item.ID, -1);'>上移</a>&nbsp;

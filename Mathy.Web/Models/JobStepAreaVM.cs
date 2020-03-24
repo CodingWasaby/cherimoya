@@ -120,7 +120,8 @@ namespace Mathy.Web.Models
                     ColumnNames = columnNames,
                     Cells = cells,
                     Value = displayText,
-                    Url = url
+                    Url = url,
+                    Description = context.Plan.Variables.FirstOrDefault(m => m.Name == step.OutVariables[i]) == null ? "" : context.Plan.Variables.FirstOrDefault(m => m.Name == step.OutVariables[i]).Description
                 };
             }
 
@@ -183,6 +184,8 @@ namespace Mathy.Web.Models
         public string Value { get; set; }
 
         public string Url { get; set; }
+
+        public string Description { get; set; }
     }
 
     public class InVariableVM

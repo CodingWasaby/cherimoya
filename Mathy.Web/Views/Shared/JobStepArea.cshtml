@@ -1,8 +1,16 @@
 ﻿@using Mathy.Web.Models
 @model JobStepAreaVM
-
 @{
 
+    <script>
+        function resultShow(id) {
+            //console.log($("#" + id));
+            $("#" + id).toggle();
+        }
+        $(document).ready(function () {
+
+        });
+    </script>
     <div class="description">
 
         <div>
@@ -15,7 +23,7 @@
                         <table>
                             <tr>
                                 <td><a href="javascript: onDeleteStepButtonClick();"><img style="width:20px;height:20px;" src="/Resources/delete.png"></a></td>
-                                <td><a href="javascript: onEditStepButtonClick();" ><img style="width:20px;height:20px;" src="/Resources/editStep.png"></a></td>
+                                <td><a href="javascript: onEditStepButtonClick();"><img style="width:20px;height:20px;" src="/Resources/editStep.png"></a></td>
                                 <td><a href="javascript: onEditVariablesButtonClick();"><img style="width:20px;height:20px;" src="/Resources/editVariables.png"></a></td>
                                 <td><a href="javascript: onInsertBeforeButtonClick();"><img style="width:20px;height:20px;" src="/Resources/insertBefore.png"></a></td>
                                 <td><a href="javascript: onInsertAfterButtonClick();"><img style="width:20px;height:20px;" src="/Resources/insertAfter.png"></a></td>
@@ -23,7 +31,7 @@
                         </table>
                     </td>
                 </tr>
-             </table>
+            </table>
         </div>
 
         @{
@@ -36,8 +44,8 @@
     </div>
 
     <br />
-    
-    <div id="message"/>
+
+    <div id="message" />
     <br />
 
     if (Model.InVariables.Length > 0)
@@ -61,34 +69,34 @@
                 <tbody>
 
                     @{
-        int index = 0;
-        foreach (InVariableVM variable in Model.InVariables)
-        {
-            <tr>
-                <td>@variable.Name</td>
-                <td>@variable.Type</td>
-                <td>@variable.Description</td>
-                <td>
-                    @{
-            if (variable.IsMatrix)
-            {
-                <table>
-                    <tr>
-                        <td><input type="button" value="导入" onclick="javascipt:importGrid(@Model.Index, @index)"></input></td>
-                        <td><input type="button" value="导出" onclick="javascipt:exportGrid(@Model.Index, @index)"></input></td>
-                    </tr>
-                </table>
-                <div class="grid" id="@variable.Index" data-variable-name="@variable.Name" data-in-variable="true" data-type="grid" style="display:inline-block;position:relative;"></div>
-            }
-            else
-            {
-                <input type="text" data-variable-name="@variable.Name" data-in-variable="true" value="@variable.Value" style="min-width:600px;" class="inVariable" id="@variable.Index" data-type="text"></input>
-            }
-                    }
-                </td>
-            </tr>
-            index++;
-        }
+                        int index = 0;
+                        foreach (InVariableVM variable in Model.InVariables)
+                        {
+                            <tr>
+                                <td>@variable.Name</td>
+                                <td>@variable.Type</td>
+                                <td>@variable.Description</td>
+                                <td>
+                                    @{
+                                        if (variable.IsMatrix)
+                                        {
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" value="导入" onclick="javascipt:importGrid(@Model.Index, @index)"></input></td>
+                                                    <td><input type="button" value="导出" onclick="javascipt:exportGrid(@Model.Index, @index)"></input></td>
+                                                </tr>
+                                            </table>
+                                            <div class="grid" id="@variable.Index" data-variable-name="@variable.Name" data-in-variable="true" data-type="grid" style="display:inline-block;position:relative;"></div>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" data-variable-name="@variable.Name" data-in-variable="true" value="@variable.Value" style="min-width:600px;" class="inVariable" id="@variable.Index" data-type="text"></input>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                            index++;
+                        }
                     }
 
                 </tbody>
@@ -104,80 +112,76 @@
 
     }
 }
+@if (Model.ResultVariables.Any())
+{
+    <div class="bordered">
+        <div>结果变量</div>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="10%">变量名</th>
+                    <th width="20%">变量说明</th>
+                    <th>变量值</th>
+                </tr>
+            </thead>
 
-<div class="bordered">
-
-    <div>结果变量</div>
-    <br />
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>变量名</th>
-                <th>变量值</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @{
-                foreach (ResultVariableVM variable in Model.ResultVariables)
-                {
-                    <tr>
-                        <td>@variable.Name</td>
-                        <td>
-                            @{
-                    if (variable.Cells != null)
+            <tbody>
+                @{ foreach (ResultVariableVM variable in Model.ResultVariables)
                     {
-                        <div style="max-width:750px;max-height:500px;" class="table-border">
-                            <table style="overflow:auto;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        @for (int i = 0; i <= variable.ColumnCount - 1; i++)
-                                        {
-                                            <th style="background-color:#A1A1A1">@variable.ColumnNames[i]</th>
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for (int i = 0; i <= variable.Cells.Length - 1; i++)
+                        <tr>
+                            <td width="10%">@variable.Name</td>
+                            <td width="20%">@variable.Description</td>
+                            <td>
+                                @{
+                                    if (variable.Cells != null)
                                     {
-                                        <tr>
-                                            <td style="background-color:#A1A1A1">@variable.RowNames[i]</td>
-                                            @for (int j = 0; j <= variable.ColumnCount - 1; j++)
-                                            {
-                                                <td>@variable.Cells[i][j]</td>
-                                            }
-                                        </tr>
+                                        <a onclick="resultShow('@variable.Name')">显示</a>
+                                        <div class="table-border" id="@variable.Name" style="display:none">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        @for (int i = 0; i <= variable.ColumnCount - 1; i++)
+                                                        {
+                                                            <th style="background-color:#A1A1A1">@variable.ColumnNames[i]</th>
+                                                        }
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i <= variable.Cells.Length - 1; i++)
+                                                    {
+                                                        <tr>
+                                                            <td style="background-color:#A1A1A1">@variable.RowNames[i]</td>
+                                                            @for (int j = 0; j <= variable.ColumnCount - 1; j++)
+                                                            {
+                                                                <td>@variable.Cells[i][j]</td>
+                                                            }
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     }
-                                </tbody>
-                            </table>
-                        </div>
+                                    else if (variable.Url != null)
+                                    {
+                                        <img src="@variable.Url" />
+                                    }
+                                    else
+                                    {
+                                        <textarea style="max-width:1000px;height:40px;width:100%;word-break:break-all;overflow:auto;" readonly>@variable.Value</textarea>
+                                    }
+                                }
+                            </td>
+                        </tr>
                     }
-                    else if (variable.Url != null)
-                    {
-                        <img src="@variable.Url" />
-                    }
-                    else
-                    {
-                        <div>@Html.Raw(variable.Value)</div>
-                    }
-                            }
-                        </td>
-                    </tr>
                 }
-            }
-
-        </tbody>
-
-    </table>
-
+            </tbody>
+        </table>
+        <br />
+    </div>
     <br />
-
-</div>
-<br />
+}
 
 <img src="@Model.ImageUrl"></img>
 

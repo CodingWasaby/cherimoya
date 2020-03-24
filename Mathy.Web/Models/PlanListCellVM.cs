@@ -23,8 +23,12 @@ namespace Mathy.Web.Models
             IsCustom = string.IsNullOrEmpty(author);
             AuthFlag = lm.AuthFlag;
             PlanCategory = lm.PlanCategory == "A" ? "检测数据处理" : "标准物质不确定度评定";
+            PlanAutoID = lm.AutoID;
+            SeqNo = lm.SeqNo;
         }
 
+        public int PlanAutoID { get; private set; }
+        public int SeqNo { get; private set; }
 
         public string CreateJobUrl { get; private set; }
 

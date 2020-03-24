@@ -269,7 +269,7 @@ namespace Cherimoya.Language.JavaLike
                 }
                 var colName = Evaluate(expression.Parameters[0], context).ToString();
                 var rowIndex = (int)Evaluate(expression.Parameters[1], context);
-                return data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailName == colName).CoefficientDetailValue;
+                return data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailName.Trim() == colName.Trim()).CoefficientDetailValue;
             }
 
             try

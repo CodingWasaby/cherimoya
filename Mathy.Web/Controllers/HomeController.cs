@@ -65,10 +65,10 @@ namespace Mathy.Web.Controllers
         {
             try
             {
-                var planA = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "A");
-                var planB = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "B");
-                ViewBag.planA = planA;
-                ViewBag.planB = planB;
+                //var planA = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "A");
+                //var planB = GetPlanList(1, "", "1900-01-01", DateTime.Now.Date.AddDays(1).ToShortDateString(), "", "", true, "B");
+                //ViewBag.planA = planA;
+                //ViewBag.planB = planB;
                 return View();
             }
             catch (Exception ex)
@@ -137,11 +137,29 @@ namespace Mathy.Web.Controllers
         }
 
 
-        public ActionResult PlansTotal(int? pageIndex, string planName, string begindate, string enddate, string content, string category)
+        public ActionResult PlansTotal_A(int? pageIndex, string planName, string begindate, string enddate, string content, string category)
         {
             category = string.IsNullOrEmpty(category) ? "A" : category;
             pageIndex = pageIndex == null ? 1 : pageIndex;
             ViewBag.category = category;
+            var user = new UserEntity();
+            user.Email = HttpContext.Request.Cookies["user"].Value;
+            user.Company = "";
+            user.Role = HttpContext.Request.Cookies["role"].Value;
+            ViewBag.User = user;
+            return View(GetPlanList(pageIndex, planName, begindate, enddate, content, "", true, category));
+        }
+
+        public ActionResult PlansTotal_B(int? pageIndex, string planName, string begindate, string enddate, string content, string category)
+        {
+            category = string.IsNullOrEmpty(category) ? "A" : category;
+            pageIndex = pageIndex == null ? 1 : pageIndex;
+            ViewBag.category = category;
+            var user = new UserEntity();
+            user.Email = HttpContext.Request.Cookies["user"].Value;
+            user.Company = "";
+            user.Role = HttpContext.Request.Cookies["role"].Value;
+            ViewBag.User = user;
             return View(GetPlanList(pageIndex, planName, begindate, enddate, content, "", true, category));
         }
 
@@ -155,6 +173,7 @@ namespace Mathy.Web.Controllers
         {
             int pageSize = string.IsNullOrEmpty(author) ? 5 : 5;
             var pageList = new PlanDAL().GetPlanList(pageIndex.Value, pageSize, planName, begindate, enddate, content, author, isAuth, category);
+            pageList.Data.ToList().ForEach(m => m.SeqNo = m.SeqNo == 0 ? 99999 : m.SeqNo);
             var list = pageList.Data;
             ViewBag.pageIndex = pageIndex;
             var planCount = pageList.Page.TotalCount;
@@ -169,6 +188,13 @@ namespace Mathy.Web.Controllers
                            join u in users on n.Author equals u.UserID.ToString()
                            select n.Author = u.Name).ToList();
             return list.Select(i => new PlanListCellVM(i, pageIndex.Value - 1, author)).ToList();
+        }
+
+        [CheckLogin]
+        [HttpPost]
+        public String ChangeSeq(int planID, int seq)
+        {
+            return new PlanDAL().UpdatePlanSeq(planID, seq) ? "success" : "fail";
         }
 
 

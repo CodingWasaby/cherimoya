@@ -23,5 +23,7 @@ namespace Petunia.LogicModel
         public int ReferenceCount { get; set; }
 
         public int AuthFlag { get; set; }
+
+        public int SeqNo { get; set; }
     }
 }

@@ -2,12 +2,32 @@
 @{
     ViewBag.Title = "Main";
     Layout = "~/Views/Shared/_Login.cshtml";
-    var planA = (IEnumerable<PlanListCellVM>)ViewBag.planA;
-    var planB = (IEnumerable<PlanListCellVM>)ViewBag.planB;
+    //var planA = (IEnumerable<PlanListCellVM>)ViewBag.planA;
+    //var planB = (IEnumerable<PlanListCellVM>)ViewBag.planB;
 }
 <script src="~/Scripts/flot/jquery.flot.js"></script>
 <script src="~/Scripts/flot/jquery.flot.tooltip.min.js"></script>
 <script src="~/Content/d3/d3.min.js"></script>
+<script>
+    function changeSeq(planID, seqNo, todo) {
+        $.ajax({
+            url: "/Home/ChangeSeq",
+            type: "POST",
+            data: {
+                planID: planID,
+                seq: seqNo
+            },
+            traditional: true,
+            success: function (result) {
+                if (result == "success")
+                    todo();
+                else
+                    alert("保存失败！");
+            }
+        });
+    }
+
+</script>
 <body style="background-color: #f3f3f4;" id="aa">
     <div class="animated fadeInDown" style="margin-left:20px;margin-right:40px">
         @*<h1 class="font-bold" style="margin:50px 20px 40px 20px">Uncertainty Evaluation System</h1>*@
@@ -16,44 +36,13 @@
             <div class="panel-heading">
                 <div class="panel-title" style="font-size:x-large;font-weight:bold">
                     标准物质不确定度评定
-                    <a href="@Url.Action("PlansTotal","home",new { category="B"})" class="btn-sm btn-success J_menuItem_Child  panel-title" style="font-size:large;font-weight:bold;text-decoration:underline">更多模型</a>
+                    @*<a href="@Url.Action("PlansTotal", "home", new { category = "B" })" class="btn-sm btn-success J_menuItem_Child  panel-title" style="font-size:large;font-weight:bold;text-decoration:underline">更多模型</a>*@
                 </div>
 
             </div>
             <div class="panel-body">
                 <div class="table-responsive gray-bg">
-                    @foreach (var n in planB)
-                    {
-                        <div class="media list-group-item">
-                            <div class="media-body">
-                                <h4 class="media-heading">
-                                    @n.Title
-                                    <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
-                                    <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
-                                    <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
-                                </h4>
-                                @*<h5>@(n.Author + "  " + n.CreateTime)</h5>*@
-                                @if (!string.IsNullOrEmpty(n.Description))
-                                {
-                                    @Html.Raw(n.Description)
-                                }
-                            </div>
-                            <div class="media" style="margin-top:10px">
-                                @if (n.IsCustom)
-                                {
-                                    if (n.PlanType == "公共")
-                                    {
-                                        <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
-                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                                    }
-                                    if (n.PlanType == "保护")
-                                    {
-                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    }
+                    @{Html.RenderAction("PlansTotal_B", "home", new { category = "B" });}
                 </div>
             </div>
         </div>
@@ -62,42 +51,12 @@
             <div class="panel-heading">
                 <div class="panel-title" style="font-size:x-large;font-weight:bold">
                     检测数据处理
-                    <a href="@Url.Action("PlansTotal","home",new { category="A"})" class="btn-sm btn-success J_menuItem_Child  panel-title" style="font-size:large;font-weight:bold;text-decoration:underline">更多模型</a>
+                    @*<a href="@Url.Action("PlansTotal", "home", new { category = "A" })" class="btn-sm btn-success J_menuItem_Child  panel-title" style="font-size:large;font-weight:bold;text-decoration:underline">更多模型</a>*@
                 </div>
             </div>
             <div class="panel-body">
                 <div class="table-responsive gray-bg">
-                    @foreach (var n in planA)
-                    {
-                        <div class="media list-group-item">
-                            <div class="media-body">
-                                <h4 class="media-heading">
-                                    @n.Title
-                                    <span class="badge" title="方案类型" style="margin-left:10px">@n.PlanCategory</span>
-                                    <span class="badge badge-warning" style="margin-left:10px">@("由" + n.Author + " 于" + n.CreateTime + "创建")</span>
-                                    <span class="badge badge-primary" style="margin-left:10px"> @("被引用 " + n.ReferenceCount + " 次")</span>
-                                </h4>
-                                @if (!string.IsNullOrEmpty(n.Description))
-                                {
-                                    @Html.Raw(n.Description)
-                                }
-                            </div>
-                            <div class="media" style="margin-top:10px">
-                                @if (n.IsCustom)
-                                {
-                                    if (n.PlanType == "公共")
-                                    {
-                                        <a href="@Html.Raw(n.CreateJobUrl)" class="btn-sm btn-success J_menuItem_Child">分析</a>
-                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                                    }
-                                    if (n.PlanType == "保护")
-                                    {
-                                        <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    }
+                    @{Html.RenderAction("PlansTotal_A", "home", new { category = "A" });}
                 </div>
             </div>
         </div>
@@ -106,34 +65,31 @@
                 <div class="panel-title" style="font-size:x-large;font-weight:bold"> 蒙特卡洛方法不确定度评定</div>
             </div>
             <div class="panel-body">
-                <div class="media col-lg-6">
+                <div class="media col-lg">
                     <div class="media-body">
                         <div class="jumbotron">
-                            <h3 class="media-heading">蒙特卡洛模拟计算 </h3>
+                            <h2 class="media-heading" style="font-weight:bold">蒙特卡洛模拟计算 </h2>
+                            <p>                </p>
                             <p>
-                                蒙特卡罗方法通过抓住事物运动的几何数量和几何特征，利用数学方法来加以模拟，即进行一种数字模拟实验。它是以一个概率模型为基础，按照这个模型所描绘的过程，通过模拟实验的结果，作为问题的近似解。
-                            </p>
-                            <p>
-                                可以把蒙特卡罗解题归结为三个主要步骤：构造或描述概率过程；实现从已知概率分布抽样；建立各种估计量。
+                                蒙特卡洛方法是实现概率分布传播的一种数值方法。它通过对输入量X的PDF离散抽样，由测量模型传播输入量的分布，计算获得输出量Y的PDF离散抽样值，进而由输出量的离散分布数值直接获得输出量的最佳估计值、标准不确定度和包含区间。
                             </p>
                             <a href="@Url.Action("mcm","home",new MCMVM { MCMType =1, DecimalDigitCount=3})" class="btn-lg btn-success J_menuItem_Child">创建实验</a>
                         </div>
-                    </div>
-                </div>
-                <div class="media col-lg-6" style="margin-top:0px">
-                    <div class="media-body">
                         <div class="jumbotron">
-                            <h3 class="media-heading">蒙特卡洛模拟计算（自适应）</h3>
+                            <h2 class="media-heading" style="font-weight:bold">蒙特卡洛模拟计算（自适应）</h2>
+                            <p>                </p>
                             <p>
-                                蒙特卡罗方法通过抓住事物运动的几何数量和几何特征，利用数学方法来加以模拟，即进行一种数字模拟实验。它是以一个概率模型为基础，按照这个模型所描绘的过程，通过模拟实验的结果，作为问题的近似解。
-                            </p>
-                            <p>
-                                可以把蒙特卡罗解题归结为三个主要步骤：构造或描述概率过程；实现从已知概率分布抽样；建立各种估计量。
+                                在执行自适应蒙特卡洛方法的基本过程中，蒙特卡洛试验次数不断增加，直至所需要的各种结果达到统计意义上的稳定。
                             </p>
                             <a href="@Url.Action("mcm","home",new MCMVM { MCMType=2,DecimalDigitCount=3})" class="btn-lg btn-success J_menuItem_Child">创建实验</a>
                         </div>
                     </div>
                 </div>
+                @*<div class="media col-lg-6" style="margin-top:0px">
+                        <div class="media-body">
+
+                        </div>
+                    </div>*@
             </div>
         </div>
     </div>

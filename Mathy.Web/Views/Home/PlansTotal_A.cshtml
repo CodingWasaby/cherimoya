@@ -1,77 +1,82 @@
 ﻿@using Mathy.Web.Models
+@using Mathy.Model.Entity
 @model IEnumerable<PlanListCellVM>
 @{
     Layout = "~/Views/Shared/_Login.cshtml";
+    var user = ViewBag.User as UserEntity;
 }
 @section scripts {
 
     <script language="javascript">
 
         $(function () {
-            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
-            window.parent.reheight();
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage_A,'A');
+            //window.parent.reheight();
         })
 
-        function SearchPage(page) {
-            var url = "/home/PlansTotal/" + "?pageIndex=" + page;
+        function SearchPage_A(page) {
+            var url = "/home/PlansTotal_A/" + "?pageIndex=" + page;
 
-            var planName = $('#planName').val();
+            var planName = $('#planName_A').val();
             if (planName.length > 0) {
                 url += "&planName=" + planName + "&";
             }
 
-            var begindate = $('#begindate').val();
+            var begindate = $('#begindate_A').val();
             if (begindate.length > 0) {
                 url += "&begindate=" + begindate + "&";
             }
 
-            var enddate = $('#enddate').val();
+            var enddate = $('#enddate_A').val();
             if (enddate.length > 0) {
                 url += "&enddate=" + enddate + "&";
             }
 
-            var content = $('#content').val();
+            var content = $('#content_A').val();
             if (content.length > 0) {
                 url += "&content=" + content + "&";
             }
-            var category = $('#category').val();
+            var category = $('#category_A').val();
             if (category.length > 0) {
                 url += "&category=" + category + "&";
             }
-            window.location.href = url;
+            url += "&ran=" + Math.random();
+            $.get(url, function (data) {
+                var pos = data.indexOf("<var>");
+                data = data.substr(pos,data.length);
+           $("#Atable").replaceWith(data);
+       });
+        }
+
+        function SeqChange_A(id) {
+            $("."+ id + "_Seq").toggle();
+        }
+
+        function SeqChange_Save_A(id) {
+            $("." + id + "_Seq").hide();
+            changeSeq(id, $('input.' + id + "_Seq").val(), () => {
+                 SearchPage_A(@ViewBag.pageIndex);
+            });
         }
 
     </script>
 }
-
-<div class="gray-bg reheight">
+<var></var>
+<div class="gray-bg reheight" id="Atable">
     <div class="wrapper wrapper-content animated fadeIn">
         <div class="col-lg-12">
             <div class="row">
-                @*<div class="col-sm-1">
-                        <div class="form-group">
-                            <label class="control-label">类型</label>
-                            <div class="row" style="padding-left:20px">
-                                <select class="form-control" id="dataRange" style="width:80%">
-                                    <option value="不限">不限</option>
-                                    <option value="公共">公共</option>
-                                    <option value="保护">保护</option>
-                                    <option value="私有">私有</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>*@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label class="control-label" for="product_name">模板名称</label>
-                        <input type="text" id="planName" value="@ViewBag.planName" placeholder="模板名称" class="form-control">
+                        <input type="text" id="planName_A" value="@ViewBag.planName" placeholder="模板名称" class="form-control">
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label class="control-label" for="product_name">模板类型</label>
                         <div class="row" style="padding-left:20px">
-                            <select class="form-control" id="category" style="width:80%">
+                            <select class="form-control" id="category_A" style="width:80%;" disabled="disabled">
                                 @if (ViewBag.category == "A")
                                 {
                                     <option value="A" selected="selected">检测数据处理</option>
@@ -92,7 +97,7 @@
                     <div class="form-group">
                         <label class="control-label">开始时间</label>
                         <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="begindate" class="form-control" value="@ViewBag.begindate">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="begindate_A" class="form-control" value="@ViewBag.begindate">
                         </div>
                     </div>
                 </div>
@@ -100,19 +105,19 @@
                     <div class="form-group">
                         <label class="control-label">结束时间</label>
                         <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate" class="form-control" value="@ViewBag.enddate">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate_A" class="form-control" value="@ViewBag.enddate">
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label class="control-label">说明内容</label>
-                        <input type="text" id="content" name="regional" value="@ViewBag.content" placeholder="说明" class="form-control">
+                        <input type="text" id="content_A" name="regional" value="@ViewBag.content" placeholder="说明" class="form-control">
                     </div>
                 </div>
-                <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="SearchPage(@ViewBag.pageIndex)">查询</a>
+                <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="SearchPage_A(@ViewBag.pageIndex)">查询</a>
             </div>
-            <div id="Paginator"> <ul id="pageLimit"></ul> </div>
+            <div id="Paginator"> <ul id="pageLimitA"></ul> </div>
             <div class="table-responsive gray-bg">
                 @foreach (var n in Model)
                 {
@@ -141,15 +146,19 @@
                                 {
                                     <a href="@Html.Raw(n.ViewPlanUrl)" class="btn-sm btn-info J_menuItem_Child">查看</a>
                                 }
+                                if (user.Role == "1")
+                                {
+                                    <a class="btn-sm btn-warning " onclick="SeqChange_A('@n.PlanAutoID')">顺序调整</a>
+                                    <input type="number" class="@(n.PlanAutoID+"_Seq")" min="1" step="1" style="display:none;width:70px" value="@n.SeqNo" />
+                                    <a class="btn-sm btn @(n.PlanAutoID+"_Seq")" name="" onclick="SeqChange_Save_A('@n.PlanAutoID')" style="display:none;">保存</a>
+                                }
                             }
                         </div>
                     </div>
                 }
-
             </div>
         </div>
     </div>
 </div>
-            </div>
-@*</div>
-    </div>*@
+
+

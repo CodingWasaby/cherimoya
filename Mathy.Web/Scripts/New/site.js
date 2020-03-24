@@ -29,8 +29,8 @@ function MessageShow(title, text, type, callback) {
     }, callback);
 }
 
-function innitPage(currentPage, totalPages, funcSearch) {
-    $('#pageLimit').bootstrapPaginator({
+function innitPage(currentPage, totalPages, funcSearch, param1) {
+    $('#pageLimit' + param1).bootstrapPaginator({
         currentPage: currentPage,
         totalPages: totalPages,
         size: "normal",

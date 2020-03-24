@@ -43,8 +43,8 @@ namespace Mathy.DAL
             {
                 sql += " and PlanCategory =@PlanCategory ";
             }
-            sql += isAuth ? " and AuthFlag=1 " : " and AuthFlag=0 and PlanType=0";
-            return QueryPage<PlanLM>(sql, new PageInfo { PageIndex = pageIndex, PageSize = pageSize, OrderField = "CreateTime", DescString = "DESC" }, new { BeginDate = begindate, EndDate = enddate, Author = author, PlanCategory = category });
+            sql += isAuth ? " and AuthFlag=1 AND PlanType<>2 " : " and AuthFlag=0 and PlanType=0";
+            return QueryPage<PlanLM>(sql, new PageInfo { PageIndex = pageIndex, PageSize = pageSize, OrderField = " ISNULL(SeqNo, 99999), CreateTime ", DescString = "DESC" }, new { BeginDate = begindate, EndDate = enddate, Author = author, PlanCategory = category });
         }
 
         public bool UpdatePlanAuthFlag(string planID, int authFlag)
@@ -53,6 +53,14 @@ namespace Mathy.DAL
                             UPDATE dbo.PlanDB SET AuthFlag =@AuthFlag
                             WHERE ID = @PlanID ";
             return Excute(sql, new { AuthFlag = authFlag, PlanID = planID });
+        }
+
+        public bool UpdatePlanSeq(int planID, int seqNo)
+        {
+            string sql = @"
+                            UPDATE dbo.PlanDB SET SeqNo =@SeqNo
+                            WHERE AutoID = @PlanID ";
+            return Excute(sql, new { SeqNo = seqNo, PlanID = planID });
         }
 
         public bool AddPlanRepository(string planRepositoryID, string text)

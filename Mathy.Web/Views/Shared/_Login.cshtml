@@ -3,51 +3,52 @@
     Layout = null;
 }
 
-<head>
-    @*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*@
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>欢迎登陆UES系统</title>
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css" asp-fallback-href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link href="~/Content/fss/fss.min.css" rel="stylesheet" />
-    <link href="~/Content/fss/site.min.css" rel="stylesheet" />
-    <link href="~/Content/datapicker/datepicker3.css" rel="stylesheet" />
-    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="~/Scripts/ui.js"></script>
-    <script src="~/Scripts/New/fss.min.js" type="text/javascript"></script>
-    <script src="~/Scripts/New/site.js" type="text/javascript"></script>
-    <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
-    <script src="~/Scripts/New/Login.js" type="text/javascript"></script>
-    <script src="~/Scripts/datapicker/bootstrap-datepicker.js"></script>
-    <script src="~/Scripts/bootstrap-paginator.min.js"></script>
-    <script>
-        window.onloadstart = function () {
-            if (window.parent == window) {
+    <head>
+        @*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*@
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>欢迎登陆UES系统</title>
+        <link rel="stylesheet" href="~/Content/bootstrap.min.css" asp-fallback-href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link href="~/Content/fss/fss.min.css" rel="stylesheet" />
+        <link href="~/Content/fss/site.min.css" rel="stylesheet" />
+        <link href="~/Content/datapicker/datepicker3.css" rel="stylesheet" />
+        <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/ui.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/New/fss.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/New/site.js" type="text/javascript"></script>
+        <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/New/Login.js" type="text/javascript"></script>
+        <script src="~/Scripts/datapicker/bootstrap-datepicker.js"></script>
+        <script src="~/Scripts/bootstrap-paginator.min.js"></script>
+        <script>
+            window.onloadstart = function () {
+                if (window.parent == window) {
 
+                }
+                else {
+                    parent.toLogin();
+                }
             }
-            else {
-                parent.toLogin();
-            }
-        }
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            $('.input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: "yyyy/mm/dd",
-                todayHighlight: true,
-                language: "zh"
-            });
+                $('.input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true,
+                    format: "yyyy/mm/dd",
+                    todayHighlight: true,
+                    language: "zh"
+                });
 
-           
-        })
-    </script>
-</head>
+
+            })
+        </script>
+    </head>
 <html>
-<body>
+<body οndragstart="return false">
     @RenderBody()
     @RenderSection("scripts", required: false)
 </body>

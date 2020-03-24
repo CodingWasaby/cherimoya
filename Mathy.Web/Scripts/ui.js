@@ -29,10 +29,10 @@ function popup(title, options, html) {
     var dialog = document.createElement("div");
 
     var html = "<table style='background-color:#555599'><thead><tr><th width='90%'>" +
-               "<div>" + title + "</div>" +
-               "</th><th width='10%'></th></tr></thead>" +
-               "<tbody><tr style='background-color:#ffffff'><td colspan='2'><div id='dialog-content'>" + html +
-               "</div></td></tr>" + buttons + "</tbody></table>";
+        "<div>" + title + "</div>" +
+        "</th><th width='10%'></th></tr></thead>" +
+        "<tbody><tr style='background-color:#ffffff'><td colspan='2'><div id='dialog-content'>" + html +
+        "</div></td></tr>" + buttons + "</tbody></table>";
 
     var width = options.width + 8;
     var height = options.height + 35 + (hasButtons ? 21 : 0);
@@ -57,6 +57,8 @@ function popup(title, options, html) {
         'overflow-y': 'auto'
     });
 
+
+
     var mask = document.createElement("div");
     $(mask).css({
         'width': '100%',
@@ -74,6 +76,24 @@ function popup(title, options, html) {
     currentMask = mask;
 
     $(document.body).append(currentMask);
+    document.addEventListener('drop', function (e) {
+        e.preventDefault();
+    }, false);
+    document.addEventListener('dragover', function (e) {
+        e.preventDefault();
+    }, false);
+    document.getElementById("dialog-content").addEventListener("drop", function (e) {
+        e.preventDefault();
+        var file = e.dataTransfer.files[0];
+        $("#select-file")[0].files = e.dataTransfer.files;
+        //file.type; 文件类型
+        //file.name;文件名
+        //file.size; 文件大小 btye
+
+    });
+    document.getElementById("dialog-content").addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
 }
 
 function closePopup() {

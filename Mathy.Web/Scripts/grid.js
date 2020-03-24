@@ -255,7 +255,7 @@ var Grid = (function () {
 
         var labelLeft = this.allowEditColumn ? 35 : 5;
 
-        var label = "<div data-part='columnLabel' style='position:absolute;left:" + labelLeft + "px;top:0px;'>" + getColumnName.call(this, column) + "</div>";
+        var label = "<div data-part='columnLabel' style='position:absolute;left:" + labelLeft + "px;top:0px;width:20px'>" + getColumnName.call(this, column) + "</div>";
 
         var header = document.createElement("div");
         $(header).html(
