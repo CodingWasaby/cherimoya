@@ -145,5 +145,13 @@ namespace Mathy.Libs
             t.Samples(ret);
             return ret;
         }
+
+        public static double[] fisher(double v1, double v2, int num)
+        {
+            var t = new FisherSnedecor(v1, v2);
+            double[] ret = new double[num];
+            t.Samples(ret);
+            return ret;
+        }
     }
 }
