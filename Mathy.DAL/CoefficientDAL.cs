@@ -78,7 +78,8 @@ namespace Mathy.DAL
         {
             string sql = @"  SELECT CoefficientDetailName ,
                                                     CoefficientDetailValue ,
-                                                    CoefficientDetailRow
+                                                    CoefficientDetailRow,
+	                                                CoefficientDetailIndex
                                              FROM   dbo.CoefficientDetail d ( NOLOCK )
                                                     JOIN dbo.Coefficient c ( NOLOCK ) ON d.CoefficientID = c.CoefficientID
                                              WHERE  c.CoefficientName = @CoefficientName

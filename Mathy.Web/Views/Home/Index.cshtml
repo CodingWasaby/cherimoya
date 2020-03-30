@@ -8,11 +8,10 @@
 @section scripts {
     <script>
         $(function () {
-            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage);
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage,'');
         });
 
         function deleteJob(autoID, pageIndex) {
-            console.log(autoID);
             if (confirm("是否确定删除？删除后无法恢复。")) {
                 $.ajax({
                     url: "/Home/DeleteJob?autoID=" + autoID + "&pageIndex=" + pageIndex,

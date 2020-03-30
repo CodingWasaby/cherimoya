@@ -20,6 +20,12 @@ namespace Mathy.Web.Controllers
             ViewBag.pageIndex = pageIndex;
             ViewBag.TotalPage = result.Page.TotalCount / result.Page.PageSize + 1;
             ViewBag.CoefficientName = coefficientName;
+
+            var user = new UserEntity();
+            user.Email = HttpContext.Request.Cookies["user"].Value;
+            user.Company = "";
+            user.Role = HttpContext.Request.Cookies["role"].Value;
+            ViewBag.User = user;
             return View(result.Data);
         }
 

@@ -333,10 +333,11 @@ namespace Mathy.Web.Controllers
             try
             {
                 Script.DeleteJob(autoID);
+                return Content("");
                 //UserLM user = Session["User"] as UserLM;
-                var userid = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value);
-                ViewData["PagingButtons"] = Paging(pageIndex, Script.GetJobCount(userid), "JobPageIndex");
-                return View("JobList", Script.SearchJobs(userid, pageIndex, 10, "", "", "", "", "").Select(i => new JobListCellVM(i, pageIndex)));
+                //var userid = Convert.ToInt32(HttpContext.Request.Cookies["userid"].Value);
+                //ViewData["PagingButtons"] = Paging(pageIndex, Script.GetJobCount(userid), "JobPageIndex");
+                //return View("JobList", Script.SearchJobs(userid, pageIndex, 10, "", "", "", "", "").Select(i => new JobListCellVM(i, pageIndex)));
             }
             catch (Exception ex)
             {

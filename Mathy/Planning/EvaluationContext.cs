@@ -259,7 +259,7 @@ namespace Mathy.Planning
                     }
                 }
             }
-
+            vc.Set("DecimalDigitCount", Settings.DecimalDigitCount);
             vc.Set("_EvaluationContext", this);
             return vc;
         }

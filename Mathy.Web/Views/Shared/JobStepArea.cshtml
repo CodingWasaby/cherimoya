@@ -117,12 +117,12 @@
     <div class="bordered">
         <div>结果变量</div>
         <br />
-        <table class="table">
+        <table style="min-width:600px">
             <thead>
                 <tr>
-                    <th width="10%">变量名</th>
+                    <th width="15%">变量名</th>
                     <th width="20%">变量说明</th>
-                    <th>变量值</th>
+                    <th width="65%">变量值</th>
                 </tr>
             </thead>
 
@@ -130,9 +130,9 @@
                 @{ foreach (ResultVariableVM variable in Model.ResultVariables)
                     {
                         <tr>
-                            <td width="10%">@variable.Name</td>
+                            <td width="15%">@variable.Name</td>
                             <td width="20%">@variable.Description</td>
-                            <td>
+                            <td width="65%">
                                 @{
                                     if (variable.Cells != null)
                                     {
@@ -169,7 +169,14 @@
                                     }
                                     else
                                     {
-                                        <textarea style="max-width:1000px;height:40px;width:100%;word-break:break-all;overflow:auto;" readonly>@variable.Value</textarea>
+                                        if (!string.IsNullOrEmpty(variable.Value) && variable.Value.Contains("]"))
+                                        {
+                                            <textarea style="max-width:1000px;height:40px;width:100%;word-break:break-all;overflow:auto;" readonly>@variable.Value</textarea>
+                                        }
+                                        else
+                                        {
+                                            <div>@Html.Raw(variable.Value)</div>
+                                        }
                                     }
                                 }
                             </td>

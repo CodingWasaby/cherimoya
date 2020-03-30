@@ -49,7 +49,7 @@ namespace Petunia.Storage
         {
             if (userAutoID == 0)
                 Database.Table<JobDB>().Count();
-            return Database.Table<JobDB>().Where(m => m.UserAutoID == userAutoID).Count();
+            return Database.Table<JobDB>().Where(m => m.UserAutoID == userAutoID && m.DeleteFlag == 0).Count();
         }
 
         public static void Delete(int autoID)

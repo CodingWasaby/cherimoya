@@ -3,6 +3,7 @@
 
 @{
     Layout = "~/Views/Shared/_Login.cshtml";
+    var user = ViewBag.User as UserEntity;
 }
 
 @section scripts {
@@ -71,8 +72,11 @@
                         </div>
                         <div class="media" style="margin-top:10px">
                             <a href="@Url.Action("CreateCoefficient","Coefficient",new {coefficientID =n.CoefficientID,ro= true })" class="btn-sm btn-info J_menuItem_Child">查看</a>
-                            <a href="@Url.Action("CreateCoefficient","Coefficient",new {coefficientID =n.CoefficientID,ro= false })" class="btn-sm btn-primary J_menuItem_Child">编辑</a>
-                            <a href="javascript:viod(0)" onclick="deleteCoefficient(@n.CoefficientID)" class="btn-sm btn-danger"> 删除</a>
+                            @if (user.Role == "1")
+                            {
+                                <a href="@Url.Action("CreateCoefficient", "Coefficient", new { coefficientID = n.CoefficientID, ro = false })" class="btn-sm btn-primary J_menuItem_Child">编辑</a>
+                                <a href="javascript:viod(0)" onclick="deleteCoefficient(@n.CoefficientID)" class="btn-sm btn-danger"> 删除</a>
+                            }
                         </div>
                     </div>
                 }

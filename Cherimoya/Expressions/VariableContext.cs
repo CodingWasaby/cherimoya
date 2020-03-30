@@ -51,6 +51,11 @@ namespace Cherimoya.Expressions
             return variables[variableName];
         }
 
+        public object GetDecimalDigitCount()
+        {
+            return variables["DecimalDigitCount"];
+        }
+
         public string[] GetAllVariables()
         {
             return variables.Keys.ToArray();

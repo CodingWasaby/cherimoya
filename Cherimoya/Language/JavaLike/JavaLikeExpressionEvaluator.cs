@@ -267,9 +267,9 @@ namespace Cherimoya.Language.JavaLike
                     var dal = new CoefficientDAL();
                     data = dal.GetCoefficientDetail(expression.MethodName);
                 }
-                var colName = Evaluate(expression.Parameters[0], context).ToString();
+                var colName = (int)Evaluate(expression.Parameters[0], context);
                 var rowIndex = (int)Evaluate(expression.Parameters[1], context);
-                return data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailName.Trim() == colName.Trim()).CoefficientDetailValue;
+                return data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailIndex == colName).CoefficientDetailValue;
             }
 
             try
