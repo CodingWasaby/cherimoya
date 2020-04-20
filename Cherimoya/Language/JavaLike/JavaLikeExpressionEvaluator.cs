@@ -267,9 +267,10 @@ namespace Cherimoya.Language.JavaLike
                     var dal = new CoefficientDAL();
                     data = dal.GetCoefficientDetail(expression.MethodName);
                 }
-                var colName = (int)Evaluate(expression.Parameters[0], context);
-                var rowIndex = (int)Evaluate(expression.Parameters[1], context);
-                return data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailIndex == colName).CoefficientDetailValue;
+                //var a = Evaluate(expression.Parameters[0], context);
+                var colName = Convert.ToInt32(Evaluate(expression.Parameters[0], context));
+                var rowIndex = Convert.ToInt32(Evaluate(expression.Parameters[1], context));
+                return Convert.ToDouble(data.FirstOrDefault(m => m.CoefficientDetailRow == rowIndex && m.CoefficientDetailIndex == colName).CoefficientDetailValue);
             }
 
             try

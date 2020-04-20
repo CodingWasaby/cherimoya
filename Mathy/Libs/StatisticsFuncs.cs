@@ -627,6 +627,29 @@ namespace Mathy.Libs
             return m;
         }
 
+        public static double normsdist(object arg1)
+        {
+            double a;
+            try
+            {
+                a = Convert.ToDouble(arg1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            Excel.Application excel = new Excel.Application();
+            var m = excel.WorksheetFunction.NormSDist(a);
+            return m;
+        }
+
+        public static double randbetween(object arg1, object arg2)
+        {
+            Excel.Application excel = new Excel.Application();
+            var m = excel.WorksheetFunction.RandBetween(arg1, arg2);
+            return m;
+        }
+
         public static bool odd(object a)
         {
             if (a is int)

@@ -73,3 +73,5 @@ Mathy.TestCases/bin/
 Mathy.TestCases/obj/
 
 Mathy.Web/Mathy.Web.rar
+
+*.rar
