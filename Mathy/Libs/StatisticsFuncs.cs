@@ -15,6 +15,8 @@ namespace Mathy.Libs
 {
     public class StatisticsFuncs
     {
+        private static Excel.Application _Excel = new Excel.Application();
+
         public static double average(double[] items)
         {
             return items.Average();
@@ -570,8 +572,7 @@ namespace Mathy.Libs
                 throw ex;
             }
 
-            Excel.Application excel = new Excel.Application();
-            var m = excel.WorksheetFunction.TInv(a, b);
+            var m = _Excel.WorksheetFunction.TInv(a, b);
             return m;
         }
 
@@ -589,8 +590,7 @@ namespace Mathy.Libs
                 throw ex;
             }
 
-            Excel.Application excel = new Excel.Application();
-            var m = excel.WorksheetFunction.FInv(a, b, c);
+            var m = _Excel.WorksheetFunction.FInv(a, b, c);
             return m;
         }
 
@@ -606,8 +606,7 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            Excel.Application excel = new Excel.Application();
-            var m = excel.WorksheetFunction.ChiInv(a, b);
+            var m = _Excel.WorksheetFunction.ChiInv(a, b);
             return m;
         }
 
@@ -622,8 +621,7 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            Excel.Application excel = new Excel.Application();
-            var m = excel.WorksheetFunction.Quartile(arg2, Convert.ToInt32(a / 0.25));
+            var m = _Excel.WorksheetFunction.Quartile(arg2, Convert.ToInt32(a / 0.25));
             return m;
         }
 
@@ -638,15 +636,13 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            Excel.Application excel = new Excel.Application();
-            var m = excel.WorksheetFunction.NormSDist(a);
+            var m = _Excel.WorksheetFunction.NormSDist(a);
             return m;
         }
 
         public static double randbetween(object arg1, object arg2)
         {
-            Excel.Application excel = new Excel.Application();
-            var m = excel.WorksheetFunction.RandBetween(arg1, arg2);
+            var m = _Excel.WorksheetFunction.RandBetween(arg1, arg2);
             return m;
         }
 

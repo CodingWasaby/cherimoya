@@ -170,6 +170,9 @@ namespace Mathy.Web.Controllers.New
             var dal = new UserDAL();
             user.CreateTime = DateTime.Now;
             user.EnableDate = DateTime.Now.AddMonths(3);
+            var userH = dal.GetUser(user.Email);
+            if (userH != null)
+                return "UserExist";
             var result = dal.InnitUser(user);
             if (result > 0)
             {
@@ -203,6 +206,5 @@ namespace Mathy.Web.Controllers.New
             ViewBag.info = error;
             return View("~/Views/NotFound.cshtml");
         }
-
     }
 }

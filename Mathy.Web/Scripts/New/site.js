@@ -1,10 +1,10 @@
 ﻿function toLogin() {
     try {
-        window.opener.location.href = "/Login/Index";
+        window.opener.location.href = "/index.html";
     }
     catch (e) {
         console.log(e);
-        window.location.href = "/Login/Index";
+        window.location.href = "/index.html";
     }
 }
 

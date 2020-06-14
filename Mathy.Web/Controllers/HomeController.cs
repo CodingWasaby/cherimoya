@@ -127,6 +127,13 @@ namespace Mathy.Web.Controllers
             });
         }
 
+        public JsonResult GetPlanForF()
+        {
+            var dal = new PlanDAL();
+            var list = dal.GetPlanList(1, 20, "", "", "", "").Data.ToList();
+            list.ForEach(m => m.Description = "");
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
 
 
         public ActionResult Plans(int? pageIndex, string planName, string begindate, string enddate, string content)
