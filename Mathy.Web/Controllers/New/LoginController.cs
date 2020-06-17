@@ -206,5 +206,16 @@ namespace Mathy.Web.Controllers.New
             ViewBag.info = error;
             return View("~/Views/NotFound.cshtml");
         }
+        
+        [HttpPost]
+        public string LoginOut()
+        {
+            //this.HttpContext.Request.Cookies.Clear();
+            var cookie = new HttpCookie("user");
+            cookie.Value = null;
+            cookie.Expires = DateTime.Now;
+            HttpContext.Response.Cookies.Set(cookie);
+            return "loginout";
+        }
     }
 }

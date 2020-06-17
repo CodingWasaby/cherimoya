@@ -23,10 +23,9 @@ using System.Web.Mvc;
 
 namespace Mathy.Web.Controllers
 {
-    [AuthValidate]
     public class HomeController : ControllerContext
     {
-        [CheckLogin]
+
         [OutputCache(Duration = 0)]
         public ActionResult Index(int? pageIndex, string jobName, string planName, string begindate, string enddate, string isFinish)
         {
@@ -52,6 +51,7 @@ namespace Mathy.Web.Controllers
             return View("index", GetJobList(pageIndex.Value, jobName, planName, begindate, enddate, isFinish, 1));
         }
 
+        [AuthValidateAttribute]
         public ActionResult DashBoard()
         {
             var user = new UserEntity();

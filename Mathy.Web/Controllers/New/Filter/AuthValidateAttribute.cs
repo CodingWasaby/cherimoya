@@ -4,17 +4,17 @@ namespace Mathy.Web.Controllers.New.Filter
 {
     public class AuthValidateAttribute : ActionFilterAttribute
     {
-        //public override void OnActionExecuting(ActionExecutingContext context)
-        //{
-        //    var userCookie = context.HttpContext.Request.Cookies["user"];
-        //    if (userCookie == null)
-        //    {
-        //        context.Result = new RedirectResult("http://" + context.HttpContext.Request.Url.Authority);
-        //        return;
-        //    }
-        //    context.Controller.ViewData["Username"] = userCookie.Value;
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            var userCookie = context.HttpContext.Request.Cookies["user"];
+            if (userCookie == null)
+            {
+                context.Result = new RedirectResult("http://" + context.HttpContext.Request.Url.Authority + "/index.html");
+                return;
+            }
+            context.Controller.ViewData["Username"] = userCookie.Value;
 
-        //}
+        }
 
         //public override void OnActionExecuted(ActionExecutedContext filterContext)
         //{
