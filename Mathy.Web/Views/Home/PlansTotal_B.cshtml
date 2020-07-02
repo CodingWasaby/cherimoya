@@ -5,62 +5,7 @@
     Layout = "~/Views/Shared/_Login.cshtml";
     var user = ViewBag.User as UserEntity;
 }
-@section scripts {
 
-    <script language="javascript">
-
-        $(function () {
-            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage_B,'B');
-            //window.parent.reheight();
-        })
-
-        function SearchPage_B(page) {
-            var url = "/home/PlansTotal_B/" + "?pageIndex=" + page;
-
-            var planName = $('#planName_B').val();
-            if (planName.length > 0) {
-                url += "&planName=" + planName + "&";
-            }
-
-            var begindate = $('#begindate_B').val();
-            if (begindate.length > 0) {
-                url += "&begindate=" + begindate + "&";
-            }
-
-            var enddate = $('#enddate_B').val();
-            if (enddate.length > 0) {
-                url += "&enddate=" + enddate + "&";
-            }
-
-            var content = $('#content_B').val();
-            if (content.length > 0) {
-                url += "&content=" + content + "&";
-            }
-            var category = $('#category_B').val();
-            if (category.length > 0) {
-                url += "&category=" + category + "&";
-            }
-             url += "&ran=" + Math.random();
-            $.get(url, function (data) {
-                           var pos = data.indexOf("<var>");
-                data = data.substr(pos,data.length);
-           $("#Btable").replaceWith(data);
-       });
-        }
-
-           function SeqChange_B(id) {
-            $("."+ id + "_Seq").toggle();
-        }
-
-        function SeqChange_Save_B(id) {
-            $("." + id + "_Seq").hide();
-            changeSeq(id, $('input.' + id + "_Seq").val(), () => {
-                 SearchPage_B(@ViewBag.pageIndex);
-            });
-        }
-    </script>
-}
-<var></var>
 <div class="gray-bg reheight" id="Btable">
     <div class="wrapper wrapper-content animated fadeIn">
         <div class="col-lg-12">
@@ -158,6 +103,55 @@
             </div>
         </div>
     </div>
+    <script language="javascript">
+
+        $(function () {
+            innitPage(@ViewBag.pageIndex, @ViewBag.TotalPage, SearchPage_B,'B');
+            //window.parent.reheight();
+        })
+
+        function SearchPage_B(page) {
+            var url = "/home/PlansTotal_B/" + "?pageIndex=" + page;
+
+            var planName = $('#planName_B').val();
+            if (planName.length > 0) {
+                url += "&planName=" + planName + "&";
+            }
+
+            var begindate = $('#begindate_B').val();
+            if (begindate.length > 0) {
+                url += "&begindate=" + begindate + "&";
+            }
+
+            var enddate = $('#enddate_B').val();
+            if (enddate.length > 0) {
+                url += "&enddate=" + enddate + "&";
+            }
+
+            var content = $('#content_B').val();
+            if (content.length > 0) {
+                url += "&content=" + content + "&";
+            }
+            var category = $('#category_B').val();
+            if (category.length > 0) {
+                url += "&category=" + category + "&";
+            }
+             url += "&ran=" + Math.random();
+            $.get(url, function (data) {           $("#Btable").replaceWith(data);
+       });
+        }
+
+           function SeqChange_B(id) {
+            $("."+ id + "_Seq").toggle();
+        }
+
+        function SeqChange_Save_B(id) {
+            $("." + id + "_Seq").hide();
+            changeSeq(id, $('input.' + id + "_Seq").val(), () => {
+                 SearchPage_B(@ViewBag.pageIndex);
+            });
+        }
+    </script>
 </div>
 
 

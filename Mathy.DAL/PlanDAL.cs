@@ -43,7 +43,7 @@ namespace Mathy.DAL
             {
                 sql += " and PlanCategory =@PlanCategory ";
             }
-            sql += isAuth ? " and AuthFlag=1 AND PlanType<>2 " : " and AuthFlag=0 and PlanType=0";
+            sql += isAuth ? " and AuthFlag=1 AND ( PlanType<>2 OR Author = @Author )" : " and AuthFlag=0 and PlanType=0";
             return QueryPage<PlanLM>(sql, new PageInfo { PageIndex = pageIndex, PageSize = pageSize, OrderField = " ISNULL(SeqNo, 99999), CreateTime ", DescString = "DESC" }, new { BeginDate = begindate, EndDate = enddate, Author = author, PlanCategory = category });
         }
 

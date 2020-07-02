@@ -17,6 +17,13 @@ namespace Mathy.Libs
     {
         private static Excel.Application _Excel = new Excel.Application();
 
+        private static Excel.Application GetExcel()
+        {
+            if (_Excel == null)
+                _Excel = new Excel.Application();
+            return _Excel;
+        }
+
         public static double average(double[] items)
         {
             return items.Average();
@@ -572,7 +579,7 @@ namespace Mathy.Libs
                 throw ex;
             }
 
-            var m = _Excel.WorksheetFunction.TInv(a, b);
+            var m = GetExcel().WorksheetFunction.TInv(a, b);
             return m;
         }
 
@@ -590,7 +597,7 @@ namespace Mathy.Libs
                 throw ex;
             }
 
-            var m = _Excel.WorksheetFunction.FInv(a, b, c);
+            var m = GetExcel().WorksheetFunction.FInv(a, b, c);
             return m;
         }
 
@@ -606,7 +613,7 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            var m = _Excel.WorksheetFunction.ChiInv(a, b);
+            var m = GetExcel().WorksheetFunction.ChiInv(a, b);
             return m;
         }
 
@@ -621,7 +628,7 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            var m = _Excel.WorksheetFunction.Quartile(arg2, Convert.ToInt32(a / 0.25));
+            var m = GetExcel().WorksheetFunction.Quartile(arg2, Convert.ToInt32(a / 0.25));
             return m;
         }
 
@@ -636,13 +643,13 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            var m = _Excel.WorksheetFunction.NormSDist(a);
+            var m = GetExcel().WorksheetFunction.NormSDist(a);
             return m;
         }
 
         public static double randbetween(object arg1, object arg2)
         {
-            var m = _Excel.WorksheetFunction.RandBetween(arg1, arg2);
+            var m = GetExcel().WorksheetFunction.RandBetween(arg1, arg2);
             return m;
         }
 
@@ -1220,5 +1227,33 @@ namespace Mathy.Libs
             return plan.CreateEvaluationContext();
         }
 
+        public static Matrix makeMatrix(double[] arrays)
+        {
+            return new Matrix(1, arrays.Count(), arrays);
+        }
+
+        public static double[] movingRange(double[] arrays)
+        {
+            var list = new List<double>();
+            for (var i = 0; i < arrays.Count() - 1; i++)
+            {
+                list.Add(Math.Abs(arrays[i] - arrays[i + 1]));
+            }
+            return list.ToArray();
+        }
+
+        public static Matrix subMatrix(Matrix m, int[] columns)
+        {
+            var items = new List<double>();
+            foreach (var c in columns.OrderBy(x => x))
+            {
+                var col = m.GetColumn(c);
+                foreach (var v in col)
+                {
+                    items.Add(v);
+                }
+            }
+            return new Matrix(m.RowCount, columns.Length, items.ToArray());
+        }
     }
 }
