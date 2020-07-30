@@ -301,7 +301,8 @@ namespace Cherimoya.Language.JavaLike
             }
             catch (Exception ex)
             {
-                throw new Exception(expression.MethodName + "\r\n" + (ex.InnerException == null ? ex.Message : ex.InnerException.Message));
+                throw ex;
+               // throw new Exception(expression.MethodName + "\r\n" + (ex.InnerException == null ? ex.Message : ex.InnerException.Message));
             }
         }
 

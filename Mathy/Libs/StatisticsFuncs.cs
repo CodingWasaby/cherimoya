@@ -15,7 +15,7 @@ namespace Mathy.Libs
 {
     public class StatisticsFuncs
     {
-        private static Excel.Application _Excel = new Excel.Application();
+        private static Excel.Application _Excel;
 
         private static Excel.Application GetExcel()
         {
@@ -568,36 +568,38 @@ namespace Mathy.Libs
 
         public static double tinv(object arg1, object arg2)
         {
-            double a, b;
+            double a;
+            int b;
             try
             {
                 a = Convert.ToDouble(arg1);
-                b = Convert.ToDouble(arg2);
+                b = Convert.ToInt32(arg2);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            var m = GetExcel().WorksheetFunction.TInv(a, b);
+            var m = ExcelFunctions.TInv(a, b);  //GetExcel().WorksheetFunction.TInv(a, b);
             return m;
         }
 
         public static double finv(object arg1, object arg2, object arg3)
         {
-            double a, b, c;
+            double a;
+            int b, c;
             try
             {
                 a = Convert.ToDouble(arg1);
-                b = Convert.ToDouble(arg2);
-                c = Convert.ToDouble(arg3);
+                b = Convert.ToInt32(arg2);
+                c = Convert.ToInt32(arg3);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            var m = GetExcel().WorksheetFunction.FInv(a, b, c);
+            var m = ExcelFunctions.FInv(a, b, c);
             return m;
         }
 
@@ -628,7 +630,7 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            var m = GetExcel().WorksheetFunction.Quartile(arg2, Convert.ToInt32(a / 0.25));
+            var m = ExcelFunctions.Quartile(arg2, Convert.ToInt32(a / 0.25));
             return m;
         }
 
@@ -643,14 +645,26 @@ namespace Mathy.Libs
             {
                 throw ex;
             }
-            var m = GetExcel().WorksheetFunction.NormSDist(a);
+            var m = ExcelFunctions.NormSDist(a);
             return m;
         }
 
         public static double randbetween(object arg1, object arg2)
         {
-            var m = GetExcel().WorksheetFunction.RandBetween(arg1, arg2);
-            return m;
+            double a, b;
+            try
+            {
+                a = Convert.ToDouble(arg1);
+                b = Convert.ToDouble(arg2);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var n = new MathNet.Numerics.Random.SystemRandomSource().NextDouble() * (b - a) + a;
+            return n;
+            //var m = GetExcel().WorksheetFunction.RandBetween(arg1, arg2);
+            //return m;
         }
 
         public static bool odd(object a)
