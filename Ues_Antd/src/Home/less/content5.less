@@ -1,0 +1,144 @@
+@content5: content5;
+.@{content5}-wrapper {
+  background-color: #fafafa;
+  min-height: 720px;
+  .@{content5} {
+    >p {
+      text-align: center;
+    }
+    &-img-wrapper {
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      .block {
+        margin-bottom: 24px;
+        .content5-block-content {
+          display: block;
+          background: #fff;
+          border-radius: 4px;
+          padding: 10px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          .page-pro();
+          border: none;
+          transition: box-shadow .3s @ease-out, transform .3s @ease-out;
+          & > span {
+            width: 100%;
+            height: 160px;
+            display: block;
+            background: @line-color;
+            padding: 5%;
+          }
+          & p {
+            width: 100%;
+            line-height: 30px;
+          }
+          &:hover {
+            & p {
+              bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .@{content5}-wrapper {
+    height: 2000px;
+    overflow: hidden;
+    .@{content5} {
+      ul {
+        li {
+          display: block;
+          width: 100%;
+          padding: 2%;
+          span {
+            height: 168px;
+          }
+          p {
+            position: relative;
+            bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@feature7: feature7;
+
+.@{feature7} {
+  &-wrapper {
+    min-height: 564px;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: #f7f9fc;
+
+    &.home-page-wrapper {
+      .home-page {
+        padding: 64px 24px;
+      }
+    }
+  }
+
+  &-title {
+
+    &-wrapper {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    &-h1 {
+      font-size: 32px;
+      color: @text-color;
+    }
+
+    &-content {
+      margin-top: 16px;
+    }
+  }
+
+  &-block {
+    margin-top: 28px;
+
+    &-group {
+      display: block;
+      padding: 28px 24px;
+      box-shadow: 0 2px 16px fade(#000, 8);
+      background-image: url('https://gw.alipayobjects.com/mdn/rms_ae7ad9/afts/img/A*fMOFSpRXMxsAAAAAAAAAAABkARQnAQ');
+      background-repeat: no-repeat;
+      background-position: 100% 100%;
+      transition: box-shadow @animate-duration @ease-in-out, transform @animate-duration @ease-in-out;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px fade(#000, 12);
+      }
+    }
+
+    &-image {
+      float: left;
+      width: 24px;
+    }
+
+    &-title {
+      font-size: 14px;
+      font-family: '微软雅黑';
+      font-weight: bolder;
+      float: left;
+      margin-left: 8px;
+      margin-bottom: 16px;
+      color: @text-color;
+    }
+
+    &-content {
+      clear: both;
+      color: fade(@text-color, 75);
+    }
+  }
+}
+
+
