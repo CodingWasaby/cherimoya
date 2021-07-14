@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -990,40 +991,44 @@ namespace Mathy.Web.Controllers
 
         [CheckLogin]
         [HttpPost]
-        public JsonResult MCMRun(MCMVM mcm)
+        public async Task<JsonResult> MCMRun(MCMVM mcm)
         {
-            EvaluationContext ec = new EvaluationContext(new Plan(), new Step[] { });
+            return await Task.Factory.StartNew(() =>
+            {
+                EvaluationContext ec = new EvaluationContext(new Plan(), new Step[] { });
 
-            ec.Settings = new Settings();
-            ec.Settings.DecimalDigitCount = mcm.DecimalDigitCount;
-            if (mcm.MCMType == 2)
-            {
-                double J, M;
-                J = Math.Floor(100 / (1 - mcm.p));
-                M = J > 1e4 ? J : 1e4;
-                mcm.RunNum = (int)M;
-            }
-            foreach (var n in mcm.Diss)
-            {
-                if (n.Name.ToUpper() == "Y")
+                ec.Settings = new Settings();
+                ec.Settings.DecimalDigitCount = mcm.DecimalDigitCount;
+                if (mcm.MCMType == 2)
                 {
-                    return Json(new { message = "参数名称不能够为y" });
+                    double J, M;
+                    J = Math.Floor(100 / (1 - mcm.p));
+                    M = J > 1e4 ? J : 1e4;
+                    mcm.RunNum = (int)M;
                 }
-                var values = GetSample(n.DisType, mcm.RunNum, n.DisParams);
-                ec.SetValueAcrossSteps(n.Name, values);
-                ec.SetValue(n.Name, values);
-            }
-            Session["Context"] = ec;
-            if (mcm.MCMType == 1)
-            {
-                var result = StatisticsFuncs.MCM_1(mcm.RunNum, mcm.p, "y=" + mcm.GS, ec);
-                return Json(new { message = "success", result });
-            }
-            else
-            {
-                var result = StatisticsFuncs.MCM_2(mcm.p, mcm.n_dig, "y=" + mcm.GS, ec);
-                return Json(new { message = "success", result });
-            }
+                foreach (var n in mcm.Diss)
+                {
+                    if (n.Name.ToUpper() == "Y")
+                    {
+                        return Json(new { message = "参数名称不能够为y" });
+                    }
+                    var values = GetSample(n.DisType, mcm.RunNum, n.DisParams);
+                    ec.SetValueAcrossSteps(n.Name, values);
+                    ec.SetValue(n.Name, values);
+                }
+                Session["Context"] = ec;
+                if (mcm.MCMType == 1)
+                {
+                    var result = StatisticsFuncs.MCM_1(mcm.RunNum, mcm.p, "y=" + mcm.GS, ec);
+                    return Json(new { message = "success", result });
+                }
+                else
+                {
+                    var result = StatisticsFuncs.MCM_2(mcm.p, mcm.n_dig, "y=" + mcm.GS, ec);
+                    return Json(new { message = "success", result });
+                }
+            }, TaskCreationOptions.LongRunning);
+
         }
 
         [CheckLogin]

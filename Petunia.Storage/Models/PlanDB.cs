@@ -40,6 +40,8 @@ namespace Petunia.Storage.Models
 
         [Field]
         public int DeleteFlag { get; set; }
+        [Field]
+        public int UserRole { get; set; }
 
 
         public static PlanLM ToLM(PlanDB db)
@@ -55,7 +57,8 @@ namespace Petunia.Storage.Models
                 ReferenceCount = db.ReferenceCount,
                 PlanType = db.PlanType,
                 AuthFlag = db.AuthFlag,
-                PlanCategory = db.PlanCategory
+                PlanCategory = db.PlanCategory,
+                UserRole = db.UserRole
             };
         }
 
@@ -72,7 +75,8 @@ namespace Petunia.Storage.Models
                 ReferenceCount = lm.ReferenceCount,
                 PlanType = lm.PlanType,
                 AuthFlag = lm.AuthFlag,
-                PlanCategory = lm.PlanCategory
+                PlanCategory = lm.PlanCategory,
+                UserRole = lm.UserRole
             };
         }
 

@@ -13,7 +13,8 @@ namespace Mathy.Web.Controllers.New.Filter
                 return;
             }
             context.Controller.ViewData["Username"] = userCookie.Value;
-
+            context.Controller.ViewData["userRole"] = 0;
+            //context.Controller.ViewData["userRole"] = context.HttpContext.Request.Cookies["role"].Value;
         }
 
         //public override void OnActionExecuted(ActionExecutedContext filterContext)

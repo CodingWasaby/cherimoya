@@ -24,6 +24,19 @@ namespace Mathy.Web.Controllers.New
             return View();
         }
 
+        public string CreateUserRoleColumn()
+        {
+            try
+            {
+                new PlanDAL().CreateUserRoleColumn();
+                return "success";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public ActionResult Register()
         {
             return View();
@@ -128,7 +141,6 @@ namespace Mathy.Web.Controllers.New
                 else
                     role.Value = "2";
                 HttpContext.Response.Cookies.Set(role);
-
                 return "true";
             }
         }

@@ -25,5 +25,6 @@ namespace Petunia.LogicModel
         public int AuthFlag { get; set; }
 
         public int SeqNo { get; set; }
+        public int UserRole { get; set; }
     }
 }

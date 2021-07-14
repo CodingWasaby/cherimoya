@@ -66,17 +66,19 @@ namespace Mathy.Web.Controllers.New
             {
                 r = 1;
             }
+            if (role == "普通用户")
+            {
+                r = 2;
+            }
             if (role == "尊享用户")
             {
                 r = 3;
             }
-            if (role == "管理员")
-            {
-                r = 2;
-            }
             var dal = new RoleDAL();
             return dal.UpdateUserRole(userids.Split(',').ToList(), r).ToString();
         }
+
+
 
         [HttpPost]
         public string UpdateDate(string emails, string date)
@@ -95,7 +97,7 @@ namespace Mathy.Web.Controllers.New
             return View("~/Views/NotFound.cshtml");
         }
 
-        private string GetRoleName(int roleid)
+        public static string GetRoleName(int roleid)
         {
             if (roleid == 1)
             {

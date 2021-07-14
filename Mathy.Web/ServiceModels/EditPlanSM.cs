@@ -15,7 +15,7 @@ namespace Mathy.Web.ServiceModels
         public string Description { get; set; }
 
         public string Author { get; set; }
-
+        public int UserRole { get; set; }
         public int PlanType { get; set; }
         public string PlanCategory { get; set; }
 
@@ -96,7 +96,8 @@ namespace Mathy.Web.ServiceModels
                 ).ToArray(),
                 Styles = ToStyles(),
                 PlanType = PlanType,
-                PlanCategory = PlanCategory
+                PlanCategory = PlanCategory,
+                UserRole = UserRole
             };
         }
 

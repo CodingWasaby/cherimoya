@@ -20,6 +20,7 @@ namespace Mathy.Web.Models
             Title = plan.Title;
             Description = plan.Description;
             Author = plan.Author;
+            UserRole = plan.UserRole;
             PlanType = plan.PlanType;
             PlanCategory = plan.PlanCategory;
             Expressions = plan.Expressions.Select((i, index) =>
@@ -52,6 +53,8 @@ namespace Mathy.Web.Models
         public string Description { get; private set; }
 
         public string Author { get; private set; }
+
+        public int UserRole { get; set; }
 
         public int PlanType { get; set; }
         public string PlanCategory { get; set; }

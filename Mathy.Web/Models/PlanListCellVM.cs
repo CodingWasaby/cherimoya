@@ -25,6 +25,7 @@ namespace Mathy.Web.Models
             PlanCategory = lm.PlanCategory == "A" ? "检测数据处理" : "标准物质不确定度评定";
             PlanAutoID = lm.AutoID;
             SeqNo = lm.SeqNo;
+            UserRole = lm.UserRole;
         }
 
         public int PlanAutoID { get; private set; }
@@ -56,7 +57,7 @@ namespace Mathy.Web.Models
         public string PlanCategory { get; set; }
 
         public int ReferenceCount { get; private set; }
-
+        public int UserRole { get; set; }
         public bool IsCustom { get; set; }
 
         public int AuthFlag { get; set; }

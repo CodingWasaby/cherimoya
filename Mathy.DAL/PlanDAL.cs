@@ -10,30 +10,49 @@ namespace Mathy.DAL
 
         public PageList<PlanLM> GetPlanList(int pageIndex, int pageSize, string planName, string begindate, string enddate, string content, string author = "", bool isAuth = true, string category = "")
         {
-            string sql = @" SELECT
-	                                    *
-                                    FROM PlanDB(NOLOCK)
-                                    WHERE DeleteFlag = 0 ";
-
+            string sql = @" SELECT p.AutoID,
+                                     p.ID,
+                                     p.Title,
+                                     p.Author,
+                                     p.Description,
+                                     p.CreateTime,
+                                     p.PlanType,
+                                     p.DeleteFlag,
+                                     p.AuthFlag,
+                                     p.PlanCategory,
+                                     p.PlanRepository,
+                                     p.SeqNo,
+                                     p.UserRole,
+                               COUNT(j.AutoID) ReferenceCount
+                        FROM dbo.PlanDB p (NOLOCK)
+                            LEFT JOIN dbo.JobDB j (NOLOCK)
+                                ON p.AutoID = j.PlanAutoID
+                                   AND j.DeleteFlag = 0  {0}      
+	                          WHERE p.DeleteFlag=0
+                         ";
+            string order = " ISNULL(SeqNo, 99999), CreateTime ";
+            string jParam = "";
             if (!string.IsNullOrEmpty(planName))
             {
-                sql += " and Title LIKE '%" + planName + "%'";
+                sql += " and p.Title LIKE '%" + planName + "%'";
             }
             if (!string.IsNullOrEmpty(content))
             {
-                sql += " and Description LIKE '%" + content + "%'";
+                sql += " and p.Description LIKE '%" + content + "%'";
             }
             if (!string.IsNullOrEmpty(begindate))
             {
-                sql += " and CreateTime >= @BeginDate";
+                jParam += " and j.CreateTime >= @BeginDate";
             }
             if (!string.IsNullOrEmpty(enddate))
             {
-                sql += " and CreateTime <= @EndDate";
+                jParam += " and j.CreateTime <= @EndDate";
             }
+            sql = string.Format(sql, jParam);
             if (!string.IsNullOrEmpty(author))
             {
-                sql += " and Author =@Author ";
+                sql += " and p.Author =@Author ";
+                order = " CreateTime ";
             }
             if (!string.IsNullOrEmpty(planName))
             {
@@ -43,8 +62,22 @@ namespace Mathy.DAL
             {
                 sql += " and PlanCategory =@PlanCategory ";
             }
+
             sql += isAuth ? " and ( AuthFlag=1 or ( PlanType<>2 OR Author = @Author ) )" : " and AuthFlag=0 and PlanType=0";
-            return QueryPage<PlanLM>(sql, new PageInfo { PageIndex = pageIndex, PageSize = pageSize, OrderField = " ISNULL(SeqNo, 99999), CreateTime ", DescString = "DESC" }, new { BeginDate = begindate, EndDate = enddate, Author = author, PlanCategory = category });
+            sql += @"GROUP BY p.AutoID,
+                                 p.ID,
+                                 p.Title,
+                                 p.Author,
+                                 p.Description,
+                                 p.CreateTime,
+                                 p.PlanType,
+                                 p.DeleteFlag,
+                                 p.AuthFlag,
+                                 p.PlanCategory,
+                                 p.PlanRepository,
+                                 p.UserRole,
+                                 p.SeqNo";
+            return QueryPage<PlanLM>(sql, new PageInfo { PageIndex = pageIndex, PageSize = pageSize, OrderField = order, DescString = "DESC" }, new { BeginDate = begindate, EndDate = enddate, Author = author, PlanCategory = category });
         }
 
         public bool UpdatePlanAuthFlag(string planID, int authFlag)
@@ -89,6 +122,24 @@ namespace Mathy.DAL
         FROM    [dbo].[PlanRepository]
         WHERE   planID = @OldID ";
             return Excute(sql, new { OldID = formID, NewID = toID });
+        }
+
+        public void CreateUserRoleColumn()
+        {
+            string sql = @"IF NOT EXISTS
+                            (
+                                SELECT *
+                                FROM syscolumns
+                                WHERE id = OBJECT_ID('PlanDB')
+                                      AND name = 'UserRole'
+                            )
+                                ALTER TABLE[PlanDB] ADD UserRole INT; ";
+            Excute(sql);
+
+            sql = @" UPDATE dbo.PlanDB
+                    SET UserRole = 2
+                    WHERE UserRole IS NULL; ";
+            Excute(sql);
         }
     }
 }

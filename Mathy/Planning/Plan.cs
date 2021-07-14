@@ -12,6 +12,7 @@
 
         public string Author { get; set; }
 
+        public int UserRole { get; set; }
         public int PlanType { get; set; }
 
         public string PlanCategory { get; set; }
