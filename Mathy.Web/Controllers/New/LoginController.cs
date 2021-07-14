@@ -11,6 +11,7 @@ namespace Mathy.Web.Controllers.New
     {
         public ActionResult Index()
         {
+            //CommonTool.Sendmail("zhaoxi@framedia.net", "a", "test");
             //try
             //{
             //    Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
@@ -153,7 +154,12 @@ namespace Mathy.Web.Controllers.New
         {
             try
             {
-                CommonTool.Sendmail(email, @"这是一封来自UES的找回密码邮件,请点击下面链接
+                var user = new UserDAL().GetUser(email);
+                if (user == null)
+                {
+                    return "未找到用户，请检查邮箱!";
+                }
+                CommonTool.Sendmail(email, @"这是一封来自UES的找回密码邮件,请点击下面链接修改密码
                         http://" + HttpContext.Request.Url.Authority + "/login/ResetPass?e=" + CommonTool.Encrypt(email) + "&t=" + CommonTool.Encrypt(DateTime.Now.ToString()),
                         "UES找回密码");
                 return "true";
@@ -162,6 +168,12 @@ namespace Mathy.Web.Controllers.New
             {
                 return ex.Message;
             }
+        }
+
+        private string GetRandomPass()
+        {
+            var guid = Guid.NewGuid().ToString();
+            return guid.Substring(0, 8);
         }
 
         [HttpPost]
@@ -206,7 +218,7 @@ namespace Mathy.Web.Controllers.New
             ViewBag.info = error;
             return View("~/Views/NotFound.cshtml");
         }
-        
+
         [HttpPost]
         public string LoginOut()
         {

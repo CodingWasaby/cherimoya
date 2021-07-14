@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Login.cshtml";
 }
-
 <div class="gray-bg" style="height:110%">
     <div class="wrapper wrapper-content animated fadeIn">
         <div class="p-w-md m-t-sm">
@@ -25,15 +24,22 @@
                                             <select class="form-control" id="role" style="width:80%">
                                                 <option value="不限">不限</option>
                                                 <option value="管理员">管理员</option>
+                                                <option value="尊享用户">尊享用户</option>
                                                 <option value="普通用户">普通用户</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-2" hidden>
                                     <div class="form-group">
                                         <label class="control-label">单位</label>
                                         <input type="text" id="company" name="company" value="@ViewBag.company" placeholder="单位" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">邮箱</label>
+                                        <input type="text" id="email" name="company" value="@ViewBag.email" placeholder="邮箱" class="form-control">
                                     </div>
                                 </div>
 
@@ -51,21 +57,25 @@
                                         <label class="control-label">结束时间</label>
                                         @*<input type="text" id="enddate" name="enddate" value="@ViewBag.enddate" placeholder="结束时间" class="form-control">*@
                                         <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate" class="form-control"value="@ViewBag.enddate">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="enddate" class="form-control" value="@ViewBag.enddate">
                                         </div>
                                     </div>
                                 </div>
                                 <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="searchview()">查询</a>
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#changerule" style="margin-top:24px;width:120px" onclick="changeruleMulti()">批量变更角色</a>
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#changeDate" style="margin-top:24px;width:100px" onclick="changeDateMulti()">批量延期</a>
+                                <input hidden="hidden" id="userIDs" />
+                                <input hidden="hidden" id="emails" />
                             </div>
                             <div class="table-responsive gray-bg">
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr id="headinfo">
-                                            <td><strong>用户ID</strong></td>
+                                            <td><input type="checkbox" onchange="selectChange(this)" /></td>
+                                            <td><strong>邮箱</strong></td>
                                             <td><strong>角色</strong></td>
                                             <td><strong>姓名</strong></td>
-                                            <td><strong>邮箱</strong></td>
-                                            <td><strong>单位</strong></td>
+                                            @*<td><strong>单位</strong></td>*@
                                             <td><strong>手机</strong></td>
                                             <td><strong>注册时间</strong></td>
                                             <td><strong>有效期</strong></td>
@@ -74,16 +84,14 @@
                                         @foreach (var n in Model)
                                         {
                                             <tr>
-                                                <td>@n.UserID</td>
+                                                <td><input type="checkbox" class="userCheck" userID="@n.UserID" email="@n.Email" /></td>
+                                                <td>@n.Email</td>
                                                 <td>@n.Role</td>
                                                 <td>@n.Name</td>
-                                                <td>@n.Email</td>
-                                                <td>@n.Company</td>
+                                                @*<td>@n.Company</td>*@
                                                 <td>@n.CellPhone</td>
                                                 <td>@n.CreateTime</td>
                                                 <td>@n.EnableDate.Value.ToShortDateString()</td>
-
-
                                                 @if (n.Email != "admin")
                                                 {
                                                     <td>
@@ -120,6 +128,7 @@
                         <div class="col-sm-4">
                             <select class="form-control" id="role_changerule" style="width:80%">
                                 <option value="管理员">管理员</option>
+                                <option value="尊享用户">尊享用户</option>
                                 <option value="普通用户">普通用户</option>
                             </select>
                         </div>
@@ -128,7 +137,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateRole()">保存</button>
+                <button type="button" class="btn btn-primary saveP" data-dismiss="modal" onclick="updateRole()">保存</button>
             </div>
         </div>
     </div>
@@ -153,13 +162,21 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateDate()">保存</button>
+                <button type="button" class="btn btn-primary saveP" data-dismiss="modal" onclick="updateDate()">保存</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    function selectChange(e) {
+        if (e.checked) {
+            $(".userCheck").prop("checked", true);
+        }
+        else {
+            $(".userCheck").removeAttr("checked");
+        }
+    }
 
     $(document).ready(function () {
         $('#role').val('@ViewBag.role')
@@ -171,6 +188,7 @@
         var beginDate = $('#beginDate').val();
         var enddate = $('#enddate').val();
         var role = $('#role').val();
+        var email = $('#email').val();
 
         var url = "/user/index?";
         if (username.length > 0) {
@@ -188,12 +206,36 @@
         if (role.length > 0) {
             url += "role=" + role + "&";
         }
+        if (role.length > 0) {
+            url += "email=" + email + "&";
+        }
         window.location.href = url;
     }
 
     function changerule(e,i) {
         $('#email_changerule').text(e);
-        $('#id_changerule').val(i);
+        $('#userIDs').val(i);
+        $('#emails').val(e);
+    }
+
+    function changeruleMulti() {
+        $('.saveP').removeAttr("disabled");
+        $('#email_changerule').text("");
+        var users = $(".userCheck:checked");
+        if (users.length == 0) {
+            $('#email_changerule').text("请勾选数据!");
+            $('.saveP').prop("disabled",true);
+            return;
+        }
+        var userIDs = [];
+        var emails = [];
+        users.each((i,e) => {
+            userIDs.push(e.getAttribute("userID"));
+            emails.push(e.getAttribute("email"));
+        });
+        console.log($('#userIDs'));
+        $('#userIDs').val(userIDs.join(","));
+        $('#emails').val(emails.join(","));
     }
 
     function updateRole() {
@@ -201,7 +243,7 @@
             url: "/user/updateRole",
             type: "POST",
             data: {
-                userid: $("#id_changerule").val(),
+                userids: $("#userIDs").val(),
                 role: $("#role_changerule").val()
             },
             traditional: true,
@@ -219,6 +261,27 @@
         $('#email_changeDate').text(e);
         $('#id_changeDate').val(i);
         $('#enableDate_changeDate').val(d);
+        $('#userIDs').val(i);
+        $('#emails').val(e);
+    }
+    function changeDateMulti() {
+        $('.saveP').removeAttr("disabled");
+        $('#email_changeDate').text("");
+        var users = $(".userCheck:checked");
+        if (users.length == 0) {
+            $('#email_changeDate').text("请勾选数据!");
+            $('.saveP').prop("disabled", true);
+            return;
+        }
+        var userIDs = [];
+        var emails = [];
+        users.each((i, e) => {
+            userIDs.push(e.getAttribute("userID"));
+            emails.push(e.getAttribute("email"));
+        });
+        $('#userIDs').val(userIDs.join(","));
+        $('#emails').val(emails.join(","));
+        $('#enableDate_changeDate').val(d);
     }
 
     function updateDate() {
@@ -226,7 +289,7 @@
             url: "/user/updateDate",
             type: "POST",
             data: {
-                email: $("#email_changeDate").text(),
+                emails: $('#emails').val(),
                 date: $("#enableDate_changeDate").val()
             },
             traditional: true,

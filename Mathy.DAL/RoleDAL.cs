@@ -28,12 +28,12 @@ namespace Mathy.DAL
             return Excute(sql, userRole);
         }
 
-        public bool UpdateUserRole(UserRoleEntity userRole)
+        public bool UpdateUserRole(List<string> userids, int roleID)
         {
             string sql = @" UPDATE  dbo.UserRoleDB
                             SET     RoleID = @RoleID
-                            WHERE   UserID = @UserID ";
-            return Excute(sql, userRole);
+                            WHERE   UserID in @UserIDs ";
+            return Excute(sql, new { UserIDs = userids, RoleID = roleID });
         }
     }
 }

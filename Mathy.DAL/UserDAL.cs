@@ -1,6 +1,7 @@
 ﻿using Mathy.Model.Common;
 using Mathy.Model.Entity;
 using Mathy.Model.Serach;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -120,12 +121,12 @@ namespace Mathy.DAL
             return Excute(sql, userEntity, transaction);
         }
 
-        public bool UpdateUserEnableDate(UserEntity userEntity, SqlTransaction transaction = null)
+        public bool UpdateUserEnableDate(List<string> emails, DateTime enableDate, SqlTransaction transaction = null)
         {
             string sql = @" UPDATE  dbo.UserDB
                             SET    EnableDate = @EnableDate
-                            WHERE   Email = @Email  AND DeleteFlag =0 ";
-            return Excute(sql, userEntity, transaction);
+                            WHERE   Email in @Emails  AND DeleteFlag =0 ";
+            return Excute(sql, new { EnableDate = enableDate, Emails = emails }, transaction);
         }
 
         public bool UpdateUserPass(UserEntity userEntity, SqlTransaction transaction = null)

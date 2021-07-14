@@ -47,7 +47,7 @@
                 <li>
                     <a><i class="glyphicon glyphicon-user"></i> <span class="nav-label">个人实验室</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="@Url.Action("index","home")" class="J_menuItem"><i class="glyphicon glyphicon-edit"></i>我的分析</a></li>
+                        <li><a href="/home/index?pageindex=1" class="J_menuItem"><i class="glyphicon glyphicon-edit"></i>我的分析</a></li>
                         <li><a href="@Url.Action("Plans","home")" class="J_menuItem"><i class="glyphicon glyphicon-edit"></i>我的模板</a></li>
                     </ul>
                 </li>
@@ -55,7 +55,7 @@
                     <a><i class="glyphicon glyphicon-share-alt"></i> <span class="nav-label">公共实验室</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="@Url.Action("Main","home")" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>分析模型</a></li>
-                        <li><a href="@Url.Action("Docs","home")" class="J_menuItem" id="docs"><i class="glyphicon glyphicon-share"></i>科学文档</a></li>
+                        <li><a href="@Url.Action("Docs","home")" class="J_menuItem" id="docs"><i class="glyphicon glyphicon-share"></i>帮助文档</a></li>
                         <li><a href="@Url.Action("index","Coefficient",new { pageindex=1})" class="J_menuItem"><i class="glyphicon glyphicon-share"></i>系数表</a></li>
                     </ul>
                 </li>

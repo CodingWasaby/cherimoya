@@ -34,6 +34,7 @@ namespace Mathy.Visualization.Expressions
             p.Dispose();
         }
 
+        // Σ
         public static void DrawSigmaSymbol(RectangleF rect, Graphics g, Brush brush)
         {
             GraphicsPath path = new GraphicsPath();
@@ -50,7 +51,8 @@ namespace Mathy.Visualization.Expressions
 
             path.Dispose();
         }
-
+        
+        //箭头
         public static void DrawArrow(RectangleF rect, Graphics g, Brush brush)
         {
             GraphicsPath path = new GraphicsPath();
@@ -68,6 +70,7 @@ namespace Mathy.Visualization.Expressions
             path.Dispose();
         }
 
+        //方括号
         public static void DrawSquareBracket(RectangleF rect, Graphics g, Brush brush)
         {
             float s = 3;

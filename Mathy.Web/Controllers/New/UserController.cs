@@ -12,7 +12,7 @@ namespace Mathy.Web.Controllers.New
     [AuthValidate]
     public class UserController : Controller
     {
-        public ActionResult Index(string username, string company, string beginDate, string endDate, string role)
+        public ActionResult Index(string username, string company, string beginDate, string endDate, string role, string email)
         {
             var userDal = new UserDAL();
             var roleDal = new RoleDAL();
@@ -32,18 +32,21 @@ namespace Mathy.Web.Controllers.New
                            let x = r.RoleID
                            select new
                            {
-                               a = l.Role = x == 1 ? "管理员" : "普通用户"
+                               a = l.Role = GetRoleName(x)
                            }).ToList();
             role = string.IsNullOrEmpty(role) ? "不限" : role;
             if (role != "不限")
             {
                 list = list.Where(m => m.Role == role).ToList();
             }
+            if (!string.IsNullOrEmpty(email))
+                list = list.Where(m => m.Email == null || m.Email.Contains(email)).ToList();
             ViewBag.username = username;
             ViewBag.company = company;
             ViewBag.beginDate = beginDate;
             ViewBag.endDate = endDate;
             ViewBag.role = role;
+            ViewBag.email = email;
             return View(list);
         }
 
@@ -56,19 +59,32 @@ namespace Mathy.Web.Controllers.New
         }
 
         [HttpPost]
-        public string UpdateRole(int userid, string role)
+        public string UpdateRole(string userids, string role)
         {
+            int r = 0;
+            if (role == "管理员")
+            {
+                r = 1;
+            }
+            if (role == "尊享用户")
+            {
+                r = 3;
+            }
+            if (role == "管理员")
+            {
+                r = 2;
+            }
             var dal = new RoleDAL();
-            return dal.UpdateUserRole(new UserRoleEntity { UserID = userid, RoleID = role == "管理员" ? 1 : 2 }).ToString();
+            return dal.UpdateUserRole(userids.Split(',').ToList(), r).ToString();
         }
 
         [HttpPost]
-        public string UpdateDate(string email, string date)
+        public string UpdateDate(string emails, string date)
         {
             if (DateTime.TryParse(date, out DateTime d))
             {
                 var dal = new UserDAL();
-                return dal.UpdateUserEnableDate(new UserEntity { Email = email, EnableDate = d }).ToString();
+                return dal.UpdateUserEnableDate(emails.Split(',').ToList(), d).ToString();
             }
             return "fales";
         }
@@ -77,6 +93,19 @@ namespace Mathy.Web.Controllers.New
         {
             ViewBag.info = "权限管理暂时未开放";
             return View("~/Views/NotFound.cshtml");
+        }
+
+        private string GetRoleName(int roleid)
+        {
+            if (roleid == 1)
+            {
+                return "管理员";
+            }
+            if (roleid == 3)
+            {
+                return "尊享用户";
+            }
+            return "管理员";
         }
     }
 }

@@ -53,6 +53,6 @@
   "devDependencies": {
     "babel-plugin-import": "^1.13.0"
   },
-  "proxy": "http://cal.ncrm.org.cn",
-  "proxy1": "http://ues.xiadaogu.fun"
+  "proxy1": "http://localhost:8080",
+  "proxy": "http://cal.ncrm.org.cn"
 }

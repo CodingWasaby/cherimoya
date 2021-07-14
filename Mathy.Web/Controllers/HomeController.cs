@@ -119,12 +119,10 @@ namespace Mathy.Web.Controllers
 
         [CheckLogin]
         [OutputCache(Duration = 0)]
-        public ActionResult GetFuncArticle(int index)
+        public ActionResult GetFuncArticle(string str)
         {
-            return PartialView("FuncArticle", new FuncDocVM(Script.GetFuncDocs()[index], index)
-            {
-                Article = new FuncArticleVM(Script.GetFuncDocs()[index].Article)
-            });
+            var fd = Script.GetFuncDocs().Where(m => m.Title.Contains(str) || m.Description.Contains(str) || m.Name.Contains(str)).ToArray();
+            return PartialView("DocsPartial", new DocVM(fd));
         }
 
         public JsonResult GetPlanForF()

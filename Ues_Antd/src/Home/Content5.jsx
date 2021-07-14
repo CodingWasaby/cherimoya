@@ -51,6 +51,22 @@ class Content5 extends React.PureComponent {
     }
   }
 
+  forget() {
+    var myReg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+    if (!myReg.test(this.state.email) && this.state.email !== "admin") {
+      message.warning("邮箱格式不正确");
+      return false;
+    }
+    adminApi.ReSetSumbit(this.state.email, this.state.pwd).then(x => {
+      if (x === true) {
+        message.info("重置密码邮件已发送，请检查邮箱！");
+      }
+      else {
+        message.warning(x);
+      }
+    });
+  }
+
   register() {
     if (this.validateInfo(false)) {
       adminApi.RgisterSumbit(this.state.email, this.state.pwd).then(x => {
@@ -84,12 +100,12 @@ class Content5 extends React.PureComponent {
     data.map((item) => {
       return (
         <Col {...item} key={item.name} onClick={(e) => {
-              this.show();
-            }}>
-        <a {...item.children}>
-          {item.children.children.map(getChildrenToRender)}
-        </a>
-      </Col>
+          this.show();
+        }}>
+          <a {...item.children}>
+            {item.children.children.map(getChildrenToRender)}
+          </a>
+        </Col>
       );
       // return (
       //   <Col key={item.name} {...item} onClick={(e) => {
@@ -153,6 +169,9 @@ class Content5 extends React.PureComponent {
             <Button type="primary" onClick={() => {
               this.register();
             }}>注册</Button>,
+            <Button type="primary" onClick={() => {
+              this.forget();
+            }}>忘记密码</Button>,
             <Button onClick={() => {
               this.close();
             }}>取消</Button>]}

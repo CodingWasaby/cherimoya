@@ -548,6 +548,7 @@
     <Content Include="Views\Shared\EditorView.cshtml" />
     <Content Include="Views\Home\MCM.cshtml" />
     <Content Include="Views\Home\PlansTotal_A.cshtml" />
+    <Content Include="Views\Home\DocsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cherimoya\Cherimoya.csproj">

@@ -9,10 +9,10 @@
 
     <script language="javascript">
 
-        function getFuncArticle(index) {
+        function getFuncArticle() {
 
             $.ajax({
-                url: "/Home/GetFuncArticle?index=" + index,
+                url: "/Home/GetFuncArticle?str=" + $("#str1").val(),
                 success: function (html) {
                     $("#article").html(html);
                 }
@@ -30,8 +30,17 @@
         overflow-y: scroll;
     }
 </style>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="control-label" for="product_name">关键字：</label>
+            <input type="text" id="str1" placeholder="关键字" class="form-control">
+        </div>
+    </div>
+    <a class="btn btn-primary" style="margin-top:24px;width:100px" onclick="getFuncArticle()">查询</a>
+</div>
 @*style="float: left; width: 220px;margin-top: 0; line-height: 30px; height:500px; overflow-y:auto"*@
-<div class="table-responsive gray-bg">
+<div class="table-responsive gray-bg" id="article">
 
     @foreach (FuncDocVM func in Model.List)
     {

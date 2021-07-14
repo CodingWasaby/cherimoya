@@ -34,7 +34,6 @@ namespace Mathy.Web
             msg.Body = content;
             msg.BodyEncoding = System.Text.Encoding.UTF8;
             msg.IsBodyHtml = true;
-            msg.Priority = MailPriority.High;
             try
             {
                 client.Send(msg);
