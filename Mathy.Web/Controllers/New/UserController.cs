@@ -107,7 +107,7 @@ namespace Mathy.Web.Controllers.New
             {
                 return "尊享用户";
             }
-            return "管理员";
+            return "普通用户";
         }
     }
 }
