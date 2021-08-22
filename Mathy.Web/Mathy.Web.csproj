@@ -549,6 +549,10 @@
     <Content Include="Views\Home\MCM.cshtml" />
     <Content Include="Views\Home\PlansTotal_A.cshtml" />
     <Content Include="Views\Home\DocsPartial.cshtml" />
+    <Content Include="Views\Draw\均值.cshtml" />
+    <Content Include="Views\Draw\比对图.cshtml" />
+    <Content Include="Views\Draw\直方图.cshtml" />
+    <Content Include="Views\Draw\线性回归.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cherimoya\Cherimoya.csproj">

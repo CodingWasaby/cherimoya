@@ -20,6 +20,8 @@ namespace Petunia.LogicModel
 
         public string PlanCategory { get; set; }
 
+        public int ReferenceCountOld { get; set; }
+
         public int ReferenceCount { get; set; }
 
         public int AuthFlag { get; set; }

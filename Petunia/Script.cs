@@ -94,7 +94,7 @@ namespace Petunia
             plan.Styles = newPlan.Styles;
             plan.PlanType = newPlan.PlanType;
             plan.PlanCategory = newPlan.PlanCategory;
-            plan.UserRole = newPlan.UserRole;
+            plan.UserRole = plan.UserRole;
             AppStore.PlanRepository.Save(id, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(new JsonSerializer() { PrettifyJson = true }.SerializeToString(plan))));
 
 
@@ -106,7 +106,7 @@ namespace Petunia
                 planLM.Author = newPlan.Author;
                 planLM.PlanType = newPlan.PlanType;
                 planLM.PlanCategory = newPlan.PlanCategory;
-                planLM.UserRole = newPlan.UserRole;
+                planLM.UserRole = planLM.UserRole;
                 PlanStorage.Save(planLM);
             }
         }

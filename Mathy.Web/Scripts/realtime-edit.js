@@ -175,7 +175,6 @@ function getPlanData(des) {
     data["Title"] = $("#titleTextBox").val();
     data["Description"] = des;     // $("#descriptionTextBox").val();
     data["Author"] = $("#authorTextBox").val();
-    data["userRole"] = $("#userRole").find(":selected").val();
     data["PlanType"] = $("#planType").find(":selected").val();
     data["PlanCategory"] = $("#category").find(":selected").val();
     data["Variables"] = [];

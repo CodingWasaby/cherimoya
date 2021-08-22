@@ -310,6 +310,7 @@ namespace Mathy.Web.Controllers
             Script.InitEvaluationContext(context, job);
             context.Update();
             new JobDAL().DeleteJob(job.AutoID);
+            new PlanDAL().IncreaseQuote(planAutoID);
             return View("ViewJob", new JobVM(context, job));
         }
 
@@ -746,6 +747,7 @@ namespace Mathy.Web.Controllers
                 else
                 {
                     id = Script.AddPlan(plan).ID;
+                    sm.UserRole = 2;
                 }
 
                 return new JsonResult() { Data = new { success = true, PlanID = id }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
@@ -1048,6 +1050,21 @@ namespace Mathy.Web.Controllers
             var dal = new MCMDAL();
             var mcmID = dal.SaveMCM(new MCM { JobID = jobid, MCMInfo = JsonConvert.SerializeObject(mcm) });
             return Json(new { message = "success", mcmID, jobid });
+        }
+
+        [CheckLogin]
+        [HttpPost]
+        public string UpdatePlanRole(int planID, int userRole)
+        {
+            try
+            {
+                new PlanDAL().UpdatePlanRole(planID, userRole);
+                return "success";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
 

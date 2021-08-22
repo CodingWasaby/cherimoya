@@ -29,6 +29,7 @@ namespace Mathy.Web.Controllers.New
             try
             {
                 new PlanDAL().CreateUserRoleColumn();
+                new PlanDAL().CreateQuoteTable();
                 return "success";
             }
             catch(Exception ex)

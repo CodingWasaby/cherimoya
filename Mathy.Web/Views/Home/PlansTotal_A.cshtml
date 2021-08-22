@@ -101,6 +101,11 @@
                                     <a class="btn-sm btn-warning " onclick="SeqChange_A('@n.PlanAutoID')">顺序调整</a>
                                     <input type="number" class="@(n.PlanAutoID+"_Seq")" min="1" step="1" style="display:none;width:70px" value="@n.SeqNo" />
                                     <a class="btn-sm btn @(n.PlanAutoID+"_Seq")" name="" onclick="SeqChange_Save_A('@n.PlanAutoID')" style="display:none;">保存</a>
+                                    <select class='type' id="@(n.PlanAutoID+"_role")" onchange="roleChange(@n.PlanAutoID)">
+                                        <option value="3" @(n.UserRole == 3 ? "selected" : "")>尊享用户</option>
+                                        <option value="2" @(n.UserRole == 2 ? "selected" : "")>普通用户</option>
+                                    </select>
+                                    <a href="@Html.Raw(n.DeletePlanUrl)" class="btn-sm btn-danger"> 删除</a>
                                 }
                             }
                         </div>
@@ -162,6 +167,22 @@
             });
         }
 
+        function roleChange(id) {
+            $.ajax({
+                url: "/Home/UpdatePlanRole?planID=" + id + "&userRole=" + $("#" + id + "_role").find(":selected").val(),
+                method: "Post",
+                success: function (msg) {
+                    if (msg == "success") {
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                error: function (res) {
+                    alert(res);
+                }
+            });
+        }
     </script>
 </div>
 
