@@ -178,10 +178,7 @@ namespace Mathy.DAL
 
 	                [CreateTime] [datetime] NOT NULL 
 
-                ) ON [PRIMARY]
-
-                GO
-                ";
+                ) ON [PRIMARY] ";
             Excute(sql);
         }
 
