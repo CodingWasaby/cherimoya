@@ -106,7 +106,7 @@
                                         <option value="3" @(n.UserRole == 3 ? "selected" : "")>尊享用户</option>
                                         <option value="2" @(n.UserRole == 2 ? "selected" : "")>普通用户</option>
                                     </select>
-                                    <a href="@Html.Raw(n.DeletePlanUrl)" class="btn-sm btn-danger"> 删除</a>
+                                    <a onclick="deletePlan_B('@n.PlanAutoID',0)" class="btn-sm btn-danger"> 删除</a>
                                 }
                             }
                         </div>
@@ -179,6 +179,22 @@
                     alert(res);
                 }
             });
+        }
+
+        function deletePlan_B(autoID, pageIndex) {
+
+            if (confirm("是否确定删除？删除后无法恢复。")) {
+
+                $.ajax({
+                    url: "/Home/DeletePlan?autoID=" + autoID + "&pageIndex=" + pageIndex,
+                    success: function (html) {
+                        SearchPage_B(1);
+                    },
+                    error: function (res) {
+                        alert(res.responseJSON.message);
+                    }
+                });
+            }
         }
     </script>
 </div>
