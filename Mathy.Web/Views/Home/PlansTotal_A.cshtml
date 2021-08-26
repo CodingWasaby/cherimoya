@@ -191,10 +191,10 @@
                 $.ajax({
                     url: "/Home/DeletePlan?autoID=" + autoID + "&pageIndex=" + pageIndex,
                     success: function (html) {
-                        SearchPage_A(1);
+                        SearchPage_A('@ViewBag.pageIndex');
                     },
                     error: function (res) {
-                        alert(res.responseJSON.message);
+                        alert(res);
                     }
                 });
             }
