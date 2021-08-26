@@ -47,7 +47,7 @@
                 $.ajax({
                     url: "/Home/DeletePlan?autoID=" + autoID + "&pageIndex=" + pageIndex,
                     success: function (html) {
-                        SearchPage(1);
+                        SearchPage(pageIndex);
                     },
                     error: function (res) {
                         alert(res.responseJSON.message);

@@ -696,18 +696,16 @@ namespace Mathy.Web.Controllers
 
         [CheckLogin]
         [OutputCache(Duration = 0)]
-        public ActionResult DeletePlan(int autoID, int pageIndex)
+        public string DeletePlan(int autoID, int pageIndex)
         {
             try
             {
                 Script.DeletePlan(autoID);
-                ViewData["PagingButtons"] = Paging(pageIndex, Script.GetPlanCount("", "", "", "", "", true), "PlanPageIndex");
-                return PartialView("PlanList", Script.SearchPlans(pageIndex, 3, "", true).Select(i => new PlanListCellVM(i, pageIndex)));
+                return "success";
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new JsonResult() { Data = new { message = ex.Message }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                return ex.Message;
             }
         }
 
